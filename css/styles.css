@@ -1,0 +1,15 @@
+
+/*Iconos*/
+.icons{
+    margin: 0 auto;
+}
+.input-group-text2{
+    width: 50px !important;
+}
+
+/*Breackpoints*/
+@media only screen and (max-width: 1200px) {
+    .break-lg{
+        margin-top: 1rem !important;
+    }
+}
