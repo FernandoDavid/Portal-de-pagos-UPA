@@ -1,18 +1,3 @@
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--Styles CSS-->
-    <link rel="stylesheet" href="css/styles.css">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <!-- Font awesome-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>
-    <title>Formulario de inscripción</title>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-
 <body>
     <div class="cointer-fluid text-center bg-primary text-white py-3">
         <h1>Formulario Inscripciones</h1>
@@ -20,7 +5,7 @@
     <div class="container my-4">
         <div class="position-relative my-5">
             <div class="progress" style="height: 1px;">
-              <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             <button id="step1" type="button" class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;">1</button>
             <button id="step2" type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-secondary rounded-pill" style="width: 2rem; height:2rem;">2</button>
@@ -28,7 +13,7 @@
         </div>
         <div class="row pb-2">
             <div class="col-3">
-                <img class="img-fluid" src="img/descargar.jpg" alt="">
+                <img class="img-fluid" src="<?php echo $dominio ?>vistas/img/descargar.jpg" alt="">
             </div>
             <div class="col-9">
                 <h2>Paso 1</h2>
@@ -41,21 +26,21 @@
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto sapiente explicabo accusamus nam consectetur et porro alias beatae, quae blanditiis aliquam hic quis. Suscipit aperiam molestiae nulla in expedita quasi?</p>
             </div>
             <div class="col-3">
-                <img class="img-fluid" src="img/descargar.jpg" alt="">
+                <img class="img-fluid" src="<?php echo $dominio ?>vistas/img/descargar.jpg" alt="">
             </div>
         </div>
         <div class="card">
             <div class="card-body">
-                <form action="submit" method="POST">
+                <form method="POST">
                     <div class="row">
                         <div class="col-12">
                             <div class="input-group mb-3">
                                 <label class="input-group-text" for="inputGroupSelect01">Nombre del curso</label>
                                 <select class="form-select" id="curso" name="curso" required>
-                                  <option selected value="">Elegir...</option>
-                                  <option value="1">Curso 1</option>
-                                  <option value="2">Curso 2</option>
-                                  <option value="3">Curso 3</option>
+                                    <option selected value="">Elegir...</option>
+                                    <option value="1">Curso 1</option>
+                                    <option value="2">Curso 2</option>
+                                    <option value="3">Curso 3</option>
                                 </select>
                             </div>
                         </div>
@@ -78,7 +63,7 @@
                         <div class="col-xl-8 col-lg-12">
                             <div class="input-group">
                                 <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-home fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="Domicilio" name="domicilio" required> 
+                                <input type="text" class="form-control" placeholder="Domicilio" name="domicilio" required>
                             </div>
                         </div>
                         <div class="col-xl-4 col-lg-12 break-lg">
@@ -87,7 +72,7 @@
                                 <input type="text" class="form-control" placeholder="Correo" name="correo" required>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="row mb-3">
                         <div class="col-xl-8 col-lg-12">
                             <div class="input-group">
@@ -103,11 +88,11 @@
                                     </div>
                                 </div>
                                 <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="1" id="hombreRadio" name="sexoRadio" onclick="document.getElementById('mujerRadio').checked = false" required>
+                                    <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio" name="sexoRadio" onclick="document.getElementById('mujerRadio').checked = false" required>
                                     <label class="ms-2" for="">Hombre</label>
                                 </div>
                                 <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="2" id="mujerRadio" name="sexoRadio" onclick="document.getElementById('hombreRadio').checked = false">
+                                    <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio" name="sexoRadio" onclick="document.getElementById('hombreRadio').checked = false">
                                     <label class="ms-2" for="">Mujer</label>
                                 </div>
                             </div>
@@ -128,27 +113,25 @@
                                     </div>
                                 </div>
                                 <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="1" id="casadoRadio" name="estadoRadio" onclick="document.getElementById('solteroRadio').checked = false" required>
+                                    <input class="form-check-input ms-1" type="radio" value="soltero" id="casadoRadio" name="estadoRadio" onclick="document.getElementById('solteroRadio').checked = false" required>
                                     <label class="ms-2" for="">Soltero/a</label>
                                 </div>
                                 <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="2" id="solteroRadio" name="estadoRadio" onclick="document.getElementById('casadoRadio').checked = false">
+                                    <input class="form-check-input ms-1" type="radio" value="casado" id="solteroRadio" name="estadoRadio" onclick="document.getElementById('casadoRadio').checked = false">
                                     <label class="ms-2" for="">Casado/a</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary">Enviar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                    <?php
+                        /*=====================================
+                        INSTANCIA Y LLAMADO DE CLASE DE INGRESO
+                        ======================================*/
+                        $ingreso = new ControladorFormularios();
+                        $ingreso->ctrRegistro();
+                    ?>
                 </form>
-            </div>    
+            </div>
         </div>
     </div>
-
-    <!-- Optional JavaScript; choose one of the two! -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-    <script src="js/script.js"></script>
-</body>
-
-</html>
