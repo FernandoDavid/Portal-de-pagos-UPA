@@ -3,6 +3,7 @@
         <h1>Formulario Inscripciones</h1>
     </div>
     <div class="container my-4">
+        <!-- Barra de progreso -->
         <div class="position-relative my-5">
             <div class="progress" style="height: 1px;">
                 <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -11,24 +12,14 @@
             <button id="step2" type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-secondary rounded-pill" style="width: 2rem; height:2rem;">2</button>
             <button id="step3" type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary rounded-pill" style="width: 2rem; height:2rem;">3</button>
         </div>
-        <div class="row pb-2">
-            <div class="col-3">
-                <img class="img-fluid" src="<?php echo $dominio ?>vistas/img/descargar.jpg" alt="">
-            </div>
-            <div class="col-9">
-                <h2>Paso 1</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto sapiente explicabo accusamus nam consectetur et porro alias beatae, quae blanditiis aliquam hic quis. Suscipit aperiam molestiae nulla in expedita quasi?</p>
-            </div>
-        </div>
-        <div class="row pb-2">
-            <div class="col-9 text-end">
-                <h2>Paso 2</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto sapiente explicabo accusamus nam consectetur et porro alias beatae, quae blanditiis aliquam hic quis. Suscipit aperiam molestiae nulla in expedita quasi?</p>
-            </div>
-            <div class="col-3">
-                <img class="img-fluid" src="<?php echo $dominio ?>vistas/img/descargar.jpg" alt="">
-            </div>
-        </div>
+        
+        <!-- Paso 1 (Carrousel con los cursos) -->
+
+
+        <!-- Paso 2 (Formulario de registro de los aspirantes)-->
+        
+        
+        
         <div class="card">
             <div class="card-body">
                 <form method="POST">
@@ -38,13 +29,17 @@
                                 <label class="input-group-text" for="inputGroupSelect01">Nombre del curso</label>
                                 <select class="form-select" id="curso" name="curso" required>
                                     <option selected value="">Elegir...</option>
-                                    <option value="1">Curso 1</option>
-                                    <option value="2">Curso 2</option>
-                                    <option value="3">Curso 3</option>
+                                    <?php 
+                                        $res=ModeloFormularios::mdlSelecReg("cursos", null,null);
+                                        foreach($res as $key=>$valor){
+                                    ?>
+                                    <option value="<?php echo $valor["idCurso"] ?>"><?php echo $valor["titulo"] ?></option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
                     </div>
+
                     <div class="row mb-3">
                         <div class="col-xl-8 col-lg-12">
                             <div class="input-group">
@@ -134,4 +129,7 @@
                 </form>
             </div>
         </div>
+
+        <!-- Paso 3 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
+
     </div>

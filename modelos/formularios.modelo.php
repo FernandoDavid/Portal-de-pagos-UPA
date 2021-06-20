@@ -42,4 +42,13 @@ class ModeloFormularios
             print_r(Conexion::conectar()->errorInfo());
         }     
     }
+
+    static public function mdlSelecReg($tabla, $atributo, $valor){
+        if($atributo==null && $valor==null){
+            $stmt=Conexion::conectar()->prepare("SELECT * FROM $tabla");
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
+        
+    }
 }
