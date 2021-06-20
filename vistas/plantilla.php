@@ -24,7 +24,7 @@
         $rutas = explode("/", $_GET["pagina"]);
 
         if (
-            $rutas[0] == "Inicio"
+            $rutas[0] == "adminCursos"
         ) {
             // switch ($rutas[0]) {
             //     case "Inicio":
@@ -37,7 +37,7 @@
             include "paginas/404.php";
         }
     } else {
-        include "paginas/adminCursos.php";
+        include "paginas/index.php";
     }
 
     ?>

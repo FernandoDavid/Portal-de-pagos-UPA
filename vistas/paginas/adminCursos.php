@@ -175,7 +175,7 @@
                         INSTANCIA Y LLAMADO DE CLASE DE INGRESO
                         ======================================*/
                         $ingreso = new ControladorFormularios();
-                        $ingreso->ctrRegistro();
+                        // $ingreso->ctrRegistro();
                     ?>
                 </form>
             </div>

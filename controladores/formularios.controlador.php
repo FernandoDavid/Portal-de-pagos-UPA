@@ -2,8 +2,8 @@
 
 class ControladorFormularios
 {
-    
-    public static function ctrRegistro()
+
+    public static function ctrRegistro($dominio)
     {
         if (isset($_POST["curso"])) {
             if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombre"])) {
@@ -20,8 +20,18 @@ class ControladorFormularios
                     "est_civil" => $_POST["estadoRadio"],
                     "idCurso" => $_POST["curso"]
                 );
-                $respuesta = ModeloFormularios::mdlCrearRegistro($tabla,array_keys($datos),$datos);
+                $respuesta = ModeloFormularios::mdlCrearRegistro($tabla, array_keys($datos), $datos);
                 if ($respuesta == "ok") {
+
+                    $id = ModeloFormularios::mdlSeleccionarId($tabla, $datos);
+                    if ($id) {
+                        $correo = new ControladorCorreo();
+                        $correo->ctrEnviarCorreo($dominio, $id["idInscrito"]);
+                    } else {
+                        echo '<script>
+                            alert("Error al obtener id");
+                        </script>';
+                    }
                     echo '<script>
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
@@ -47,5 +57,4 @@ class ControladorFormularios
             }
         }
     }
-
 }

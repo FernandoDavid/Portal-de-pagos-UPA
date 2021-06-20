@@ -18,24 +18,6 @@ class ModeloFormularios
         $stmt->bindParam(":sexo", $datos["sexo"], PDO::PARAM_STR);
         $stmt->bindParam(":est_civil", $datos["est_civil"], PDO::PARAM_STR);
         $stmt->bindParam(":idCurso", $datos["idCurso"], PDO::PARAM_INT);
-        // $i = 0;
-        // foreach ($datos as $dato) {
-        //     echo '<pre>';
-        //     var_dump($dato);
-        //     var_dump($i);
-        //     var_dump(":".$campos[$i]);
-            
-        //     if (is_numeric($dato)) {
-        //         $stmt->bindParam(":" . $campos[$i], $dato, PDO::PARAM_INT);
-        //         echo 'int';
-        //     } else {
-        //         $stmt->bindParam(":" . $campos[$i], $dato, PDO::PARAM_STR);
-        //         echo 'str';
-        //     }
-        //     echo '</pre>';
-        //     $i++;
-        // }
-        // echo strval($stmt);
         if($stmt -> execute()){
             return "ok";
         }else{
@@ -49,6 +31,14 @@ class ModeloFormularios
             $stmt->execute();
             return $stmt->fetchAll();
         }
+    }
         
+    static public function mdlSeleccionarId($tabla,$valores){
+        $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE correo = :correo AND idCurso = :idCurso");
+        $stmt -> bindParam(":correo",$valores["correo"], PDO::PARAM_STR);
+        $stmt -> bindParam(":idCurso",$valores["idCurso"], PDO::PARAM_STR);
+
+        $stmt -> execute();
+        return $stmt->fetch();
     }
 }
