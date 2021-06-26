@@ -37,7 +37,7 @@
             include "paginas/404.php";
         }
     } else {
-        include "paginas/index.php";
+        include "paginas/adminCursos.php";
     }
 
     ?>

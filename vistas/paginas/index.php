@@ -30,7 +30,7 @@
                                 <select class="form-select" id="curso" name="curso" required>
                                     <option selected value="">Elegir...</option>
                                     <?php 
-                                        $res=ModeloFormularios::mdlSelecReg("cursos", null,null);
+                                        $res=ModeloFormularios::mdlSelecReg("cursos";
                                         foreach($res as $key=>$valor){
                                     ?>
                                     <option value="<?php echo $valor["idCurso"] ?>"><?php echo $valor["titulo"] ?></option>
