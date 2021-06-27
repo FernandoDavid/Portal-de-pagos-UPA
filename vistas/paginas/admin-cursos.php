@@ -4,6 +4,7 @@
         <h1 class="text-center">Tabla inscritos</h1>
         <table class="table table-striped table-success mb-4">
             <thead>
+                <th scope="col">ID</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Correo</th>
                 <th scope="col">Teléfono</th>
@@ -22,9 +23,12 @@
                     foreach($res as $key=> $datos){
                 ?>
                 <tr>
-                    <th>
+                    <td>
+                        <?php echo $datos['idInscrito']    ?>
+                    </td>
+                    <td>
                         <?php echo $datos['nombre']    ?>
-                        </td>
+                    </td>
                     <td>
                         <?php echo $datos['correo']    ?>
                     </td>
@@ -50,7 +54,7 @@
                         <?php echo $datos['idCurso']  ?>
                     </td>
                     <!-- Modal modifcar datos del alumno-->
-                    <td><button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarAlumno" style="color: black; border-color: black;">Modificar</button></td>
+                    <td><button type="submit" class="btn btn-warning btnEditarAlumno" style="color: black; border-color: black;">Modificar</button></td>
                     <div class="modal fade" id="modalModificarAlumno" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-centered">
                             <div class="modal-content">
@@ -59,19 +63,19 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    
                                     <form method="POST">
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="input-group mb-3">
+                                                    <input type="text" id="idAlumno" name="idAlumno">
                                                     <label class="input-group-text" for="inputGroupSelect01">Nombre del curso</label>
                                                     <select class="form-select" id="curso" name="curso" required>
-                                                        <option selected value="">Elegir...</option>
+                                                        <option  selected value="">Elegir...</option>
                                                         <?php   
-                                                            $res=ModeloFormularios::mdlSelecReg("cursos",null,null);
-                                                            foreach($res as $key=>$valor){
+                                                            $opcionescursos=ModeloFormularios::mdlSelecReg("cursos",null,null);
+                                                            foreach($opcionescursos as $key=>$opcurso){
                                                         ?>
-                                                        <option value="<?php echo $valor["idCurso"] ?>"><?php echo $valor["titulo"] ?></option>
+                                                        <option value="<?php echo $opcurso["idCurso"] ?>"><?php echo $opcurso["titulo"] ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
@@ -82,13 +86,13 @@
                                             <div class="col-xl-8 col-lg-12">
                                                 <div class="input-group">
                                                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                    <input type="text" class="form-control" placeholder="Nombre completo" name="nombre" required>
+                                                    <input type="text" value="" class="form-control" placeholder="Nombre completo" id="nombre" name="nombre" required>
                                                 </div>
                                             </div>
                                             <div class="col-xl-4 col-lg-12 break-lg">
                                                 <div class="input-group">
                                                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-phone-alt fa-lg icons"></i></span>
-                                                    <input type="text" class="form-control" placeholder="Número de teléfono" name="telefono" required>
+                                                    <input type="text" class="form-control" placeholder="Número de teléfono" id="telefono" name="telefono" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -96,13 +100,13 @@
                                             <div class="col-xl-8 col-lg-12">
                                                 <div class="input-group">
                                                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-home fa-lg icons"></i></span>
-                                                    <input type="text" class="form-control" placeholder="Domicilio" name="domicilio" required>
+                                                    <input type="text" class="form-control" placeholder="Domicilio" id="domicilio" name="domicilio" required>
                                                 </div>
                                             </div>
                                             <div class="col-xl-4 col-lg-12 break-lg">
                                                 <div class="input-group">
                                                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-envelope fa-lg icons"></i></i></span>
-                                                    <input type="text" class="form-control" placeholder="Correo" name="correo" required>
+                                                    <input type="text" class="form-control" placeholder="Correo" id="correo" name="correo" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -110,7 +114,7 @@
                                             <div class="col-xl-8 col-lg-12">
                                                 <div class="input-group">
                                                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-hashtag fa-lg icons"></i></span>
-                                                    <input type="text" class="form-control" placeholder="CURP" name="curp" required>
+                                                    <input type="text" class="form-control" placeholder="CURP" id="curp" name="curp" required>
                                                 </div>
                                             </div>
                                             <div class="col-xl-4 col-lg-12 break-lg">
@@ -135,7 +139,7 @@
                                             <div class="col-xl-8 col-lg-12">
                                                 <div class="input-group">
                                                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-address-card fa-lg icons"></i></span>
-                                                    <input type="text" class="form-control" placeholder="RFC" name="rfc" required>
+                                                    <input type="text" class="form-control" placeholder="RFC" id="rfc" name="rfc" required>
                                                 </div>
                                             </div>
                                             <div class="col-xl-4 col-lg-12 break-lg">
@@ -156,19 +160,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Enviar</button>
-                                        <?php
-                                            /*=====================================
-                                            INSTANCIA Y LLAMADO DE CLASE DE INGRESO
-                                            ======================================*/
-                                            $ingreso = new ControladorFormularios();
-                                            $ingreso->ctrRegistro($dominio);
-                                        ?>
                                     </form>
-
-
-
-
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -177,8 +169,9 @@
                             </div>
                         </div>
                     </div>
+                    
                     <!-- Modal eliminar alumno-->
-                    <td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarAlumno" style="border-color: black">Eliminar</button></td>
+                    <td><button type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarAlumno" style="border-color: black">Eliminar</button></td>
                     <div class="modal fade" id="modalEliminarAlumno" tabindex="-1"  aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -205,6 +198,7 @@
         <h1 class="text-center">Tabla Cursos</h1>
         <table class="table table-striped table-success mb-4">
             <thead>
+                <th scope="col">ID</th>
                 <th scope="col">Nombre del curso</th>
                 <th scope="col">Descripción</th>
                 <th scope="col">Instructor</th>
@@ -221,13 +215,15 @@
                 <?php 
                     
                     $res=ModeloFormularios::mdlSelecReg("cursos",null,null);
-
                     foreach($res as $key=> $datos){
                 ?>
                 <tr>
                     <th>
-                        <?php echo $datos['titulo']    ?>
+                        <?php echo $datos['idCurso']    ?>
                         </td>
+                    <td>
+                        <?php echo $datos['titulo']    ?>
+                    </td>
                     <td>
                         <?php echo $datos['desc']    ?>
                     </td>
@@ -262,9 +258,111 @@
                                 </div>
                                 <div class="modal-body">
                                     
-                                    
-
-
+                                    <div class="row mb-3">
+                                        <div class="col-xl-7 col-lg-12">
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text input-group-text2"
+                                                            id="addon-wrapping"><i
+                                                                class="fas fa-user fa-lg icons"></i></span>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Nombre del curso" name="nombre" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text input-group-text2"
+                                                            id="addon-wrapping"><i
+                                                                class="fas fa-user fa-lg icons"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Instructor"
+                                                            name="nombre" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text input-group-text2"
+                                                            id="addon-wrapping"><i
+                                                                class="fas fa-user fa-lg icons"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Lugar"
+                                                            name="nombre" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">Descripción</span>
+                                                        <textarea class="form-control"
+                                                            aria-label="Descripción"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-5 col-lg-12">
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text input-group-text2"
+                                                            id="addon-wrapping"><i
+                                                                class="fas fa-user fa-lg icons"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Precio"
+                                                            name="nombre" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <h5 class="text-center">Fechas de curso</h5>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="col-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text input-group-text2"
+                                                            id="addon-wrapping"><i
+                                                                class="fas fa-user fa-lg icons"></i></span>
+                                                        <input type="date" class="form-control" placeholder="Instructor"
+                                                            name="nombre" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text input-group-text2"
+                                                            id="addon-wrapping"><i
+                                                                class="fas fa-user fa-lg icons"></i></span>
+                                                        <input type="date" class="form-control" placeholder="Instructor"
+                                                            name="nombre" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row ">
+                                                <h5 class="text-center">Horas del curso</h5>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text input-group-text2"
+                                                            id="addon-wrapping"><i
+                                                                class="fas fa-user fa-lg icons"></i></span>
+                                                        <input type="time" class="form-control" placeholder="Instructor"
+                                                            name="nombre" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text input-group-text2"
+                                                            id="addon-wrapping"><i
+                                                                class="fas fa-user fa-lg icons"></i></span>
+                                                        <input type="time" class="form-control" placeholder="Instructor"
+                                                            name="nombre" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                                 <div class="modal-footer">
@@ -428,5 +526,47 @@
         </form>
 
     </div>
+
+        <script>
+            $(document).ready(function(){
+                $(".btnEditarAlumno").on('click', function(){
+                    $('#modalModificarAlumno').modal('show');
+                    var $tr=$(this).closest('tr');
+
+                    
+                    var $datos=$tr.children('td').map(function(){
+                        
+                        return $(this).text();
+                    }).get();
+                    
+
+                    //var $datos=$(this).parents("tr").find("td").contents().toArray();
+                    console.log($datos);
+
+                    
+                    $('#idAlumno').val($datos[0]);
+                    $('#nombre').val($datos[1]);
+                    $('#correo').val($datos[2]);
+                    $('#telefono').val($datos[3]);
+                    $('#domicilio').val($datos[4]);
+                    $('#curp').val($datos[5]);
+                    $('#rfc').val($datos[6]);
+                    if($datos[7]=="H"){
+                        document.getElementById('hombreRadio').checked = true;
+                    }
+                    else{
+                        document.getElementById('mujerRadio').checked = true;
+                    }
+
+                    if($datos[8]=="soltero"){
+                        document.getElementById('solteroRadio').checked = true;
+                    }
+                    else{
+                        document.getElementById('casadoRadio').checked = true;
+                    }
+                });
+            });
+        </script>
+
 
 </body>
