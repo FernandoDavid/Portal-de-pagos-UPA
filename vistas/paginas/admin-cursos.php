@@ -18,7 +18,7 @@
             </thead>
             <tbody>
                 <?php 
-                    $res=ModeloFormularios::mdlSelecReg("inscritos");
+                    $res=ModeloFormularios::mdlSelecReg("inscritos",null,null);
                     foreach($res as $key=> $datos){
                 ?>
                 <tr>
@@ -68,7 +68,7 @@
                                                     <select class="form-select" id="curso" name="curso" required>
                                                         <option selected value="">Elegir...</option>
                                                         <?php   
-                                                            $res=ModeloFormularios::mdlSelecReg("cursos");
+                                                            $res=ModeloFormularios::mdlSelecReg("cursos",null,null);
                                                             foreach($res as $key=>$valor){
                                                         ?>
                                                         <option value="<?php echo $valor["idCurso"] ?>"><?php echo $valor["titulo"] ?></option>

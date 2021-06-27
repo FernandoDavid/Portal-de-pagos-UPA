@@ -8,6 +8,8 @@
             Toast.fire({
                 icon: "'.$toast[0].'",
                 title: "'.$toast[1].'"
+            }).then(function(){
+                stepAlert("Paso 1: Elección", "Selecciona tu curso..");
             });
         </script>';
         unset($_SESSION["toast"]);
@@ -82,17 +84,6 @@
                         <div class="col-12">
                             <h4 class="titulo-curso"></h4>
                             <input name="curso" id="curso" type="text" class="visually-hidden-focusable">
-                            <!-- <div class="input-group mb-3">
-                                <label class="input-group-text" for="inputGroupSelect01">Nombre del curso</label>
-                                <select class="form-select" id="curso" name="curso" required>
-                                    <option selected value="">Elegir...</option>
-                                    <?php
-                                    // foreach ($res as $key => $valor) {
-                                    ?>
-                                        <option value="<?php //echo $valor["idCurso"] ?>"><?php //echo $valor["titulo"] ?></option>
-                                    <?php //} ?>
-                                </select>
-                            </div> -->
                         </div>
                     </div>
 
@@ -177,8 +168,8 @@
                     <button type="submit" class="btn btn-primary">Enviar</button>
                     <?php
                     /*=====================================
-                        INSTANCIA Y LLAMADO DE CLASE DE INGRESO
-                        ======================================*/
+                    INSTANCIA Y LLAMADO DE CLASE DE INGRESO
+                    ======================================*/
                     $ingreso = new ControladorFormularios();
                     $ingreso->ctrRegistro($dominio);
                     ?>
@@ -188,16 +179,25 @@
 
         <!-- Paso 2 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
 
-        <div class="card visually-hidden-focusable" id="card2">
-            <div class="card-body">
-                <form method="POST" class="row">
-                    <div class="col-12">
-                        <div class="mb-3">
-                            <label for="formFile" class="form-label">Comprobante de pago</label>
-                            <input class="form-control" type="file" id="formFile">
-                        </div>
+        <div class="visually-hidden-focusable" id="card2">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card">
+                        
                     </div>
-                </form>
+                </div>
+                
+            
+                <div class="col-sm-8">
+                    <div class="card">
+                        <form method="POST" class="row">
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Comprobante de pago</label>
+                                <input class="form-control" type="file" id="formFile">
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
