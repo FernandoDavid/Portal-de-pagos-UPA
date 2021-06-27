@@ -45,4 +45,11 @@ class ModeloFormularios
         $stmt -> execute();
         return $stmt->fetch();
     }
+
+    static public function mdlBorrarRegistro($tabla, $campoId, $valorId){
+            $stmt=Conexion::conectar()->prepare("DELETE FROM $tabla WHERE $campoId=$valorId");
+            $stmt->execute();
+            return $stmt->fetchAll();
+    }
+
 }

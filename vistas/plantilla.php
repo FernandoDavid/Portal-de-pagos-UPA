@@ -43,7 +43,7 @@
             include "paginas/404.php";
         }
     } else {
-        include "paginas/admin-cursos.php";
+        include "paginas/registro.php";
     }
 
     ?>

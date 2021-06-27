@@ -67,7 +67,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="input-group mb-3">
-                                                    <input type="text" id="idAlumno" name="idAlumno">
+                                                    <input type="text" id="idAlumno" name="idAlumno" hidden>
                                                     <label class="input-group-text" for="inputGroupSelect01">Nombre del curso</label>
                                                     <select class="form-select" id="curso" name="curso" required>
                                                         <option  selected value="">Elegir...</option>
@@ -150,43 +150,50 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-4 pt-2">
-                                                        <input class="form-check-input ms-1" type="radio" value="soltero" id="casadoRadio" name="estadoRadio" onclick="document.getElementById('solteroRadio').checked = false" required>
+                                                        <input class="form-check-input ms-1" type="radio" value="soltero" id="solteroRadio" name="estadoRadio" onclick="document.getElementById('solteroRadio').checked = false" required>
                                                         <label class="ms-2" for="">Soltero/a</label>
                                                     </div>
                                                     <div class="col-4 pt-2">
-                                                        <input class="form-check-input ms-1" type="radio" value="casado" id="solteroRadio" name="estadoRadio" onclick="document.getElementById('casadoRadio').checked = false">
+                                                        <input class="form-check-input ms-1" type="radio" value="casado" id="casadoRadio" name="estadoRadio" onclick="document.getElementById('casadoRadio').checked = false">
                                                         <label class="ms-2" for="">Casado/a</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="button" class="btn btn-warning">Actualizar datos</button>
-                                </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-warning">Actualizar datos</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Modal eliminar alumno-->
-                    <td><button type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarAlumno" style="border-color: black">Eliminar</button></td>
+                    <td><button type="button" class="btn btn-danger btnEliminarAlumno"  style="border-color: black">Eliminar</button></td>
                     <div class="modal fade" id="modalEliminarAlumno" tabindex="-1"  aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h2 class="modal-title" id="exampleModalLabel">Eliminar alumno</h2>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    ¿Estás seguro que deseas eliminar este alumno para siempre? NO SE PODRÁ RECUPERAR DE NINGUNA FORMA UNA VEZ BORRADO
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="button" class="btn btn-danger">Borrar alumno</button>
-                                </div>
-                            </div>
+                                <form method="POST">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title" id="exampleModalLabel">Eliminar alumno</h2>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <input type="text" id="idAlumnoEliminar" name="idAlumnoEliminar" >
+                                        ¿Estás seguro que deseas eliminar este alumno para siempre? NO SE PODRÁ RECUPERAR DE NINGUNA FORMA UNA VEZ BORRADO
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-danger ">Borrar alumno</button>
+                                        <?php
+                                            $delete= new ControladorFormularios();
+                                            $delete->ctrEliminarRegistro();
+                                        ?>
+                                    </div>
+                                </form>
+                            </div>    
                         </div>
                     </div>
                 </tr>
@@ -218,7 +225,7 @@
                     foreach($res as $key=> $datos){
                 ?>
                 <tr>
-                    <th>
+                    <td>
                         <?php echo $datos['idCurso']    ?>
                         </td>
                     <td>
@@ -248,7 +255,8 @@
                     <td>
                         <?php echo $datos['lugar']  ?>
                     </td>
-                    <td><button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarCurso" style="color: black; border-color: black;">Modificar</button></td>
+                    <!-- Modal modificar curso-->
+                    <td><button type="button" class="btn btn-warning btnModificarCurso"  style="color: black; border-color: black;">Modificar</button></td>
                     <div class="modal fade" id="modalModificarCurso" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-centered">
                             <div class="modal-content">
@@ -257,17 +265,17 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    
                                     <div class="row mb-3">
                                         <div class="col-xl-7 col-lg-12">
                                             <div class="row mb-3">
                                                 <div class="col-12">
                                                     <div class="input-group">
+                                                        <input type="text" id="idCurso" hidden >
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
                                                         <input type="text" class="form-control"
-                                                            placeholder="Nombre del curso" name="nombre" required>
+                                                            placeholder="Nombre del curso" id="nombreCurso" name="nombreCurso" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -278,7 +286,7 @@
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
                                                         <input type="text" class="form-control" placeholder="Instructor"
-                                                            name="nombre" required>
+                                                            id="instructor" name="instructor" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -289,7 +297,7 @@
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
                                                         <input type="text" class="form-control" placeholder="Lugar"
-                                                            name="nombre" required>
+                                                            id="lugar" name="lugar" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -297,7 +305,7 @@
                                                 <div class="col-12">
                                                     <div class="input-group">
                                                         <span class="input-group-text">Descripción</span>
-                                                        <textarea class="form-control"
+                                                        <textarea class="form-control" id="descripcion"
                                                             aria-label="Descripción"></textarea>
                                                     </div>
                                                 </div>
@@ -310,8 +318,8 @@
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Precio"
-                                                            name="nombre" required>
+                                                        <input type="number" class="form-control" placeholder="Precio"
+                                                            name="precio" id="precio" min=0 required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -324,8 +332,8 @@
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="date" class="form-control" placeholder="Instructor"
-                                                            name="nombre" required>
+                                                        <input type="date" class="form-control" 
+                                                            name="fecha_inicio" id="fecha_inicio" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -333,8 +341,8 @@
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="date" class="form-control" placeholder="Instructor"
-                                                            name="nombre" required>
+                                                        <input type="date" class="form-control" 
+                                                            name="fecha_fin" id="fecha_fin" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -347,8 +355,8 @@
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="time" class="form-control" placeholder="Instructor"
-                                                            name="nombre" required>
+                                                        <input type="time" class="form-control" 
+                                                            name="hora_inicio" id="hora_inicio" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -356,8 +364,8 @@
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="time" class="form-control" placeholder="Instructor"
-                                                            name="nombre" required>
+                                                        <input type="time" class="form-control" 
+                                                            name="hora_fin" id="hora_fin" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -367,12 +375,13 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="button" class="btn btn-warning">Actualizar datos</button>
+                                    <button type="submit" class="btn btn-warning">Actualizar datos</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarCurso" style="border-color: black">Eliminar</button></td>
+
+                    <td><button type="button" class="btn btn-danger btnEliminarCurso"  style="border-color: black">Eliminar</button></td>
                     <div class="modal fade" id="modalEliminarCurso" tabindex="-1"  aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -381,11 +390,12 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
+                                <input type="text" id="idCursoEliminar" hidden>
                                     ¿Estás seguro que deseas eliminar este curso para siempre? NO SE PODRÁ RECUPERAR DE NINGUNA FORMA UNA VEZ BORRADO
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="button" class="btn btn-danger">Borrar curso</button>
+                                    <button type="submit" class="btn btn-danger">Borrar curso</button>
                                 </div>
                             </div>
                         </div>
@@ -417,7 +427,7 @@
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
                                                         <input type="text" class="form-control"
-                                                            placeholder="Nombre del curso" name="nombre" required>
+                                                            placeholder="Nombre del curso" name="nombreCurso" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -533,17 +543,11 @@
                     $('#modalModificarAlumno').modal('show');
                     var $tr=$(this).closest('tr');
 
-                    
                     var $datos=$tr.children('td').map(function(){
-                        
-                        return $(this).text();
+                        return $(this)[0].innerText;
                     }).get();
-                    
-
-                    //var $datos=$(this).parents("tr").find("td").contents().toArray();
                     console.log($datos);
-
-                    
+ 
                     $('#idAlumno').val($datos[0]);
                     $('#nombre').val($datos[1]);
                     $('#correo').val($datos[2]);
@@ -564,9 +568,67 @@
                     else{
                         document.getElementById('casadoRadio').checked = true;
                     }
+                    $('#curso').val($datos[9]);
+                });
+
+                $(".btnEliminarAlumno").on('click', function(){
+                    $('#modalEliminarAlumno').modal('show');
+                    var $tr=$(this).closest('tr');
+
+                    var $datos=$tr.children('td').map(function(){
+                        return $(this)[0].innerText;
+                    }).get();
+                    console.log($datos);
+
+                    $('#idAlumnoEliminar').val($datos[0]);
+                    
+                });
+                
+
+
+                $(".btnModificarCurso").on('click', function(){
+                    $('#modalModificarCurso').modal('show');
+                    var $tr=$(this).closest('tr');
+
+                    
+                    var $datos=$tr.children('td').map(function(){
+                        return $(this)[0].innerText;
+                    }).get();
+                    console.log($datos);
+
+                    
+                    $('#idCurso').val($datos[0]);
+                    $('#nombreCurso').val($datos[1]);
+                    $('#descripcion').val($datos[2]);
+                    $('#instructor').val($datos[3]);
+                    $('#fecha_inicio').val($datos[4]);
+                    $('#fecha_fin').val($datos[5]);
+                    $('#hora_inicio').val($datos[6]);
+                    $('#hora_fin').val($datos[7]);
+                    $('#precio').val($datos[8]);
+                    $('#hora_inicio').val($datos[6]);
+                    $('#lugar').val($datos[9]);
+                });
+
+                $(".btnEliminarCurso").on('click', function(){
+                    $('#modalEliminarCurso').modal('show');
+                    var $tr=$(this).closest('tr');
+
+                    var $datos=$tr.children('td').map(function(){
+                        return $(this)[0].innerText;
+                    }).get();
+                    console.log($datos);
+
+                    $('#idCursoEliminar').val($datos[0]);
+                    
                 });
             });
-        </script>
 
+
+            
+
+
+
+        </script>
 
 </body>

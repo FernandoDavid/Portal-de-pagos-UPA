@@ -62,4 +62,17 @@ class ControladorFormularios
             }
         }
     }
+
+    public static function ctrEliminarRegistro(){
+        if (isset($_POST["idAlumnoEliminar"])) {
+            $eliminar=ModeloFormularios::mdlBorrarRegistro("inscritos", "idInscrito", $_POST['idAlumnoEliminar']);
+            echo '<script>
+            if(window.history.replaceState){
+                window.history.replaceState(null,null,window.location.href);
+            } 
+            // alert("Error al realizar registro");
+            location.reload();
+            </script>';
+        }
+    }
 }
