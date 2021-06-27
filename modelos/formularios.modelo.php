@@ -23,30 +23,18 @@ class ModeloFormularios
         }else{
             print_r(Conexion::conectar()->errorInfo());
         }     
-    }
+    }    
 
-    static public function mdlSelecReg($tabla, $atributo, $valor){
-        if($atributo==null && $valor==null){
+    static public function mdlSelecReg($tabla){
             $stmt=Conexion::conectar()->prepare("SELECT * FROM $tabla");
             $stmt->execute();
             return $stmt->fetchAll();
-        }else{
-            $stmt=Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $atributo = :item");
-            if(is_numeric($valor)){
-                $stmt->bindParam(":item",$valor,PDO::PARAM_INT);
-            }else{
-                $stmt->bindParam(":item",$valor,PDO::PARAM_STR);
-            }
-            $stmt->execute();
-            return $stmt->fetchAll();
-        }
     }
         
     static public function mdlSeleccionarId($tabla,$valores){
         $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE correo = :correo AND idCurso = :idCurso");
         $stmt -> bindParam(":correo",$valores["correo"], PDO::PARAM_STR);
         $stmt -> bindParam(":idCurso",$valores["idCurso"], PDO::PARAM_STR);
-
         $stmt -> execute();
         return $stmt->fetch();
     }
