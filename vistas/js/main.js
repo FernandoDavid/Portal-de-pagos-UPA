@@ -26,6 +26,7 @@ function reg(element){
     $("#card0").toggleClass("visually-hidden-focusable");
     $("#card1").toggleClass("visually-hidden-focusable");
     
+    stepAlert("Paso 2: Registro", "Ingresa tus datos personales..");
     $(".progress-bar").width(parseInt(100/3)+"%");
     $("#step2").toggleClass("btn-secondary btn-primary");
 }
