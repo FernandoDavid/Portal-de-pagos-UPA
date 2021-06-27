@@ -47,7 +47,7 @@ class ControladorCorreo
                     $mail->Body    = 
                     '<div>
                         <p>Ingresa al siguiente enlace para subir tu comprobante de pago: </p>
-                        <a href="'.$dominio.'registro/'.$id.'">Click me</a>
+                        <a href="'.$dominio.'registro/'.$id.'">'.$dominio.'registro/'.$id.'</a>
                     </div>';
                     // $mail->AltBody = 
                     // `<div>

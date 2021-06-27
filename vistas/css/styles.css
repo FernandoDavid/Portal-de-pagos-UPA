@@ -1,4 +1,3 @@
-
 /*Iconos*/
 .icons{
     margin: 0 auto;
@@ -12,4 +11,23 @@
     .break-lg{
         margin-top: 1rem !important;
     }
+}
+
+.cursos{
+    width: 17rem !important;
+    cursor: pointer !important;
+    margin: 0 0.5rem !important;
+}
+
+.progress-step button{
+    width:2rem !important;
+    height:2rem !important;
+}
+
+.start-33{
+    left: calc(100%*1/3);
+}
+
+.start-66{
+    left: calc(100%*2/3);
 }

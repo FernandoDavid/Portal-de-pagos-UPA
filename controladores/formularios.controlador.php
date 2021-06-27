@@ -32,27 +32,32 @@ class ControladorFormularios
                             alert("Error al obtener id");
                         </script>';
                     }
+                    $_SESSION["toast"] = "success/Registro exitoso, revisa tu correo";
                     echo '<script>
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
                     } 
-                    alert("Registro guardado correctamente");
+                    // alert("Registro guardado correctamente");
                     location.reload();
                     </script>';
                 } else {
+                    $_SESSION["toast"] = "error/Error al realizar registro";
                     echo '<script>
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
                     } 
-                    alert("Error al realizar registro");
+                    // alert("Error al realizar registro");
+                    location.reload();
                     </script>';
                 }
             } else {
+                $_SESSION["toast"] = "error/Error al realizar registro";
                 echo '<script>
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
                     } 
-                    alert("Error al realizar registro");
+                    // alert("Error al realizar registro");
+                    location.reload();
                     </script>';
             }
         }

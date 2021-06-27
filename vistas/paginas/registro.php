@@ -1,42 +1,98 @@
 <body>
+<script>var st = 0;</script>
+    <?php
+    if(isset($_SESSION["toast"])){
+        $toast = explode("/", $_SESSION["toast"]);
+        echo '
+        <script>
+            Toast.fire({
+                icon: "'.$toast[0].'",
+                title: "'.$toast[1].'"
+            });
+        </script>';
+        unset($_SESSION["toast"]);
+    }
+
+    $res = ModeloFormularios::mdlSelecReg("cursos", null, null);
+    $progress = 0;
+    if (isset($rutas[1])) {
+        $inscrito = ModeloFormularios::mdlSelecReg("inscritos", "idInscrito", intval($rutas[1]));
+        if (isset($inscrito[0]["idInscrito"])) {
+            echo '
+            <script>
+                st = 2;
+                stepAlert("Paso 3: Comprobante de pago","Adjunta tu comprobante de pago..");
+            </script>
+        ';
+            $progress = 200/3;
+        } else {
+            $_SESSION["toast"] = "error/Usuario no registrado";
+            echo '
+            <script>
+            if(window.history.replaceState){
+                window.history.replaceState(null,null,window.location.href);
+            } 
+            window.location = "'.$dominio.'";
+            </script>
+            ';
+        }
+    }
+    ?>
+
     <div class="cointer-fluid text-center bg-primary text-white py-3">
-        <h1>Formulario Inscripciones</h1>
+        <h1>Cursos UPA</h1>
     </div>
     <div class="container my-4">
         <!-- Barra de progreso -->
-        <div class="position-relative my-5">
+        <div class="position-relative my-5 progress-step">
             <div class="progress" style="height: 1px;">
-                <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar" role="progressbar" style="width: <?php echo intval($progress) ?>%;" aria-valuenow="<?php echo intval($progress) ?>" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <button id="step1" type="button" class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;">1</button>
-            <button id="step2" type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-secondary rounded-pill" style="width: 2rem; height:2rem;">2</button>
-            <button id="step3" type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary rounded-pill" style="width: 2rem; height:2rem;">3</button>
+            <button id="step1" type="button" class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-circle">1</button>
+            <button id="step2" type="button" class="position-absolute top-0 start-33 translate-middle btn btn-sm <?php if ($progress >= (100/3)) : ?>btn-primary<?php else : ?>btn-secondary<?php endif ?> rounded-circle">2</button>
+            <button id="step2" type="button" class="position-absolute top-0 start-66 translate-middle btn btn-sm <?php if ($progress >= (100*2/3)) : ?>btn-primary<?php else : ?>btn-secondary<?php endif ?> rounded-circle">3</button>
+            <button id="step3" type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm <?php if ($progress == 100) : ?>btn-primary<?php else : ?>btn-secondary<?php endif ?> rounded-circle">4</button>
         </div>
-        
+
+        <div class="text-center" id="loader">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+
         <!-- Paso 1 (Carrousel con los cursos) -->
 
+        <div class="card visually-hidden-focusable" id="card0">
+            <div class="d-flex justify-content-evenly border-0">
+                <?php foreach ($res as $valor) :?>
+                <div id="<?php echo $valor["idCurso"]?>" onclick="reg(this)"class="cursos bg-primary px-3 py-4 text light text-center">
+                    <h4><?php echo $valor["titulo"]?></h4>
+                </div>
+                <?php endforeach ?>
+            </div>
+        </div>
+        
 
         <!-- Paso 2 (Formulario de registro de los aspirantes)-->
-        
-        
-        
-        <div class="card">
+
+        <div class="card visually-hidden-focusable" id="card1">
             <div class="card-body">
                 <form method="POST">
                     <div class="row">
                         <div class="col-12">
-                            <div class="input-group mb-3">
+                            <h4 class="titulo-curso"></h4>
+                            <input name="curso" id="curso" type="text" class="visually-hidden-focusable">
+                            <!-- <div class="input-group mb-3">
                                 <label class="input-group-text" for="inputGroupSelect01">Nombre del curso</label>
                                 <select class="form-select" id="curso" name="curso" required>
                                     <option selected value="">Elegir...</option>
-                                    <?php 
-                                        $res=ModeloFormularios::mdlSelecReg("cursos", null,null);
-                                        foreach($res as $key=>$valor){
+                                    <?php
+                                    // foreach ($res as $key => $valor) {
                                     ?>
-                                    <option value="<?php echo $valor["idCurso"] ?>"><?php echo $valor["titulo"] ?></option>
-                                    <?php } ?>
+                                        <option value="<?php //echo $valor["idCurso"] ?>"><?php //echo $valor["titulo"] ?></option>
+                                    <?php //} ?>
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -120,16 +176,28 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Enviar</button>
                     <?php
-                        /*=====================================
+                    /*=====================================
                         INSTANCIA Y LLAMADO DE CLASE DE INGRESO
                         ======================================*/
-                        $ingreso = new ControladorFormularios();
-                        $ingreso->ctrRegistro($dominio);
+                    $ingreso = new ControladorFormularios();
+                    $ingreso->ctrRegistro($dominio);
                     ?>
                 </form>
             </div>
         </div>
 
-        <!-- Paso 3 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
+        <!-- Paso 2 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
 
+        <div class="card visually-hidden-focusable" id="card2">
+            <div class="card-body">
+                <form method="POST" class="row">
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Comprobante de pago</label>
+                            <input class="form-control" type="file" id="formFile">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
