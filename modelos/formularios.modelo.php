@@ -25,10 +25,17 @@ class ModeloFormularios
         }     
     }    
 
-    static public function mdlSelecReg($tabla){
+    static public function mdlSelecReg($tabla, $campo, $valor){
+        if($campo==null && $valor==null){
             $stmt=Conexion::conectar()->prepare("SELECT * FROM $tabla");
             $stmt->execute();
             return $stmt->fetchAll();
+        }
+        else{
+            $stmt=Conexion::conectar()->prepare("SELECT * FROM $tabla where $campo=$valor");
+            $stmt->execute();
+            return $stmt->fetch();
+        }
     }
         
     static public function mdlSeleccionarId($tabla,$valores){
