@@ -26,4 +26,6 @@ $(document).ready(() => {
                 break;
         }
     }
+
+    $('.filepond--drop-label label').empty().text("Adjunta tu comprobante de pago aquí");
 });

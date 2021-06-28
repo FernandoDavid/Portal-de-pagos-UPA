@@ -183,8 +183,16 @@
 
         <div class="visually-hidden-focusable" id="card2">
             <div class="row">
-                <div class="col-sm-4 mb-3">
-                    <div class="card p-4">
+                <div class="col-12">
+                    <div class="card p-4 mb-3 bg-dark text-light position-relative">
+                        <h4 class="text-uppercase">Título curso</h4>
+                        <span class="position-absolute badge rounded-pill bg-success" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important">Price</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-stretch">
+                <div class="col-sm-6 mb-3">
+                    <div class="card p-4 h-100">
                         <h4>Name</h4>
                         <hr>
                         <p><b>Correo: </b>...</p>
@@ -193,16 +201,23 @@
                         <p><b>Estado Civil: </b>...</p>
                     </div>
                 </div>
-                <div class="col-sm-8">
-                    <div class="card p-4 mb-3 bg-dark text-light position-relative" style="height: 45% !important">
-                        <h4 class="text-uppercase">Título curso</h4>
-                        <span class="position-absolute badge rounded-pill bg-success" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important">Price</span>
-                    </div>
-                    <div class="card p-4" style="height: 44.5% !important">
-                        <form method="POST" class="row">
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label">Comprobante de pago</label>
-                                <input type="file" class="my-pond" data-max-file-size="3MB" data-max-files="1" name="comprobante" id="comprobante">
+                <div class="col-sm-6 mb-3">
+                    <div class="card p-4 h-100" >
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="">
+                                <label for="comprobante" class="form-label">Comprobante de pago</label>
+                                <div class="file-img mb-3">
+                                    <!-- <input name="comprobante" id="comprobante" type="file" class="my-pond" data-max-file-size="3MB" data-max-files="1"> -->
+                                    <input name="comprobante" id="comprobante" type="file" class="" data-max-file-size="3MB" data-max-files="1">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <?php
+                                /*=====================================
+                                INSTANCIA Y LLAMADO DE CLASE DE INGRESO
+                                ======================================*/
+                                $ctrComp = new ControladorFormularios();
+                                $ctrComp->ctrComprobante($inscrito[0]["idInscrito"].'_'.$inscrito[0]["idCurso"]);
+                                ?>
                             </div>
                         </form>
                     </div>
@@ -211,11 +226,13 @@
         </div>
     </div>
 
-    <!-- include FilePond library -->
-    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
-
     <!-- include FilePond plugins -->
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
+
+    <!-- include FilePond library -->
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
 
     <!-- include FilePond jQuery adapter -->
     <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
@@ -224,18 +241,28 @@
     $(document).ready(function(){
     
         // First register any plugins
-        $.fn.filepond.registerPlugin(FilePondPluginImagePreview);
+        $.fn.filepond.registerPlugin(
+            FilePondPluginImagePreview,
+            FilePondPluginImageResize,
+            FilePondPluginImageEdit
+        );
+
+        // $.fn.filepond.setOptions({
+        // });
 
         // Turn input element into a pond
         $('.my-pond').filepond();
 
         // Set allowMultiple property to true
-        $('.my-pond').filepond('allowMultiple', false);
+        $('.my-pond').filepond('allowMultiple', true);
     
+
+
         // Listen for addfile event
         $('.my-pond').on('FilePond:addfile', function(e) {
-            console.log('file added event', e);
+            $('#comprobante input[type="file"]').attr("name","comprobante");
         });
-        $('.filepond--credits').addClass("visually-hidden");
+
+        $('.filepond--credits').addClass("visually-hidden");        
     });
     </script>

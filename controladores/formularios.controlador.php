@@ -75,4 +75,19 @@ class ControladorFormularios
             </script>';
         }
     }
+
+    public static function ctrComprobante($name){
+        if(isset($_FILES["comprobante"])){
+            $ext = explode("/",$_FILES["comprobante"]["type"]);
+            if (move_uploaded_file($_FILES["comprobante"]["tmp_name"],'vistas/img/comprobantes/'.basename($name.'.'.$ext[1]))){
+                
+            }else{
+                echo '<script>alert("Error");</script>';
+            }
+        }
+        echo '<pre>';
+        echo '$_FILES["comprobante"]: ';
+        var_dump($_FILES["comprobante"]);
+        echo '</pre>';
+    }
 }

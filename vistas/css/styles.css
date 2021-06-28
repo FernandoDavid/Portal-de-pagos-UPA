@@ -1,18 +1,3 @@
-/*Iconos*/
-.icons{
-    margin: 0 auto;
-}
-.input-group-text2{
-    width: 50px !important;
-}
-
-/*Breackpoints*/
-@media only screen and (max-width: 1200px) {
-    .break-lg{
-        margin-top: 1rem !important;
-    }
-}
-
 .cursos{
     width: 17rem !important;
     cursor: pointer !important;
@@ -32,10 +17,29 @@
     left: calc(100%*2/3);
 }
 
-#comprobante {
+#comprobante{
+    margin-bottom: 0 !important;
+}
+
+#comprobante, #comprobante label{
     cursor: pointer !important;
 }
 
-.filepond--root {
-    max-height: 10rem !important;
+.filepond--root{
+    max-height: 19em !important;
+}
+
+/*Iconos*/
+.icons{
+    margin: 0 auto;
+}
+.input-group-text2{
+    width: 50px !important;
+}
+
+/*Breackpoints*/
+@media only screen and (max-width: 1200px) {
+    .break-lg{
+        margin-top: 1rem !important;
+    }
 }
