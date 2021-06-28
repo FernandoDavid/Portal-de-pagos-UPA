@@ -535,13 +535,13 @@
 
                     
                     var $datos=$tr.children('td').map(function(){
-                        
-                        return $(this).text();
+                        console.log($(this)[0].innerText);
+                        return $(this)[0].innerText;
                     }).get();
                     
 
                     //var $datos=$(this).parents("tr").find("td").contents().toArray();
-                    console.log($datos);
+                    // console.log($datos);
 
                     
                     $('#idAlumno').val($datos[0]);

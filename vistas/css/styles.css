@@ -31,3 +31,11 @@
 .start-66{
     left: calc(100%*2/3);
 }
+
+#comprobante {
+    cursor: pointer !important;
+}
+
+.filepond--root {
+    max-height: 10rem !important;
+}
