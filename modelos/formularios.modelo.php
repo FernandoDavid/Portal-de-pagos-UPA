@@ -54,4 +54,22 @@ class ModeloFormularios
             return $stmt->fetchAll();
     }
 
+    static public function mdlModificarRegistro($tabla, $campos, $datos, $id){    
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET idCurso=:idCurso, nombre=:nombre, correo=:correo, telefono=:telefono, direc=:direc, curp=:curp, rfc=:rfc, sexo=:sexo, est_civil=:est_civil WHERE idInscrito=$id");
+        $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
+        $stmt->bindParam(":correo", $datos["correo"], PDO::PARAM_STR);
+        $stmt->bindParam(":telefono", $datos["telefono"], PDO::PARAM_STR);
+        $stmt->bindParam(":direc", $datos["direc"], PDO::PARAM_STR);
+        $stmt->bindParam(":curp", $datos["curp"], PDO::PARAM_STR);
+        $stmt->bindParam(":rfc", $datos["rfc"], PDO::PARAM_STR);
+        $stmt->bindParam(":sexo", $datos["sexo"], PDO::PARAM_STR);
+        $stmt->bindParam(":est_civil", $datos["est_civil"], PDO::PARAM_STR);
+        $stmt->bindParam(":idCurso", $datos["idCurso"], PDO::PARAM_INT);
+        if($stmt -> execute()){
+            return "ok";
+        }else{
+            print_r(Conexion::conectar()->errorInfo());
+        } 
+    }
+
 }

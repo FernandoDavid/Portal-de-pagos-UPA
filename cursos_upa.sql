@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Inscritos` (
   CONSTRAINT `fk_Inscritos_Cursos1`
     FOREIGN KEY (`idCurso`)
     REFERENCES `cursos_upa`.`Cursos` (`idCurso`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
