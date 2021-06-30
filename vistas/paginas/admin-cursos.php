@@ -67,7 +67,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="input-group mb-3">
-                                                    <input type="text" id="idAlumno" name="idAlumno" hidden>
+                                                    <input type="text" id="idAlumno" name="idAlumno" hidden >
                                                     <label class="input-group-text" for="inputGroupSelect01">Nombre del curso</label>
                                                     <select class="form-select" id="curso" name="curso" required>
                                                         <option  selected value="">Elegir...</option>
@@ -150,11 +150,11 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-4 pt-2">
-                                                        <input class="form-check-input ms-1" type="radio" value="soltero" id="solteroRadio" name="estadoRadio" onclick="document.getElementById('solteroRadio').checked = false" required>
+                                                        <input class="form-check-input ms-1" type="radio" value="soltero" id="solteroRadio" name="estadoRadio" onclick="document.getElementById('casadoRadio').checked = false" required>
                                                         <label class="ms-2" for="">Soltero/a</label>
                                                     </div>
                                                     <div class="col-4 pt-2">
-                                                        <input class="form-check-input ms-1" type="radio" value="casado" id="casadoRadio" name="estadoRadio" onclick="document.getElementById('casadoRadio').checked = false">
+                                                        <input class="form-check-input ms-1" type="radio" value="casado" id="casadoRadio" name="estadoRadio" onclick="document.getElementById('solteroRadio').checked = false">
                                                         <label class="ms-2" for="">Casado/a</label>
                                                     </div>
                                                 </div>
@@ -164,6 +164,11 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                         <button type="submit" class="btn btn-warning">Actualizar datos</button>
+                                        <?php 
+                                            $modificar=new ControladorFormularios();
+                                            $modificar->ctrModificarRegistroAlumno();
+                                        
+                                        ?>
                                     </div>
                                 </form>
                             </div>
@@ -181,7 +186,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                    <input type="text" id="idAlumnoEliminar" name="idAlumnoEliminar" >
+                                    <input type="text" id="idAlumnoEliminar" name="idAlumnoEliminar" hidden>
                                         ¿Estás seguro que deseas eliminar este alumno para siempre? NO SE PODRÁ RECUPERAR DE NINGUNA FORMA UNA VEZ BORRADO
                                     </div>
                                     <div class="modal-footer">
@@ -270,7 +275,7 @@
                                             <div class="row mb-3">
                                                 <div class="col-12">
                                                     <div class="input-group">
-                                                        <input type="text" id="idCurso" hidden >
+                                                        <input type="text" id="idCurso" >
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
@@ -380,7 +385,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--Modal elminar curso-->
                     <td><button type="button" class="btn btn-danger btnEliminarCurso"  style="border-color: black">Eliminar</button></td>
                     <div class="modal fade" id="modalEliminarCurso" tabindex="-1"  aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -390,7 +395,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                <input type="text" id="idCursoEliminar" hidden>
+                                <input type="text" id="idCursoEliminar" >
                                     ¿Estás seguro que deseas eliminar este curso para siempre? NO SE PODRÁ RECUPERAR DE NINGUNA FORMA UNA VEZ BORRADO
                                 </div>
                                 <div class="modal-footer">
@@ -423,6 +428,7 @@
                                             <div class="row mb-3">
                                                 <div class="col-12">
                                                     <div class="input-group">
+                                                    <input type="text" id="idCurso" hidden >
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
@@ -529,12 +535,16 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-primary">Guardar curso</button>
+                            <?php 
+                            
+                            
+                            
+                            ?>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
-
     </div>
 
         <script>
@@ -623,11 +633,6 @@
                     
                 });
             });
-
-
-            
-
-
 
         </script>
 
