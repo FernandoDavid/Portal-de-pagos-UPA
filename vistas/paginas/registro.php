@@ -216,7 +216,7 @@
                                 INSTANCIA Y LLAMADO DE CLASE DE INGRESO
                                 ======================================*/
                                 $ctrComp = new ControladorFormularios();
-                                $ctrComp->ctrComprobante($inscrito[0]["idInscrito"].'_'.$inscrito[0]["idCurso"]);
+                                $ctrComp->ctrComprobante($inscrito[0]["idInscrito"],$inscrito[0]["idCurso"],$dominio);
                                 ?>
                             </div>
                         </form>
@@ -248,6 +248,7 @@
         );
 
         // $.fn.filepond.setOptions({
+        //     server: '/'
         // });
 
         // Turn input element into a pond
@@ -256,7 +257,7 @@
         // Set allowMultiple property to true
         $('.my-pond').filepond('allowMultiple', true);
     
-
+        
 
         // Listen for addfile event
         $('.my-pond').on('FilePond:addfile', function(e) {

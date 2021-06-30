@@ -76,18 +76,30 @@ class ControladorFormularios
         }
     }
 
-    public static function ctrComprobante($name){
+    public static function ctrComprobante($idInscrito,$idCurso,$dominio){
         if(isset($_FILES["comprobante"])){
             $ext = explode("/",$_FILES["comprobante"]["type"]);
-            if (move_uploaded_file($_FILES["comprobante"]["tmp_name"],'vistas/img/comprobantes/'.basename($name.'.'.$ext[1]))){
-                
+            $carpeta = 'vistas/img/comprobantes/'.$idCurso;
+            if (!file_exists($carpeta)) {
+                mkdir($carpeta, 0777, true);
+            }
+            if (move_uploaded_file($_FILES["comprobante"]["tmp_name"],$carpeta.'/'.basename($idInscrito.'.'.$ext[1]))){
+                $_SESSION["toast"] = "success/Comprobante subido correctamente";
+                echo '<script>
+                    if(window.history.replaceState){
+                        window.history.replaceState(null,null,window.location.href);
+                    } 
+                    window.location = "'.$dominio.'";
+                    </script>';
             }else{
-                echo '<script>alert("Error");</script>';
+                $_SESSION["toast"] = "error/Error al subir comprobante";
+                echo '<script>
+                    if(window.history.replaceState){
+                        window.history.replaceState(null,null,window.location.href);
+                    } 
+                    location.reload();
+                    </script>';
             }
         }
-        echo '<pre>';
-        echo '$_FILES["comprobante"]: ';
-        var_dump($_FILES["comprobante"]);
-        echo '</pre>';
     }
 }
