@@ -82,8 +82,7 @@ class ControladorFormularios
                     echo '<script>
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
-                    } 
-                    // alert("Error al realizar registro");
+                    }
                     location.reload();
                     </script>';
                 }
@@ -99,7 +98,6 @@ class ControladorFormularios
             if(window.history.replaceState){
                 window.history.replaceState(null,null,window.location.href);
             } 
-            // alert("Error al realizar registro");
             location.reload();
             </script>';
         }
@@ -112,17 +110,29 @@ class ControladorFormularios
         if(isset($_FILES["comprobante"])){
             $ext = explode("/",$_FILES["comprobante"]["type"]);
             $carpeta = 'vistas/img/comprobantes/'.$idCurso;
+            $name = basename($idInscrito.'.'.$ext[1]);
             if (!file_exists($carpeta)) {
                 mkdir($carpeta, 0777, true);
             }
-            if (move_uploaded_file($_FILES["comprobante"]["tmp_name"],$carpeta.'/'.basename($idInscrito.'.'.$ext[1]))){
-                $_SESSION["toast"] = "success/Comprobante subido correctamente";
-                echo '<script>
+            if (move_uploaded_file($_FILES["comprobante"]["tmp_name"],$carpeta.'/'.$name)){
+                $respuesta = ModeloFormularios::mdlComprobante("inscritos", $name, $idInscrito);
+                if($respuesta == "ok"){
+                    $_SESSION["toast"] = "success/Comprobante subido correctamente";
+                    echo '<script>
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
                     } 
                     window.location = "'.$dominio.'";
                     </script>';
+                }else{
+                    $_SESSION["toast"] = "error/Error al subir comprobante";
+                    echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null,null,window.location.href);
+                        } 
+                        location.reload();
+                        </script>';
+                }
             }else{
                 $_SESSION["toast"] = "error/Error al subir comprobante";
                 echo '<script>

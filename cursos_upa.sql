@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Inscritos` (
   `rfc` VARCHAR(15) NOT NULL,
   `sexo` CHAR(1) NULL,
   `est_civil` VARCHAR(15) NULL,
-  `ref` VARCHAR(45) NOT NULL,
+  `ref` VARCHAR(45) NULL,
   `pago` VARCHAR(45) NULL,
   `rev1` TINYINT NULL,
   `rev2` TINYINT NULL,
@@ -44,14 +44,19 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Cursos` (
   `idCurso` INT NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(60) NOT NULL,
   `desc` TEXT(255) NULL,
-  `impartidor` VARCHAR(45) NOT NULL,
+  `instructor` VARCHAR(45) NOT NULL,
   `fec_inicio` DATE NOT NULL,
   `fec_fin` DATE NOT NULL,
   `hora_inicio` TIME NOT NULL,
   `hora_fin` TIME NOT NULL,
+  `cupo` INT NOT NULL,
+  `status` TINYINT NOT NULL,
   `precio` DECIMAL(12,2) NOT NULL,
   `lugar` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idCurso`))
+  PRIMARY KEY (`idCurso`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+    )
 ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
