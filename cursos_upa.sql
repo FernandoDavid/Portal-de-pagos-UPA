@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Inscritos` (
   `rfc` VARCHAR(15) NOT NULL,
   `sexo` CHAR(1) NULL,
   `est_civil` VARCHAR(15) NULL,
-  `ref` VARCHAR(45) NULL,
   `pago` VARCHAR(45) NULL,
   `rev1` TINYINT NULL,
   `rev2` TINYINT NULL,
@@ -42,7 +41,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cursos_upa`.`Cursos` (
   `idCurso` INT NOT NULL AUTO_INCREMENT,
-  `titulo` VARCHAR(60) NOT NULL,
+  `curso` VARCHAR(60) NOT NULL,
   `desc` TEXT(255) NULL,
   `instructor` VARCHAR(45) NOT NULL,
   `fec_inicio` DATE NOT NULL,
