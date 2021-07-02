@@ -248,7 +248,7 @@
             ?>
                 <tr>
                     <td class="c-<?php echo $datos["idCurso"] ?>">
-                        <?php echo  $datos['idCurso']    ?>
+                        <?php echo  $key+1    ?>
                     </td>
                     <td>
                         <?php echo $datos['curso']    ?>
@@ -594,7 +594,7 @@
                 return $(this)[0].innerText;
             }).get();
 
-            $('#idCursoModificar').val($datos[0]);
+            $('#idCursoModificar').val($tr.children('td')[0].className.split('-')[1]);
             $('#nombreCurso').val($datos[1]);
             $('#descripcion').val($datos[2]);
             $('#instructor').val($datos[3]);
