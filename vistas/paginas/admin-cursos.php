@@ -21,11 +21,11 @@
             <?php
             $res = ModeloFormularios::mdlSelecReg("inscritos", null, null);
             foreach ($res as $key => $datos) {
-                $curso = ModeloFormularios::mdlSelecReg("cursos","idCurso",$datos["idCurso"]);
+                $curso = ModeloFormularios::mdlSelecReg("cursos", "idCurso", $datos["idCurso"]);
             ?>
                 <tr>
                     <td class="i-<?php echo $datos["idInscrito"] ?>">
-                        <?php echo $key+1 ?>
+                        <?php echo $key + 1 ?>
                     </td>
                     <td>
                         <?php echo $datos['nombre']    ?>
@@ -58,15 +58,16 @@
                     <td><button type="submit" class="btn btn-primary btnComprobante"><i class="fas fa-file-invoice-dollar"></i></button></td>
                     <div class="modal fade" id="modalRevisar" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h2 class="modal-title">Revisión de comprobante de pago</h2>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title">Revisión de comprobante de pago</h2>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img id="revCmprobante" src="" alt="" class="img-fluid">
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                <img id="revCmprobante" src="" alt="" class="img-fluid">
-                            </div>
-                        </div></div>
+                        </div>
                     </div>
                     <!-- Modal modifcar datos del alumno-->
                     <td><button type="submit" class="btn btn-warning btnEditarAlumno" style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button></td>
@@ -181,7 +182,7 @@
                                     <button type="submit" class="btn btn-warning">Actualizar datos</button>
                                     <?php
                                     $modificar = new ControladorFormularios();
-                                    $modificar->ctrModificarRegistroAlumno();
+                                    $modificar->ctrModificarRegistroAlumno($dominio);
 
                                     ?>
                                 </div>
@@ -201,7 +202,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <input type="text" id="idAlumnoEliminar" name="idAlumnoEliminar" hidden>
+                                        <input type="text" id="idAlumnoEliminar" name="alumnoEliminar" hidden>
                                         ¿Estás seguro que deseas eliminar este alumno para siempre? NO SE PODRÁ RECUPERAR DE NINGUNA FORMA UNA VEZ BORRADO
                                     </div>
                                     <div class="modal-footer">
@@ -209,7 +210,7 @@
                                         <button type="submit" class="btn btn-danger ">Borrar alumno</button>
                                         <?php
                                         $delete = new ControladorFormularios();
-                                        $delete->ctrEliminarRegistro();
+                                        $delete->ctrEliminarRegistro("inscritos", "idInscrito");
                                         ?>
                                     </div>
                                 </form>
@@ -245,8 +246,8 @@
             foreach ($res as $key => $datos) {
             ?>
                 <tr>
-                    <td>
-                        <?php echo $key+1    ?>
+                    <td class="c-<?php echo $datos["idCurso"] ?>">
+                        <?php echo $key + 1    ?>
                     </td>
                     <td>
                         <?php echo $datos['curso']    ?>
@@ -380,18 +381,24 @@
                     <div class="modal fade" id="modalEliminarCurso" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h2 class="modal-title" id="exampleModalLabel">Eliminar curso</h2>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <input type="text" id="idCursoEliminar">
-                                    ¿Estás seguro que deseas eliminar este curso para siempre? NO SE PODRÁ RECUPERAR DE NINGUNA FORMA UNA VEZ BORRADO
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" class="btn btn-danger">Borrar curso</button>
-                                </div>
+                                <form method="POST">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title" id="exampleModalLabel">Eliminar curso</h2>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="text" id="idCursoEliminar" name="cursoEliminar">
+                                        ¿Estás seguro que deseas eliminar este curso para siempre? NO SE PODRÁ RECUPERAR DE NINGUNA FORMA UNA VEZ BORRADO
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-danger">Borrar curso</button>
+                                        <?php
+                                        $del = new ControladorFormularios();
+                                        $del->ctrEliminarRegistro("cursos", "idCurso");
+                                        ?>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -536,7 +543,7 @@
             $('#domicilio').val($datos[4]);
             $('#curp').val($datos[5]);
             $('#rfc').val($datos[6]);
-            if ($datos[7] == "H") {
+            if ($datos[7] == "Masculino") {
                 document.getElementById('hombreRadio').checked = true;
             } else {
                 document.getElementById('mujerRadio').checked = true;
@@ -547,22 +554,16 @@
             } else {
                 document.getElementById('casadoRadio').checked = true;
             }
-            $('#curso').val($datos[9]);
+            $('#curso').val($tr.children('td')[9].className.split('-')[1]);
         });
 
         $(".btnEliminarAlumno").on('click', function() {
             $('#modalEliminarAlumno').modal('show');
             var $tr = $(this).closest('tr');
 
-            var $datos = $tr.children('td').map(function() {
-                return $(this)[0].innerText;
-            }).get();
-            console.log($datos);
-
-            $('#idAlumnoEliminar').val($datos[0]);
+            $('#idAlumnoEliminar').val($tr.children('td')[0].className.split('-')[1]);
 
         });
-
 
 
         $(".btnModificarCurso").on('click', function() {
@@ -573,10 +574,8 @@
             var $datos = $tr.children('td').map(function() {
                 return $(this)[0].innerText;
             }).get();
-            console.log($datos);
 
-
-            $('#idCurso').val($datos[0]);
+            $('#idCurso').val($tr.children('td')[0].className.split('-')[1]);
             $('#nombreCurso').val($datos[1]);
             $('#descripcion').val($datos[2]);
             $('#instructor').val($datos[3]);
@@ -593,24 +592,38 @@
             $('#modalEliminarCurso').modal('show');
             var $tr = $(this).closest('tr');
 
-            var $datos = $tr.children('td').map(function() {
-                return $(this)[0].innerText;
-            }).get();
-            console.log($datos);
-
-            $('#idCursoEliminar').val($datos[0]);
-
+            $('#idCursoEliminar').val($tr.children('td')[0].className.split('-')[1]);
         });
 
-        $(".btnComprobante").on('click', function(){
+        $(".btnComprobante").on('click', function() {
             $('#modalRevisar').modal('show');
 
             var tr = $(this).closest('tr');
-            
-            var datos = [tr.children('td')[0].className.split('-')[1],tr.children('td')[9].className.split('-')[1]];
+
+            var datos = {
+                "idInscrito": tr.children('td')[0].className.split('-')[1],
+                "idCurso": tr.children('td')[9].className.split('-')[1]
+            };
             console.log(datos);
 
-            $('#modalRevisar .modal-body img').attr({"src":dominio+'vistas/img/comprobantes/'+datos[1]+'/'+datos[0]+'.png',"alt":datos[1]+'-'+datos[0]});
+            $.ajax({
+                url: dominio + 'ajax/formularios.ajax.php',
+                method: "POST",
+                data: datos,
+                dataType: "json",
+                success: function(res) {
+                    console.log(res);
+                    $('#modalRevisar .modal-body img').attr({
+                        "src": dominio + 'vistas/img/comprobantes/' + res["idCurso"] + '/' + res["pago"],
+                        "alt": res["pago"]
+                    });
+                },
+                error: function() {
+                    alert("err");
+                }
+            });
+
+
         });
     });
 </script>

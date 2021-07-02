@@ -61,7 +61,7 @@ class ControladorFormularios
         }
     }
     //Modificar registro alumnos
-    public static function ctrModificarRegistroAlumno()
+    public static function ctrModificarRegistroAlumno($dominio)
     {
         if (isset($_POST["idAlumno"])) {
             if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombre"])) {
@@ -77,8 +77,17 @@ class ControladorFormularios
                     "est_civil" => $_POST["estadoRadio"],
                     "idCurso" => $_POST["curso"]
                 );
+                $inscrito = ModeloFormularios::mdlSelecReg("Inscritos", "idInscrito", $_POST["idAlumno"])[0];
                 $respuesta = ModeloFormularios::mdlModificarRegistro($tabla, array_keys($datos), $datos, $_POST["idAlumno"]);
                 if ($respuesta == "ok") {
+                    if (!file_exists("vistas/img/comprobantes/" . $datos["idCurso"])) {
+                        mkdir("vistas/img/comprobantes/" . $datos["idCurso"], 0777, true);
+                    }
+                    $source = "vistas/img/comprobantes/" . $inscrito['idCurso'] . "/" . $inscrito['pago'];
+                    $destination = "vistas/img/comprobantes/" . $datos['idCurso'] . "/" . $inscrito['pago'];
+                    copy($source, $destination);
+                    unlink($source);
+                    // echo '<script>alert("'.$source.', '.$destination.'")</script>';
                     $_SESSION["toast"] = "success/Registro modificado exitosamente";
                     echo '<script>
                     if(window.history.replaceState){
@@ -101,17 +110,39 @@ class ControladorFormularios
         }
     }
     //Eliminar registro de alumnos
-    public static function ctrEliminarRegistro()
+    public static function ctrEliminarRegistro($tabla, $item)
     {
-        if (isset($_POST['idAlumnoEliminar'])) {
-            $eliminar = ModeloFormularios::mdlBorrarRegistro("inscritos", "idInscrito", $_POST['idAlumnoEliminar']);
-            echo '<script>
-            if(window.history.replaceState){
-                window.history.replaceState(null,null,window.location.href);
-            } 
-            location.reload();
-            </script>';
-        } else if (isset($_POST['idAlumnoEliminar'])) {
+        if (isset($_POST['alumnoEliminar']) || isset($_POST['cursoEliminar'])) {
+            if ($tabla == "inscritos" || $tabla == "Inscritos") {
+                $inscrito = ModeloFormularios::mdlSelecReg("Inscritos", "idInscrito", $_POST["alumnoEliminar"])[0];
+                $val = $_POST["alumnoEliminar"];
+                unlink("vistas/img/comprobantes/" . $inscrito['idCurso'] . '/' . $inscrito['pago']);
+            } else {
+                $curso = ModeloFormularios::mdlSelecReg("cursos", "idCurso", $_POST["cursoEliminar"])[0];
+                $val = $_POST["cursoEliminar"];
+                rmdir("vistas/img/comprobantes/" . $curso['idCurso']);
+            }
+            $eliminar = ModeloFormularios::mdlBorrarRegistro($tabla, $item, $val);
+            if ($eliminar == "ok") {
+
+                $_SESSION["toast"] = "success/Registro eliminado exitosamente";
+                echo '<script>
+                    if(window.history.replaceState){
+                        window.history.replaceState(null,null,window.location.href);
+                    } 
+                    location.reload();
+                    </script>';
+            } else {
+                echo '<script>
+                    if(window.history.replaceState){
+                        window.history.replaceState(null,null,window.location.href);
+                    } 
+                    Toast.fire({
+                        icon: "error",
+                        title: "Error al eliminar registro"
+                    });
+                    </script>';
+            }
         }
     }
     //Registro comprobante
@@ -153,6 +184,11 @@ class ControladorFormularios
                     </script>';
             }
         }
+    }
+
+    public static function ctrSelecComprobante($inscrito, $curso)
+    {
+        return ModeloFormularios::mdlSelecComprobante("Inscritos", array("idInscrito" => $inscrito, "idCurso" => $curso));
     }
 
     ////////////////////////////////////CURSOS////////////////////////////////////

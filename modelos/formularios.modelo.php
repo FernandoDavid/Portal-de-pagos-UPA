@@ -29,9 +29,13 @@ class ModeloFormularios
     }
     //Borrar un registrode cualquier tabla
     static public function mdlBorrarRegistro($tabla, $campoId, $valorId){
-            $stmt=Conexion::conectar()->prepare("DELETE FROM $tabla WHERE $campoId=$valorId");
-            $stmt->execute();
-            return $stmt->fetchAll();
+        $stmt=Conexion::conectar()->prepare("DELETE FROM $tabla WHERE $campoId=:id");
+        $stmt->bindParam(":id",$valorId,PDO::PARAM_INT);
+        if($stmt->execute()){
+            return "ok";
+        }else{
+            print_r(Conexion::conectar()->errorInfo());
+        }
     }
 
 
@@ -88,6 +92,13 @@ class ModeloFormularios
         }
     }
 
+    static public function mdlSelecComprobante($tabla, $datos){
+        $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idInscrito=:idInscrito AND idCurso=:idCurso");
+        $stmt -> bindParam(":idInscrito", $datos["idInscrito"], PDO::PARAM_INT);
+        $stmt -> bindParam(":idCurso", $datos["idCurso"], PDO::PARAM_INT);
+        $stmt -> execute();
+        return $stmt->fetch();
+    }
 
     ////////////////////////////////CURSOS//////////////////////////////
     static public function mdlRegistrarCurso($tabla, $datos){
@@ -103,7 +114,7 @@ class ModeloFormularios
         $stmt->bindParam(":hora_fin", $datos["hora_fin"], PDO::PARAM_STR);
         $stmt->bindParam(":cupo", $datos["cupo"], PDO::PARAM_STR);
         $stmt->bindParam(":stat", $datos["status"], PDO::PARAM_INT);
-        $stmt->bindParam(":precio", $datos["precio"], PDO::PARAM_INT);
+        $stmt->bindParam(":precio", $datos["precio"], PDO::PARAM_STR);
         $stmt->bindParam(":lugar", $datos["lugar"], PDO::PARAM_STR);
         if($stmt -> execute()){
             return "ok";
