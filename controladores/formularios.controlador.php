@@ -194,7 +194,7 @@ class ControladorFormularios
     ////////////////////////////////////CURSOS////////////////////////////////////
     public static function ctrRegistrarCurso()
     {
-        if (isset($_POST["nombreCurso"])) {
+        if (isset($_POST["nombreCurso"]) && !isset($_POST["idCursoModificar"]) ) {
             if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombreCurso"])) {
                 $tabla = "Cursos";
                 $datos = array(
@@ -233,4 +233,48 @@ class ControladorFormularios
             }
         }
     }
+
+    public static function ctrModificarCurso()
+    {
+        if (isset($_POST["idCursoModificar"])) {
+            if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombreCurso"])) {
+                $tabla = "Cursos";
+                $datos = array(
+                    "curso" => $_POST["nombreCurso"],
+                    "desc" => $_POST["desc"],
+                    "instructor" => $_POST["instructor"],
+                    "fec_inicio" => $_POST["fec_inicio"],
+                    "fec_fin" => $_POST["fec_fin"],
+                    "hora_inicio" => $_POST["hora_inicio"],
+                    "hora_fin" => $_POST["hora_fin"],
+                    "cupo" => $_POST["cupo"],
+                    "status" => 1,
+                    "precio" => $_POST["precio"],
+                    "lugar" => $_POST["lugar"]
+                );
+                
+                $actualizar = ModeloFormularios::mdlModificarCurso($tabla, $datos, $_POST['idCursoModificar']);
+                if ($actualizar == "ok") {
+                    $_SESSION["toast"] = "success/Curso creado exitosamente";
+                    echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null,null,window.location.href);
+                        } 
+                        location.reload();
+                        </script>';
+                } else {
+                    echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null,null,window.location.href);
+                        }
+                        Toast.fire({
+                            icon: "error",
+                            title: "Error al crear curso"
+                        });
+                        </script>';
+                }
+            }
+        }
+    }
+
 }

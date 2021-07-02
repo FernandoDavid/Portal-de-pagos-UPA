@@ -236,6 +236,7 @@
             <th scope="col">Hora de fin</th>
             <th scope="col">Costo</th>
             <th scope="col">Lugar</th>
+            <th scope="col">Cupo</th>
             <th scope="col">Modificar</th>
             <th scope="col">Eliminar</th>
         </thead>
@@ -247,7 +248,7 @@
             ?>
                 <tr>
                     <td class="c-<?php echo $datos["idCurso"] ?>">
-                        <?php echo $key + 1    ?>
+                        <?php echo  $datos['idCurso']    ?>
                     </td>
                     <td>
                         <?php echo $datos['curso']    ?>
@@ -276,103 +277,121 @@
                     <td>
                         <?php echo $datos['lugar']  ?>
                     </td>
+                    <td>
+                        <?php echo $datos['cupo']  ?>
+                    </td>
                     <!-- Modal modificar curso-->
                     <td><button type="button" class="btn btn-warning btnModificarCurso" style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button></td>
                     <div class="modal fade" id="modalModificarCurso" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-centered">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h2 class="modal-title" id="exampleModalLabel">Actualizar datos del curso</h2>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row mb-3">
-                                        <div class="col-xl-7 col-lg-12">
-                                            <div class="row mb-3">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" id="idCurso">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Nombre del curso" id="nombreCurso" name="nombreCurso" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Instructor" id="instructor" name="instructor" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Lugar" id="lugar" name="lugar" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text">Descripción</span>
-                                                        <textarea class="form-control" id="descripcion" aria-label="Descripción"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5 col-lg-12">
-                                            <div class="row mb-3">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="number" class="form-control" placeholder="Precio" name="precio" id="precio" min=0 required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <h5 class="text-center">Fechas de curso</h5>
-                                            </div>
-                                            <div class="row mb-4">
-                                                <div class="col-6">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row ">
-                                                <h5 class="text-center">Horas del curso</h5>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="time" class="form-control" name="hora_inicio" id="hora_inicio" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="time" class="form-control" name="hora_fin" id="hora_fin" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <form method="POST">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title" id="exampleModalLabel">Actualizar datos del curso</h2>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
+                                    <div class="modal-body">
+                                        <div class="row mb-3">
+                                            <div class="col-xl-6 col-lg-12">
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <div class="input-group">
+                                                            <input type="text" name="idCursoModificar" id="idCursoModificar" hidden >
+                                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
+                                                            <input type="text" class="form-control" placeholder="Nombre del curso" name="nombreCurso" id="nombreCurso" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
+                                                            <input type="text" class="form-control" placeholder="Instructor" id="instructor" name="instructor" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
+                                                            <input type="text" class="form-control" placeholder="Lugar" id="lugar" name="lugar" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text">Descripción</span>
+                                                            <textarea class="form-control" aria-label="Descripción" id="descripcion" name="desc"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-12">
+                                                <div class="row mb-3">
+                                                    <div class="col-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
+                                                            <input type="number" class="form-control" placeholder="Precio" id=precio name="precio" step="0.01" min="0" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
+                                                            <input type="number" class="form-control" placeholder="Cupo" id="cupo" name="cupo" min="0" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <h5 class="text-center">Fechas de curso</h5>
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
+                                                            <input type="date" class="form-control" id="fec_inicio" name="fec_inicio" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
+                                                            <input type="date" class="form-control" id="fec_fin" name="fec_fin" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row ">
+                                                    <h5 class="text-center">Horas del curso</h5>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
+                                                            <input type="time" class="form-control" id="hora_inicio" name="hora_inicio" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
+                                                            <input type="time" class="form-control" id="hora_fin" name="hora_fin" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" class="btn btn-warning">Actualizar datos</button>
-                                </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-warning">Actualizar datos</button>
+                                        <?php 
+                                        
+                                        $modificarCurso = new ControladorFormularios();
+                                        $modificarCurso->ctrModificarCurso();
+                                        
+                                        
+                                        ?>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -387,7 +406,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <input type="text" id="idCursoEliminar" name="cursoEliminar">
+                                        <input type="text" id="idCursoEliminar" name="cursoEliminar" hidden>
                                         ¿Estás seguro que deseas eliminar este curso para siempre? NO SE PODRÁ RECUPERAR DE NINGUNA FORMA UNA VEZ BORRADO
                                     </div>
                                     <div class="modal-footer">
@@ -575,17 +594,17 @@
                 return $(this)[0].innerText;
             }).get();
 
-            $('#idCurso').val($tr.children('td')[0].className.split('-')[1]);
+            $('#idCursoModificar').val($datos[0]);
             $('#nombreCurso').val($datos[1]);
             $('#descripcion').val($datos[2]);
             $('#instructor').val($datos[3]);
-            $('#fecha_inicio').val($datos[4]);
-            $('#fecha_fin').val($datos[5]);
+            $('#fec_inicio').val($datos[4]);
+            $('#fec_fin').val($datos[5]);
             $('#hora_inicio').val($datos[6]);
             $('#hora_fin').val($datos[7]);
             $('#precio').val($datos[8]);
-            $('#hora_inicio').val($datos[6]);
             $('#lugar').val($datos[9]);
+            $('#cupo').val($datos[10]);
         });
 
         $(".btnEliminarCurso").on('click', function() {
