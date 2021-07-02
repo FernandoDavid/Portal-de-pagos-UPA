@@ -536,7 +536,7 @@
             }).get();
             console.log($datos);
 
-            $('#idAlumno').val($datos[0]);
+            $('#idAlumno').val($tr.children('td')[0].className.split('-')[1]);
             $('#nombre').val($datos[1]);
             $('#correo').val($datos[2]);
             $('#telefono').val($datos[3]);

@@ -54,7 +54,7 @@ if (isset($rutas[1])) {
     <div class="visually-hidden-focusable" id="card0">
         <div class="d-flex justify-content-evenly border-0">
             <?php foreach ($res as $valor) : ?>
-                <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" class="cursos bg-primary px-3 py-4 text light text-center">
+                <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" style="width: 50em !important" class="cursos bg-primary px-3 py-4 text light text-center">
                     <h4><?php echo $valor["curso"] ?></h4>
                 </div>
             <?php endforeach ?>
