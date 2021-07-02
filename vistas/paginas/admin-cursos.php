@@ -234,13 +234,13 @@
                         <?php echo $datos['idCurso']    ?>
                         </td>
                     <td>
-                        <?php echo $datos['titulo']    ?>
+                        <?php echo $datos['curso']    ?>
                     </td>
                     <td>
                         <?php echo $datos['desc']    ?>
                     </td>
                     <td>
-                        <?php echo $datos['impartidor']  ?>
+                        <?php echo $datos['instructor']  ?>
                     </td>
                     <td>
                         <?php echo $datos['fec_inicio']  ?>
@@ -424,7 +424,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row mb-3">
-                                        <div class="col-xl-7 col-lg-12">
+                                        <div class="col-xl-6 col-lg-12">
                                             <div class="row mb-3">
                                                 <div class="col-12">
                                                     <div class="input-group">
@@ -444,7 +444,7 @@
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
                                                         <input type="text" class="form-control" placeholder="Instructor"
-                                                            name="nombre" required>
+                                                            name="instructor" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -455,7 +455,7 @@
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
                                                         <input type="text" class="form-control" placeholder="Lugar"
-                                                            name="nombre" required>
+                                                            name="lugar" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -464,20 +464,29 @@
                                                     <div class="input-group">
                                                         <span class="input-group-text">Descripción</span>
                                                         <textarea class="form-control"
-                                                            aria-label="Descripción"></textarea>
+                                                            aria-label="Descripción" name="desc"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-xl-5 col-lg-12">
+                                        <div class="col-xl-6 col-lg-12">
                                             <div class="row mb-3">
-                                                <div class="col-12">
+                                                <div class="col-6">
                                                     <div class="input-group">
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Precio"
-                                                            name="nombre" required>
+                                                        <input type="number" class="form-control" placeholder="Precio"
+                                                            name="precio" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text input-group-text2"
+                                                            id="addon-wrapping"><i
+                                                                class="fas fa-user fa-lg icons"></i></span>
+                                                        <input type="number" class="form-control" placeholder="Cupo"
+                                                            name="cupo" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -490,8 +499,8 @@
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="date" class="form-control" placeholder="Instructor"
-                                                            name="nombre" required>
+                                                        <input type="date" class="form-control" 
+                                                            name="fec_inicio" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -499,8 +508,8 @@
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="date" class="form-control" placeholder="Instructor"
-                                                            name="nombre" required>
+                                                        <input type="date" class="form-control" 
+                                                            name="fec_fin" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -513,8 +522,8 @@
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="time" class="form-control" placeholder="Instructor"
-                                                            name="nombre" required>
+                                                        <input type="time" class="form-control" 
+                                                            name="hora_inicio" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -522,8 +531,8 @@
                                                         <span class="input-group-text input-group-text2"
                                                             id="addon-wrapping"><i
                                                                 class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="time" class="form-control" placeholder="Instructor"
-                                                            name="nombre" required>
+                                                        <input type="time" class="form-control" 
+                                                            name="hora_fin" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -536,8 +545,8 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-primary">Guardar curso</button>
                             <?php 
-                            
-                            
+                                $insert=new ControladorFormularios();
+                                $insert->ctrRegistrarCurso();
                             
                             ?>
                         </div>

@@ -2,7 +2,8 @@
 
 class ControladorFormularios
 {
-
+    ////////////////////////////ALUMNOS//////////////////////////////////
+    //Insertar registro alumnos
     public static function ctrRegistro($dominio)
     {
         if (isset($_POST["curso"])) {
@@ -61,7 +62,7 @@ class ControladorFormularios
             }
         }
     }
-
+    //Modificar registro alumnos
     public static function ctrModificarRegistroAlumno(){
         if (isset($_POST["idAlumno"])) {
             if(preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombre"]))
@@ -90,7 +91,7 @@ class ControladorFormularios
 
 
     }
-
+    //Eliminar registro de alumnos
     public static function ctrEliminarRegistro(){
         if (isset($_POST['idAlumnoEliminar'])) {
             $eliminar=ModeloFormularios::mdlBorrarRegistro("inscritos", "idInscrito", $_POST['idAlumnoEliminar']);
@@ -105,7 +106,7 @@ class ControladorFormularios
 
         }
     }
-
+    //Registro comprobante
     public static function ctrComprobante($idInscrito,$idCurso,$dominio){
         if(isset($_FILES["comprobante"])){
             $ext = explode("/",$_FILES["comprobante"]["type"]);
@@ -143,5 +144,26 @@ class ControladorFormularios
                     </script>';
             }
         }
+    }
+
+    ////////////////////////////////////CURSOS////////////////////////////////////
+    public static function ctrRegistrarCurso(){
+            if(preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombreCurso"])){
+                $tabla="Cursos";
+                $datos = array(
+                    "curso" => $_POST["nombreCurso"],
+                    "desc" => $_POST["desc"],
+                    "instructor" => $_POST["instructor"],
+                    "fec_inicio" => $_POST["fec_inicio"],
+                    "fec_fin" => $_POST["fec_fin"],
+                    "hora_inicio" => $_POST["hora_inicio"],
+                    "hora_fin" => $_POST["hora_fin"],
+                    "cupo" => $_POST["cupo"],
+                    "status" => 1,
+                    "precio" => $_POST["precio"],
+                    "lugar" => $_POST["lugar"]
+                );
+                $insertar=ModeloFormularios::mdlRegistrarCurso($tabla, $datos);
+            }
     }
 }
