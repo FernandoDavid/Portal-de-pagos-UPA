@@ -73,8 +73,8 @@ class ModeloFormularios
     }
 
     static public function mdlComprobante($tabla, $valor, $id){
-        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET ref=:ref WHERE idInscrito=:idInscrito");
-        $stmt->bindParam(":ref",$valor, PDO::PARAM_STR);
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET pago=:pago WHERE idInscrito=:idInscrito");
+        $stmt->bindParam(":pago",$valor, PDO::PARAM_STR);
         $stmt->bindParam(":idInscrito",$id,PDO::PARAM_INT);
         if($stmt -> execute()){
             return "ok";

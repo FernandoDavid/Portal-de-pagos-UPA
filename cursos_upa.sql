@@ -53,8 +53,6 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Cursos` (
   `precio` DECIMAL(12,2) NOT NULL,
   `lugar` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idCurso`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
     )
 ENGINE = InnoDB;
 

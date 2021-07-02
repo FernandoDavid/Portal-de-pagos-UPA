@@ -66,7 +66,7 @@
 
         <!-- Paso 1 (Carrousel con los cursos) -->
 
-        <div class="card visually-hidden-focusable" id="card0">
+        <div class="visually-hidden-focusable" id="card0">
             <div class="d-flex justify-content-evenly border-0">
                 <?php foreach ($res as $valor) : ?>
                     <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" class="cursos bg-primary px-3 py-4 text light text-center">
@@ -84,7 +84,7 @@
                 <form method="POST">
                     <div class="row">
                         <div class="col-12">
-                            <h4 class="titulo-curso"></h4>
+                            <h4 class="titulo-curso fw-bolder text-center pb-2"></h4>
                             <input name="curso" id="curso" type="text" class="visually-hidden-focusable">
                         </div>
                     </div>
@@ -179,30 +179,32 @@
             </div>
         </div>
 
-        <!-- Paso 2 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
+        <!-- Paso 3 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
 
         <div class="visually-hidden-focusable" id="card2">
             <div class="row">
                 <div class="col-12">
                     <div class="card p-4 mb-3 bg-dark text-light position-relative">
-                        <h4 class="text-uppercase">Título curso</h4>
-                        <span class="position-absolute badge rounded-pill bg-success" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important">Price</span>
+                        <?php $curso = ModeloFormularios::mdlSelecReg("cursos","idCurso",$inscrito[0]["idCurso"]);?>
+                        <h4 class="text-uppercase fw-bolder text-center"><?php echo $curso[0]["curso"]?></h4>
+                        <span class="position-absolute badge rounded-pill bg-success" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important">$ <?php echo $curso[0]["precio"]?></span>
                     </div>
                 </div>
             </div>
             <div class="row align-items-stretch">
                 <div class="col-sm-6 mb-3">
                     <div class="card p-4 h-100">
-                        <h4>Name</h4>
+                        <h4><?php echo $inscrito[0]["nombre"]?></h4>
                         <hr>
-                        <p><b>Correo: </b>...</p>
-                        <p><b>Teléfono: </b>...</p>
-                        <p><b>Sexo: </b>...</p>
-                        <p><b>Estado Civil: </b>...</p>
+                        <p><b>Correo: </b><?php echo $inscrito[0]["correo"]?></p>
+                        <p><b>Teléfono: </b><?php echo $inscrito[0]["telefono"]?></p>
+                        <p><b>Sexo: </b><?php echo ($inscrito[0]["sexo"]=="H") ? "Masculino" : "Femenino";?></p>
+                        <p class="text-capitalize"><b>Estado Civil: </b><?php echo $inscrito[0]["est_civil"]?></p>
                     </div>
                 </div>
                 <div class="col-sm-6 mb-3">
                     <div class="card p-4 h-100" >
+                        <?php if($inscrito[0]["pago"] == null):?>
                         <form method="POST" enctype="multipart/form-data">
                             <div class="">
                                 <label for="comprobante" class="form-label">Comprobante de pago</label>
@@ -220,6 +222,10 @@
                                 ?>
                             </div>
                         </form>
+                        <?php else: ?>
+                        <h4 class="fw-bolder text-center">Comprobante</h4>
+                        <img src="<?php echo $dominio.'vistas/img/comprobantes/'.$inscrito[0]["idCurso"].'/'.$inscrito[0]["pago"]?>" alt="<?php echo $inscrito[0]["pago"]?>" class="img-fluid">
+                        <?php endif?>
                     </div>
                 </div>
             </div>
