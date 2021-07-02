@@ -1,210 +1,195 @@
-<body>
-    <script>
-        var st = 0;
-    </script>
-    <?php
-    if (isset($_SESSION["toast"])) {
-        $toast = explode("/", $_SESSION["toast"]);
+<script>
+    var st = 0;
+</script>
+<?php
+$res = ModeloFormularios::mdlSelecReg("cursos", null, null);
+$progress = 0;
+if (isset($rutas[1])) {
+    $inscrito = ModeloFormularios::mdlSelecReg("inscritos", "idInscrito", intval($rutas[1]));
+    if (isset($inscrito[0]["idInscrito"])) {
         echo '
         <script>
-            Toast.fire({
-                icon: "' . $toast[0] . '",
-                title: "' . $toast[1] . '"
-            }).then(function(){
-                stepAlert("Paso 1: Elección", "Selecciona tu curso..");
-            });
-        </script>';
-        unset($_SESSION["toast"]);
-    }
-
-    $res = ModeloFormularios::mdlSelecReg("cursos", null, null);
-    $progress = 0;
-    if (isset($rutas[1])) {
-        $inscrito = ModeloFormularios::mdlSelecReg("inscritos", "idInscrito", intval($rutas[1]));
-        if (isset($inscrito[0]["idInscrito"])) {
-            echo '
-            <script>
-                st = 2;
-                stepAlert("Paso 3: Comprobante de pago","Adjunta tu comprobante de pago..");
-            </script>
+            st = 2;
+            stepAlert("Paso 3: Comprobante de pago","Adjunta tu comprobante de pago..");
+        </script>
+    ';
+        $progress = 200 / 3;
+    } else {
+        $_SESSION["toast"] = "error/Usuario no registrado";
+        echo '
+        <script>
+        if(window.history.replaceState){
+            window.history.replaceState(null,null,window.location.href);
+        } 
+        window.location = "' . $dominio . '";
+        </script>
         ';
-            $progress = 200 / 3;
-        } else {
-            $_SESSION["toast"] = "error/Usuario no registrado";
-            echo '
-            <script>
-            if(window.history.replaceState){
-                window.history.replaceState(null,null,window.location.href);
-            } 
-            window.location = "' . $dominio . '";
-            </script>
-            ';
-        }
     }
-    ?>
+}
+?>
 
-    <div class="cointer-fluid text-center bg-primary text-white py-3">
-        <h1>Cursos UPA</h1>
+<div class="cointer-fluid text-center bg-primary text-white py-3">
+    <h1>Cursos UPA</h1>
+</div>
+<div class="container my-4">
+    <!-- Barra de progreso -->
+    <div class="position-relative my-5 progress-step">
+        <div class="progress" style="height: 1px;">
+            <div class="progress-bar" role="progressbar" style="width: <?php echo intval($progress) ?>%;" aria-valuenow="<?php echo intval($progress) ?>" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <button id="step1" type="button" class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-circle">1</button>
+        <button id="step2" type="button" class="position-absolute top-0 start-33 translate-middle btn btn-sm <?php if ($progress >= (100 / 3)) : ?>btn-primary<?php else : ?>btn-secondary<?php endif ?> rounded-circle">2</button>
+        <button id="step3" type="button" class="position-absolute top-0 start-66 translate-middle btn btn-sm <?php if ($progress >= (100 * 2 / 3)) : ?>btn-primary<?php else : ?>btn-secondary<?php endif ?> rounded-circle">3</button>
+        <button id="step4" type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm <?php if ($progress == 100) : ?>btn-primary<?php else : ?>btn-secondary<?php endif ?> rounded-circle">4</button>
     </div>
-    <div class="container my-4">
-        <!-- Barra de progreso -->
-        <div class="position-relative my-5 progress-step">
-            <div class="progress" style="height: 1px;">
-                <div class="progress-bar" role="progressbar" style="width: <?php echo intval($progress) ?>%;" aria-valuenow="<?php echo intval($progress) ?>" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <button id="step1" type="button" class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-circle">1</button>
-            <button id="step2" type="button" class="position-absolute top-0 start-33 translate-middle btn btn-sm <?php if ($progress >= (100 / 3)) : ?>btn-primary<?php else : ?>btn-secondary<?php endif ?> rounded-circle">2</button>
-            <button id="step3" type="button" class="position-absolute top-0 start-66 translate-middle btn btn-sm <?php if ($progress >= (100 * 2 / 3)) : ?>btn-primary<?php else : ?>btn-secondary<?php endif ?> rounded-circle">3</button>
-            <button id="step4" type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm <?php if ($progress == 100) : ?>btn-primary<?php else : ?>btn-secondary<?php endif ?> rounded-circle">4</button>
+
+    <div class="text-center" id="loader">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Cargando...</span>
         </div>
+    </div>
 
-        <div class="text-center" id="loader">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Cargando...</span>
-            </div>
+    <!-- Paso 1 (Carrousel con los cursos) -->
+
+    <div class="visually-hidden-focusable" id="card0">
+        <div class="d-flex justify-content-evenly border-0">
+            <?php foreach ($res as $valor) : ?>
+                <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" class="cursos bg-primary px-3 py-4 text light text-center">
+                    <h4><?php echo $valor["curso"] ?></h4>
+                </div>
+            <?php endforeach ?>
         </div>
-
-        <!-- Paso 1 (Carrousel con los cursos) -->
-
-        <div class="visually-hidden-focusable" id="card0">
-            <div class="d-flex justify-content-evenly border-0">
-                <?php foreach ($res as $valor) : ?>
-                    <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" class="cursos bg-primary px-3 py-4 text light text-center">
-                        <h4><?php echo $valor["titulo"] ?></h4>
-                    </div>
-                <?php endforeach ?>
-            </div>
-        </div>
+    </div>
 
 
-        <!-- Paso 2 (Formulario de registro de los aspirantes)-->
+    <!-- Paso 2 (Formulario de registro de los aspirantes)-->
 
-        <div class="card visually-hidden-focusable" id="card1">
-            <div class="card-body">
-                <form method="POST">
-                    <div class="row">
-                        <div class="col-12">
-                            <h4 class="titulo-curso fw-bolder text-center pb-2"></h4>
-                            <input name="curso" id="curso" type="text" class="visually-hidden-focusable">
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-xl-8 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="Nombre completo" name="nombre" required>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-12 break-lg">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-phone-alt fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="Número de teléfono" name="telefono" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-xl-8 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-home fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="Domicilio" name="domicilio" required>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-12 break-lg">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-envelope fa-lg icons"></i></i></span>
-                                <input type="text" class="form-control" placeholder="Correo" name="correo" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-xl-8 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-hashtag fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="CURP" name="curp" required>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-12 break-lg">
-                            <div class="row">
-                                <div class="col-4 text-center">
-                                    <div class="input-group-text">
-                                        <p style="margin-bottom: 0 !important; margin:0 auto;">Sexo</p>
-                                    </div>
-                                </div>
-                                <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio" name="sexoRadio" onclick="document.getElementById('mujerRadio').checked = false" required>
-                                    <label class="ms-2" for="">Hombre</label>
-                                </div>
-                                <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio" name="sexoRadio" onclick="document.getElementById('hombreRadio').checked = false">
-                                    <label class="ms-2" for="">Mujer</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-xl-8 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-address-card fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="RFC" name="rfc" required>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-12 break-lg">
-                            <div class="row">
-                                <div class="col-4 text-center">
-                                    <div class="input-group-text">
-                                        <p style="margin-bottom: 0 !important; margin:0 auto;">Estado civil</p>
-                                    </div>
-                                </div>
-                                <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="soltero" id="casadoRadio" name="estadoRadio" onclick="document.getElementById('solteroRadio').checked = false" required>
-                                    <label class="ms-2" for="">Soltero/a</label>
-                                </div>
-                                <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="casado" id="solteroRadio" name="estadoRadio" onclick="document.getElementById('casadoRadio').checked = false">
-                                    <label class="ms-2" for="">Casado/a</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Enviar</button>
-                    <?php
-                    /*=====================================
-                    INSTANCIA Y LLAMADO DE CLASE DE INGRESO
-                    ======================================*/
-                    $ingreso = new ControladorFormularios();
-                    $ingreso->ctrRegistro($dominio);
-                    ?>
-                </form>
-            </div>
-        </div>
-
-        <!-- Paso 3 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
-
-        <div class="visually-hidden-focusable" id="card2">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card p-4 mb-3 bg-dark text-light position-relative">
-                        <?php $curso = ModeloFormularios::mdlSelecReg("cursos","idCurso",$inscrito[0]["idCurso"]);?>
-                        <h4 class="text-uppercase fw-bolder text-center"><?php echo $curso[0]["curso"]?></h4>
-                        <span class="position-absolute badge rounded-pill bg-success" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important">$ <?php echo $curso[0]["precio"]?></span>
+    <div class="card visually-hidden-focusable" id="card1">
+        <div class="card-body">
+            <form method="POST">
+                <div class="row">
+                    <div class="col-12">
+                        <h4 class="titulo-curso fw-bolder text-center pb-2"></h4>
+                        <input name="curso" id="curso" type="text" class="visually-hidden-focusable">
                     </div>
                 </div>
-            </div>
-            <div class="row align-items-stretch">
-                <div class="col-sm-6 mb-3">
-                    <div class="card p-4 h-100">
-                        <h4><?php echo $inscrito[0]["nombre"]?></h4>
-                        <hr>
-                        <p><b>Correo: </b><?php echo $inscrito[0]["correo"]?></p>
-                        <p><b>Teléfono: </b><?php echo $inscrito[0]["telefono"]?></p>
-                        <p><b>Sexo: </b><?php echo ($inscrito[0]["sexo"]=="H") ? "Masculino" : "Femenino";?></p>
-                        <p class="text-capitalize"><b>Estado Civil: </b><?php echo $inscrito[0]["est_civil"]?></p>
+
+                <div class="row mb-3">
+                    <div class="col-xl-8 col-lg-12">
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
+                            <input type="text" class="form-control" placeholder="Nombre completo" name="nombre" required>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-12 break-lg">
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-phone-alt fa-lg icons"></i></span>
+                            <input type="text" class="form-control" placeholder="Número de teléfono" name="telefono" required>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-6 mb-3">
-                    <div class="card p-4 h-100" >
-                        <?php if($inscrito[0]["pago"] == null):?>
+                <div class="row mb-3">
+                    <div class="col-xl-8 col-lg-12">
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-home fa-lg icons"></i></span>
+                            <input type="text" class="form-control" placeholder="Domicilio" name="domicilio" required>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-12 break-lg">
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-envelope fa-lg icons"></i></i></span>
+                            <input type="text" class="form-control" placeholder="Correo" name="correo" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-xl-8 col-lg-12">
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-hashtag fa-lg icons"></i></span>
+                            <input type="text" class="form-control" placeholder="CURP" name="curp" required>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-12 break-lg">
+                        <div class="row">
+                            <div class="col-4 text-center">
+                                <div class="input-group-text">
+                                    <p style="margin-bottom: 0 !important; margin:0 auto;">Sexo</p>
+                                </div>
+                            </div>
+                            <div class="col-4 pt-2">
+                                <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio" name="sexoRadio" onclick="document.getElementById('mujerRadio').checked = false" required>
+                                <label class="ms-2" for="">Hombre</label>
+                            </div>
+                            <div class="col-4 pt-2">
+                                <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio" name="sexoRadio" onclick="document.getElementById('hombreRadio').checked = false">
+                                <label class="ms-2" for="">Mujer</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-xl-8 col-lg-12">
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-address-card fa-lg icons"></i></span>
+                            <input type="text" class="form-control" placeholder="RFC" name="rfc" required>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-12 break-lg">
+                        <div class="row">
+                            <div class="col-4 text-center">
+                                <div class="input-group-text">
+                                    <p style="margin-bottom: 0 !important; margin:0 auto;">Estado civil</p>
+                                </div>
+                            </div>
+                            <div class="col-4 pt-2">
+                                <input class="form-check-input ms-1" type="radio" value="soltero" id="casadoRadio" name="estadoRadio" onclick="document.getElementById('solteroRadio').checked = false" required>
+                                <label class="ms-2" for="">Soltero/a</label>
+                            </div>
+                            <div class="col-4 pt-2">
+                                <input class="form-check-input ms-1" type="radio" value="casado" id="solteroRadio" name="estadoRadio" onclick="document.getElementById('casadoRadio').checked = false">
+                                <label class="ms-2" for="">Casado/a</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+                <?php
+                /*=====================================
+                INSTANCIA Y LLAMADO DE CLASE DE INGRESO
+                ======================================*/
+                $ingreso = new ControladorFormularios();
+                $ingreso->ctrRegistro($dominio);
+                ?>
+            </form>
+        </div>
+    </div>
+
+    <!-- Paso 3 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
+
+    <div class="visually-hidden-focusable" id="card2">
+        <div class="row">
+            <div class="col-12">
+                <div class="card p-4 mb-3 bg-dark text-light position-relative">
+                    <?php $curso = ModeloFormularios::mdlSelecReg("cursos", "idCurso", $inscrito[0]["idCurso"]); ?>
+                    <h4 class="text-uppercase fw-bolder text-center"><?php echo $curso[0]["curso"] ?></h4>
+                    <span class="position-absolute badge rounded-pill bg-success" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important">$ <?php echo $curso[0]["precio"] ?></span>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-stretch">
+            <div class="col-sm-6 mb-3">
+                <div class="card p-4 h-100">
+                    <h4><?php echo $inscrito[0]["nombre"] ?></h4>
+                    <hr>
+                    <p><b>Correo: </b><?php echo $inscrito[0]["correo"] ?></p>
+                    <p><b>Teléfono: </b><?php echo $inscrito[0]["telefono"] ?></p>
+                    <p><b>Sexo: </b><?php echo ($inscrito[0]["sexo"] == "H") ? "Masculino" : "Femenino"; ?></p>
+                    <p class="text-capitalize"><b>Estado Civil: </b><?php echo $inscrito[0]["est_civil"] ?></p>
+                </div>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <div class="card p-4 h-100">
+                    <?php if ($inscrito[0]["pago"] == null) : ?>
                         <form method="POST" enctype="multipart/form-data">
                             <div class="">
                                 <label for="comprobante" class="form-label">Comprobante de pago</label>
@@ -215,61 +200,19 @@
                                 <button type="submit" class="btn btn-primary">Guardar</button>
                                 <?php
                                 /*=====================================
-                                INSTANCIA Y LLAMADO DE CLASE DE INGRESO
-                                ======================================*/
+                            INSTANCIA Y LLAMADO DE CLASE DE INGRESO
+                            ======================================*/
                                 $ctrComp = new ControladorFormularios();
-                                $ctrComp->ctrComprobante($inscrito[0]["idInscrito"],$inscrito[0]["idCurso"],$dominio);
+                                $ctrComp->ctrComprobante($inscrito[0]["idInscrito"], $inscrito[0]["idCurso"], $dominio);
                                 ?>
                             </div>
                         </form>
-                        <?php else: ?>
+                    <?php else : ?>
                         <h4 class="fw-bolder text-center">Comprobante</h4>
-                        <img src="<?php echo $dominio.'vistas/img/comprobantes/'.$inscrito[0]["idCurso"].'/'.$inscrito[0]["pago"]?>" alt="<?php echo $inscrito[0]["pago"]?>" class="img-fluid">
-                        <?php endif?>
-                    </div>
+                        <img src="<?php echo $dominio . 'vistas/img/comprobantes/' . $inscrito[0]["idCurso"] . '/' . $inscrito[0]["pago"] ?>" alt="<?php echo $inscrito[0]["pago"] ?>" class="img-fluid">
+                    <?php endif ?>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- include FilePond plugins -->
-    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
-
-    <!-- include FilePond library -->
-    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
-
-    <!-- include FilePond jQuery adapter -->
-    <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
-
-    <script>
-    $(document).ready(function(){
-    
-        // First register any plugins
-        $.fn.filepond.registerPlugin(
-            FilePondPluginImagePreview,
-            FilePondPluginImageResize,
-            FilePondPluginImageEdit
-        );
-
-        // $.fn.filepond.setOptions({
-        //     server: '/'
-        // });
-
-        // Turn input element into a pond
-        $('.my-pond').filepond();
-
-        // Set allowMultiple property to true
-        $('.my-pond').filepond('allowMultiple', true);
-    
-        
-
-        // Listen for addfile event
-        $('.my-pond').on('FilePond:addfile', function(e) {
-            $('#comprobante input[type="file"]').attr("name","comprobante");
-        });
-
-        $('.filepond--credits').addClass("visually-hidden");        
-    });
-    </script>
+</div>

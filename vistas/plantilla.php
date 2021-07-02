@@ -32,7 +32,7 @@
     <!--Styles CSS-->
     <link rel="stylesheet" href="<?php echo $dominio ?>vistas/css/styles.css">
 </head>
-
+<body>
 <?php
 session_start();
 
@@ -45,17 +45,13 @@ if (isset($_GET["pagina"])) {
         $rutas[0] == "admin-cursos" ||
         $rutas[0] == "registro"
     ) {
-        // switch ($rutas[0]) {
-        //     case "":
-        //     case "Registro":
-        //         include "modulos/cabecera.php";
-        //         break;
-        // }
+        include "modulos/mensajes.php";
         include "paginas/" . $rutas[0] . ".php";
     } else {
         include "paginas/404.php";
     }
 } else {
+    include "modulos/mensajes.php";
     include "paginas/registro.php";
 }
 

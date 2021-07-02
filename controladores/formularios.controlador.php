@@ -46,7 +46,6 @@ class ControladorFormularios
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
                     } 
-                    // alert("Error al realizar registro");
                     location.reload();
                     </script>';
                 }
@@ -55,17 +54,17 @@ class ControladorFormularios
                 echo '<script>
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
-                    } 
-                    // alert("Error al realizar registro");
+                    }
                     location.reload();
                     </script>';
             }
         }
     }
     //Modificar registro alumnos
-    public static function ctrModificarRegistroAlumno(){
+    public static function ctrModificarRegistroAlumno()
+    {
         if (isset($_POST["idAlumno"])) {
-            if(preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombre"]))
+            if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombre"])) {
                 $tabla = "Inscritos";
                 $datos = array(
                     "nombre" => $_POST["nombre"],
@@ -79,53 +78,63 @@ class ControladorFormularios
                     "idCurso" => $_POST["curso"]
                 );
                 $respuesta = ModeloFormularios::mdlModificarRegistro($tabla, array_keys($datos), $datos, $_POST["idAlumno"]);
-                if($respuesta){
+                if ($respuesta == "ok") {
+                    $_SESSION["toast"] = "success/Registro modificado exitosamente";
                     echo '<script>
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
                     }
                     location.reload();
                     </script>';
+                } else {
+                    echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null,null,window.location.href);
+                        } 
+                        Toast.fire({
+                            icon: "error",
+                            title: "Error al crear curso"
+                        });
+                        </script>';
                 }
+            }
         }
-
-
     }
     //Eliminar registro de alumnos
-    public static function ctrEliminarRegistro(){
+    public static function ctrEliminarRegistro()
+    {
         if (isset($_POST['idAlumnoEliminar'])) {
-            $eliminar=ModeloFormularios::mdlBorrarRegistro("inscritos", "idInscrito", $_POST['idAlumnoEliminar']);
+            $eliminar = ModeloFormularios::mdlBorrarRegistro("inscritos", "idInscrito", $_POST['idAlumnoEliminar']);
             echo '<script>
             if(window.history.replaceState){
                 window.history.replaceState(null,null,window.location.href);
             } 
             location.reload();
             </script>';
-        }
-        else if(isset($_POST['idAlumnoEliminar'])){
-
+        } else if (isset($_POST['idAlumnoEliminar'])) {
         }
     }
     //Registro comprobante
-    public static function ctrComprobante($idInscrito,$idCurso,$dominio){
-        if(isset($_FILES["comprobante"])){
-            $ext = explode("/",$_FILES["comprobante"]["type"]);
-            $carpeta = 'vistas/img/comprobantes/'.$idCurso;
-            $name = basename($idInscrito.'.'.$ext[1]);
+    public static function ctrComprobante($idInscrito, $idCurso, $dominio)
+    {
+        if (isset($_FILES["comprobante"])) {
+            $ext = explode("/", $_FILES["comprobante"]["type"]);
+            $carpeta = 'vistas/img/comprobantes/' . $idCurso;
+            $name = basename($idInscrito . '.' . $ext[1]);
             if (!file_exists($carpeta)) {
                 mkdir($carpeta, 0777, true);
             }
-            if (move_uploaded_file($_FILES["comprobante"]["tmp_name"],$carpeta.'/'.$name)){
+            if (move_uploaded_file($_FILES["comprobante"]["tmp_name"], $carpeta . '/' . $name)) {
                 $respuesta = ModeloFormularios::mdlComprobante("inscritos", $name, $idInscrito);
-                if($respuesta == "ok"){
+                if ($respuesta == "ok") {
                     $_SESSION["toast"] = "success/Comprobante subido correctamente";
                     echo '<script>
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
                     } 
-                    window.location = "'.$dominio.'";
+                    window.location = "' . $dominio . '";
                     </script>';
-                }else{
+                } else {
                     $_SESSION["toast"] = "error/Error al subir comprobante";
                     echo '<script>
                         if(window.history.replaceState){
@@ -134,7 +143,7 @@ class ControladorFormularios
                         location.reload();
                         </script>';
                 }
-            }else{
+            } else {
                 $_SESSION["toast"] = "error/Error al subir comprobante";
                 echo '<script>
                     if(window.history.replaceState){
@@ -147,9 +156,11 @@ class ControladorFormularios
     }
 
     ////////////////////////////////////CURSOS////////////////////////////////////
-    public static function ctrRegistrarCurso(){
-            if(preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombreCurso"])){
-                $tabla="Cursos";
+    public static function ctrRegistrarCurso()
+    {
+        if (isset($_POST["nombreCurso"])) {
+            if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombreCurso"])) {
+                $tabla = "Cursos";
                 $datos = array(
                     "curso" => $_POST["nombreCurso"],
                     "desc" => $_POST["desc"],
@@ -163,7 +174,27 @@ class ControladorFormularios
                     "precio" => $_POST["precio"],
                     "lugar" => $_POST["lugar"]
                 );
-                $insertar=ModeloFormularios::mdlRegistrarCurso($tabla, $datos);
+                $insertar = ModeloFormularios::mdlRegistrarCurso($tabla, $datos);
+                if ($insertar == "ok") {
+                    $_SESSION["toast"] = "success/Curso creado exitosamente";
+                    echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null,null,window.location.href);
+                        } 
+                        location.reload();
+                        </script>';
+                } else {
+                    echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null,null,window.location.href);
+                        } 
+                        Toast.fire({
+                            icon: "error",
+                            title: "Error al crear curso"
+                        });
+                        </script>';
+                }
             }
+        }
     }
 }

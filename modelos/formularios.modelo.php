@@ -104,7 +104,7 @@ class ModeloFormularios
         $stmt->bindParam(":cupo", $datos["cupo"], PDO::PARAM_STR);
         $stmt->bindParam(":stat", $datos["status"], PDO::PARAM_INT);
         $stmt->bindParam(":precio", $datos["precio"], PDO::PARAM_INT);
-        $stmt->bindParam(":lugar", $datos["lugar"], PDO::PARAM_INT);
+        $stmt->bindParam(":lugar", $datos["lugar"], PDO::PARAM_STR);
         if($stmt -> execute()){
             return "ok";
         }else{
