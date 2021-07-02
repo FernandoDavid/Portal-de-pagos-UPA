@@ -101,6 +101,7 @@ class ModeloFormularios
     }
 
     ////////////////////////////////CURSOS//////////////////////////////
+    //Modelo para registrar curso
     static public function mdlRegistrarCurso($tabla, $datos){
         $fec_inicio=date_format(date_create($datos["fec_inicio"]), "Y-m-d");
         $fec_fin=date_format(date_create($datos["fec_fin"]), "Y-m-d");
@@ -122,4 +123,27 @@ class ModeloFormularios
             print_r(Conexion::conectar()->errorInfo());
         }     
     }
+    //Modelo para modificar curso
+    static public function mdlModificarCurso($tabla, $datos, $id){
+        $fec_inicio=date_format(date_create($datos["fec_inicio"]), "Y-m-d");
+        $fec_fin=date_format(date_create($datos["fec_fin"]), "Y-m-d");
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET curso=:curso, `desc`=:descrip, instructor=:instructor, fec_inicio=:fec_inicio, fec_fin=:fec_fin, hora_inicio=:hora_inicio, hora_fin=:hora_fin, cupo=:cupo, `status`=:stat, precio=:precio, lugar=:lugar where idCurso=$id");
+        $stmt->bindParam(":curso", $datos["curso"], PDO::PARAM_STR);
+        $stmt->bindParam(":descrip", $datos["desc"], PDO::PARAM_STR);
+        $stmt->bindParam(":instructor", $datos["instructor"], PDO::PARAM_STR);
+        $stmt->bindParam(":fec_inicio", $fec_inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fec_fin", $fec_fin, PDO::PARAM_STR);
+        $stmt->bindParam(":hora_inicio", $datos["hora_inicio"], PDO::PARAM_STR);
+        $stmt->bindParam(":hora_fin", $datos["hora_fin"], PDO::PARAM_STR);
+        $stmt->bindParam(":cupo", $datos["cupo"], PDO::PARAM_STR);
+        $stmt->bindParam(":stat", $datos["status"], PDO::PARAM_INT);
+        $stmt->bindParam(":precio", $datos["precio"], PDO::PARAM_STR);
+        $stmt->bindParam(":lugar", $datos["lugar"], PDO::PARAM_STR);
+        if($stmt -> execute()){
+            return "ok";
+        }else{
+            print_r(Conexion::conectar()->errorInfo());
+        }     
+    }
+
 }
