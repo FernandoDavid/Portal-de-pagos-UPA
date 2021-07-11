@@ -61,16 +61,30 @@ if (isset($rutas[1])) {
 
     <div class="visually-hidden-focusable container" id="card0">
         <div class="d-flex justify-content-evenly">
-            <?php foreach ($res as $valor) : ?>
+            <?php foreach ($res as $valor) : 
+                // HAcer un query que cuente los registros de alumnos (idCurso) y si es menor al Cupo del curso, muestralo
+                
+                $cupo=ModeloFormularios::mdlVerificarCupo($valor["idCurso"],0);
+                $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($valor["idCurso"],1);
+                date_default_timezone_set('America/Mexico_City');
+                $fechaActual = strtotime(date('y-m-d'));
+                $fechainicio = strtotime($cupo['fec_inicio']);
+                $fechafin = strtotime($cupo['fec_fin']);
+                
+                
+                if(($alumnosInscritos[0]<$cupo['cupo']) && ($fechaActual>$fechainicio && $fechaActual<$fechafin)){
+                ?>
                 <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" style="border-radius: 0.5rem" class="cursos overflow-hidden mb-3 shadow text light text-center">
                     <div class="curso-title text-white bg-primary px-3 py-2">
-                        <h4><?php echo $valor["curso"] ?></h4>
+                        <h4><?php echo $valor["curso"]?></h4>
                     </div>
                     <div class="curso-body px-3 py-4">
                         <p><?php echo $valor["desc"] ?></p>
                     </div>
                 </div>
-            <?php endforeach ?>
+            <?php 
+                }
+            endforeach ?>
         </div>
     </div>
 
@@ -161,6 +175,16 @@ if (isset($rutas[1])) {
                                 <input class="form-check-input ms-1" type="radio" value="casado" id="solteroRadio" name="estadoRadio" onclick="document.getElementById('casadoRadio').checked = false">
                                 <label class="ms-2" for="">Casado/a</label>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                        <label class="form-check-label" for="flexCheckChecked">
+                            Deseo recibir notificaciones a mi correo sobre las noticias más recientes relacionadas al área de Cursos y diplomados de la UPA
+                        </label>
                         </div>
                     </div>
                 </div>

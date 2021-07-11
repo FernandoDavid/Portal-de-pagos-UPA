@@ -689,6 +689,7 @@ foreach ($res as $key => $dato) {
             $.ajax({
                 url: dominio + 'ajax/formularios.ajax.php',
                 method: 'POST',
+                crossDomain: true,
                 data: {
                     "tablaFD": "inscritos",
                     "itemFD": "idInscrito",
@@ -771,6 +772,7 @@ foreach ($res as $key => $dato) {
                     let inputs = $('#modalModificarCurso').find('input');
                     // console.log(inputs);
                     $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
+                    console.log(tr.children('td')[0].className.split('-')[1]);
                     $(inputs[1]).val(res["curso"]);
                     $(inputs[2]).val(res["instructor"]);
                     $(inputs[3]).val(res["lugar"]);

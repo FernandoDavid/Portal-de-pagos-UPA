@@ -157,4 +157,17 @@ class ModeloFormularios
         }     
     }
 
+    static public function mdlVerificarCupo($idCurso, $mode){
+        //Traer el cupo total de un curso
+        if($mode==0){
+            $stmt = Conexion::conectar()->prepare("SELECT cupo, fec_inicio, fec_fin from Cursos where idCurso=$idCurso");
+        }
+        //Cantidad de alumnos inscritos a un curso
+        else if($mode==1){
+            $stmt = Conexion::conectar()->prepare("SELECT COUNT(i.idInscrito) as cuenta FROM Inscritos i INNER JOIN Cursos c ON i.idCurso=c.idCurso where c.idCurso=$idCurso");
+        }
+        $stmt -> execute();
+        return $stmt->fetch();
+    }
+
 }
