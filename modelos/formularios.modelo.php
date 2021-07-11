@@ -100,6 +100,18 @@ class ModeloFormularios
         return $stmt->fetch();
     }
 
+    static public function mdlRevisarComprobante($campo,$idInscrito,$idCurso){
+        $query = "UPDATE inscritos SET $campo=1 WHERE idInscrito=:idInscrito AND idCurso=:idCurso";
+        $stmt = Conexion::conectar()->prepare($query);
+        $stmt -> bindParam(":idInscrito",$idInscrito,PDO::PARAM_INT);
+        $stmt -> bindParam(":idCurso",$idCurso,PDO::PARAM_INT);
+        if($stmt -> execute()){
+            return "ok";
+        }else{
+            print_r(Conexion::conectar()->errorInfo());
+        }
+    }
+
     ////////////////////////////////CURSOS//////////////////////////////
     //Modelo para registrar curso
     static public function mdlRegistrarCurso($tabla, $datos){

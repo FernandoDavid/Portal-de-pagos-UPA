@@ -1,4 +1,8 @@
-<?php $dominio = fgets(fopen("dominio.txt", "r")); ?>
+<?php 
+// echo $_SERVER["HTTP_HOST"];
+// echo $_SERVER["REQUEST_URI"];
+$dominio = fgets(fopen("dominio.txt", "r")); 
+?>
 
 <!doctype html>
 <html lang="es">
@@ -6,10 +10,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Last-Modified" content="0">
-    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-    <meta http-equiv="Pragma" content="no-cache">
 
     <script type="text/javascript">
         var dominio = "<?php echo $dominio ?>";
@@ -43,7 +43,9 @@ if (isset($_GET["pagina"])) {
 
     if (
         $rutas[0] == "admin-cursos" ||
-        $rutas[0] == "registro"
+        $rutas[0] == "registro" || 
+        $rutas[0] == "admin" ||
+        $rutas[0] == "salir"
     ) {
         include "modulos/mensajes.php";
         include "paginas/" . $rutas[0] . ".php";

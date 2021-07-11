@@ -51,11 +51,16 @@ if (isset($rutas[1])) {
 
     <!-- Paso 1 (Carrousel con los cursos) -->
 
-    <div class="visually-hidden-focusable" id="card0">
-        <div class="d-flex justify-content-evenly border-0">
+    <div class="visually-hidden-focusable container" id="card0">
+        <div class="d-flex justify-content-evenly">
             <?php foreach ($res as $valor) : ?>
-                <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" style="width: 50em !important" class="cursos bg-primary px-3 py-4 text light text-center">
-                    <h4><?php echo $valor["curso"] ?></h4>
+                <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" style="border-radius: 0.5rem" class="cursos overflow-hidden mb-3 shadow text light text-center">
+                    <div class="curso-title text-white bg-primary px-3 py-2">
+                        <h4><?php echo $valor["curso"] ?></h4>
+                    </div>
+                    <div class="curso-body px-3 py-4">
+                        <p><?php echo $valor["desc"] ?></p>
+                    </div>
                 </div>
             <?php endforeach ?>
         </div>
@@ -63,7 +68,6 @@ if (isset($rutas[1])) {
 
 
     <!-- Paso 2 (Formulario de registro de los aspirantes)-->
-
     <div class="card visually-hidden-focusable" id="card1">
         <div class="card-body">
             <form method="POST">
@@ -165,14 +169,13 @@ if (isset($rutas[1])) {
     </div>
 
     <!-- Paso 3 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
-
     <div class="visually-hidden-focusable" id="card2">
         <div class="row">
             <div class="col-12">
                 <div class="card p-4 mb-3 bg-dark text-light position-relative">
                     <?php $curso = ModeloFormularios::mdlSelecReg("cursos", "idCurso", $inscrito[0]["idCurso"]); ?>
                     <h4 class="text-uppercase fw-bolder text-center"><?php echo $curso[0]["curso"] ?></h4>
-                    <span class="position-absolute badge rounded-pill bg-success" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important">$ <?php echo $curso[0]["precio"] ?></span>
+                    <span class="position-absolute badge rounded-pill bg-success" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important; font-size: 1.25rem !important">$ <?php echo $curso[0]["precio"] ?></span>
                 </div>
             </div>
         </div>
@@ -214,5 +217,18 @@ if (isset($rutas[1])) {
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Paso 4 (Confirmación de información) -->
+    <div class="-visually-hidden-focusable text-center" id="card3">
+        <h1 class="display-2">¡Ehhorabuena!</h1>
+        <hr>
+        <?php
+            $dia = explode('-',$curso[0]["fec_inicio"]);
+            $hora = explode(':',$curso[0]["hora_inicio"]);
+        ?>
+        <p class="fw-bolder fs-3">Gracias, <?php echo $inscrito[0]["nombre"]; ?>, por inscribirte al curso "<?php echo $curso[0]["curso"] ?>"</p>
+        <!-- <p>Recuerda que el curso inicia el <?php //echo strftime("%A, %d de %B del %Y a las %H:%M hrs.",mktime($hora[0],$hora[1],$hora[2],$dia[1],$dia[2],$dia[0])); ?></p> -->
+        <p>Recuerda que el curso inicia el <?php echo $curso[0]["fec_inicio"] ?> a las <?php echo $curso[0]["hora_inicio"] ?> hrs. en <?php echo $curso[0]["lugar"] ?>.</p>
     </div>
 </div>

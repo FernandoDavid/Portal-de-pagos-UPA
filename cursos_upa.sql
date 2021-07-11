@@ -53,7 +53,20 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Cursos` (
   `precio` DECIMAL(12,2) NOT NULL,
   `lugar` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idCurso`)
-    )
+)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `cursos_upa`.`Admins`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cursos_upa`.`Admins` (
+  `correo` VARCHAR(45) NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `depto` VARCHAR(45) NOT NULL,
+  `telefono` VARCHAR(10) NOT NULL,
+  `pwd` VARCHAR(25) NOT NULL,
+  PRIMARY KEY (`correo`)
+)
 ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;

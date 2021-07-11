@@ -22,11 +22,16 @@ class ControladorFormularios
                 );
                 $respuesta = ModeloFormularios::mdlCrearRegistro($tabla, array_keys($datos), $datos);
                 if ($respuesta == "ok") {
-
                     $id = ModeloFormularios::mdlSeleccionarId($tabla, $datos);
                     if ($id) {
+                        $msg = '<div>
+                            <p>Ingresa al siguiente enlace para subir tu comprobante de pago: </p>
+                            <a href="' . $dominio . 'registro/' . $id . '">' . $dominio . 'registro/' . $id . '</a>
+                        </div>';
+                        $subject = "Info. cursos";
+
                         $correo = new ControladorCorreo();
-                        $correo->ctrEnviarCorreo($dominio, $id["idInscrito"]);
+                        $correo->ctrEnviarCorreo($datos["correo"],$datos["nombre"],$subject, $msg);
                     } else {
                         echo '<script>
                             alert("Error al obtener id");
@@ -83,10 +88,13 @@ class ControladorFormularios
                     if (!file_exists("vistas/img/comprobantes/" . $datos["idCurso"])) {
                         mkdir("vistas/img/comprobantes/" . $datos["idCurso"], 0777, true);
                     }
-                    $source = "vistas/img/comprobantes/" . $inscrito['idCurso'] . "/" . $inscrito['pago'];
-                    $destination = "vistas/img/comprobantes/" . $datos['idCurso'] . "/" . $inscrito['pago'];
-                    copy($source, $destination);
-                    unlink($source);
+
+                    if ($inscrito["idCurso"] != $datos["idCurso"]) {
+                        $source = "vistas/img/comprobantes/" . $inscrito['idCurso'] . "/" . $inscrito['pago'];
+                        $destination = "vistas/img/comprobantes/" . $datos['idCurso'] . "/" . $inscrito['pago'];
+                        copy($source, $destination);
+                        unlink($source);
+                    }
                     // echo '<script>alert("'.$source.', '.$destination.'")</script>';
                     $_SESSION["toast"] = "success/Registro modificado exitosamente";
                     echo '<script>
@@ -191,10 +199,113 @@ class ControladorFormularios
         return ModeloFormularios::mdlSelecComprobante("Inscritos", array("idInscrito" => $inscrito, "idCurso" => $curso));
     }
 
+    public static function ctrSelectData($tabla, $item, $id)
+    {
+        return ModeloFormularios::mdlSelecReg($tabla, $item, $id);
+    }
+
+    ////////////////////////////ADMIN//////////////////////////////////
+    public static function ctrIngreso()
+    {
+        if (isset($_POST["correoIngreso"]) && isset($_POST["pwdIngreso"])) {
+            $res = ModeloFormularios::mdlSelecReg("admins", "correo", $_POST["correoIngreso"]);
+            if (isset($res[0])) {
+                if ($res[0]["pwd"] == $_POST["pwdIngreso"]) {
+                    $_SESSION["admin"] = $res[0]["nombre"];
+                    $_SESSION["toast"] = "success/Bienvenido(a) " . $_SESSION["admin"];
+                    echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null,null,window.location.href);
+                        } 
+                        window.location = "admin-cursos";
+                        </script>';
+                } else {
+                    echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null,null,window.location.href);
+                        } 
+                        Toast.fire({
+                            icon: "error",
+                            title: "Contraseña incorrecta"
+                        });
+                        </script>';
+                }
+            } else {
+                echo '<script>
+                if(window.history.replaceState){
+                    window.history.replaceState(null,null,window.location.href);
+                } 
+                Toast.fire({
+                    icon: "error",
+                    title: "Correo incorrecto"
+                });
+                </script>';
+            }
+        }
+    }
+
+    public static function ctrValidarComprobante($dominio, $revisor)
+    {
+        if (isset($_POST["idRev"]) && isset($_POST["btnRev"]) && isset($_POST["idRevCurso"])) {
+            $inscrito = ModeloFormularios::mdlSelecReg("Inscritos", "idInscrito", $_POST["idRev"]);
+            if ($_POST["btnRev"] == "Validar") {
+                // echo '<script>alert("2 if")</script>';
+                // $revisor = ModeloFormularios::mdlSelecReg("admins", "nombre", $_SESSION["admin"]);
+                $revisor[0]["depto"] == "Posgrado" ? $campo = "rev1" : $campo = "rev2";
+                $res = ModeloFormularios::mdlRevisarComprobante($campo, $_POST["idRev"], $_POST["idRevCurso"]);
+                if ($res == "ok") {
+                    $msg = '<div>
+                            <h3>Felicidades</h3>
+                            <p>Tu comprobante de pago ha sido validado, ingresa al siguiente enlace para.. : </p>
+                            <a href="' . $dominio . 'confirmacion/' . $_POST["idRev"] . '">' . $dominio . 'confirmacion/' . $_POST["idRev"] . '</a>
+                        </div>';
+                    $subject = "Info. cursos";
+                    $correo = new ControladorCorreo();
+                    $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg);
+                    $_SESSION["toast"] = "success/Comprobante validado";
+                    echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null,null,window.location.href);
+                        } 
+                        window.location = "admin-cursos";
+                        </script>';
+                } else {
+                    echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null,null,window.location.href);
+                        } 
+                        Toast.fire({
+                            icon: "error",
+                            title: "Error al validar comprobante"
+                        });
+                        </script>';
+                }
+            } else {
+                $source = "vistas/img/comprobantes/" . $_POST["idRevCurso"] . "/" . $_POST["idRev"];
+                unlink($source);
+                $msg = '<div>
+                            <h3>Lo sentimos</h3>
+                            <p>Tu comprobante de pago ha sido rechazado, ingresa al siguiente enlace para.. : </p>
+                            <a href="' . $dominio . 'registro/' . $_POST["idRev"] . '">' . $dominio . 'registro/' . $_POST["idRev"] . '</a>
+                        </div>';
+                $subject = "Info. cursos";
+                $correo = new ControladorCorreo();
+                $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg);
+                $_SESSION["toast"] = "error/Comprobante rechazado";
+                    echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null,null,window.location.href);
+                        } 
+                        window.location = "admin-cursos";
+                        </script>';
+            }
+        }
+    }
+
     ////////////////////////////////////CURSOS////////////////////////////////////
     public static function ctrRegistrarCurso()
     {
-        if (isset($_POST["nombreCurso"]) && !isset($_POST["idCursoModificar"]) ) {
+        if (isset($_POST["nombreCurso"]) && !isset($_POST["idCursoModificar"])) {
             if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombreCurso"])) {
                 $tabla = "Cursos";
                 $datos = array(
@@ -218,7 +329,7 @@ class ControladorFormularios
                             window.history.replaceState(null,null,window.location.href);
                         } 
                         location.reload();
-                        </script>';
+                        </>';
                 } else {
                     echo '<script>
                         if(window.history.replaceState){
@@ -252,10 +363,10 @@ class ControladorFormularios
                     "precio" => $_POST["precio"],
                     "lugar" => $_POST["lugar"]
                 );
-                
+
                 $actualizar = ModeloFormularios::mdlModificarCurso($tabla, $datos, $_POST['idCursoModificar']);
                 if ($actualizar == "ok") {
-                    $_SESSION["toast"] = "success/Curso creado exitosamente";
+                    $_SESSION["toast"] = "success/Curso modificado exitosamente";
                     echo '<script>
                         if(window.history.replaceState){
                             window.history.replaceState(null,null,window.location.href);
@@ -276,5 +387,4 @@ class ControladorFormularios
             }
         }
     }
-
 }
