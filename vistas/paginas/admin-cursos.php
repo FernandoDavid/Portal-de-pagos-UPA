@@ -782,22 +782,6 @@ foreach ($res as $key => $dato) {
                     console.log(err);
                 }
             });
-
-            // var $datos = $tr.children('td').map(function() {
-            //     return $(this)[0].innerText;
-            // }).get();
-
-            // $('#idCursoModificar').val($tr.children('td')[0].className.split('-')[1]);
-            // $('#nombreCurso').val($datos[1]);
-            // $('#descripcion').val($datos[2]);
-            // $('#instructor').val($datos[3]);
-            // $('#fec_inicio').val($datos[4]);
-            // $('#fec_fin').val($datos[5]);
-            // $('#hora_inicio').val($datos[6]);
-            // $('#hora_fin').val($datos[7]);
-            // $('#precio').val($datos[8]);
-            // $('#lugar').val($datos[9]);
-            // $('#cupo').val($datos[10]);
         });
 
         $(".btnEliminarCurso").on('click', function() {

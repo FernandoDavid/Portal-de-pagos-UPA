@@ -117,7 +117,7 @@ class ModeloFormularios
     static public function mdlRegistrarCurso($tabla, $datos){
         $fec_inicio=date_format(date_create($datos["fec_inicio"]), "Y-m-d");
         $fec_fin=date_format(date_create($datos["fec_fin"]), "Y-m-d");
-        $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(`curso`,`desc`,`instructor`,`fec_inicio`,`fec_fin`,`hora_inicio`,`hora_fin`,`cupo`,`status`,`precio`,`lugar`) VALUES (:curso, :descrip, :instructor, :fec_inicio, :fec_fin, :hora_inicio, :hora_fin, :cupo, :stat, :precio, :lugar)");
+        $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(`curso`,`desc`,`instructor`,`fec_inicio`,`fec_fin`,`hora_inicio`,`hora_fin`,`cupo`,`status`,`precio`,`lugar`) VALUES (:curso, :descrip, :instructor, :fec_inicio, :fec_fin, :hora_inicio, :hora_fin, :cupo, 1, :precio, :lugar)");
         $stmt->bindParam(":curso", $datos["curso"], PDO::PARAM_STR);
         $stmt->bindParam(":descrip", $datos["desc"], PDO::PARAM_STR);
         $stmt->bindParam(":instructor", $datos["instructor"], PDO::PARAM_STR);
@@ -126,7 +126,6 @@ class ModeloFormularios
         $stmt->bindParam(":hora_inicio", $datos["hora_inicio"], PDO::PARAM_STR);
         $stmt->bindParam(":hora_fin", $datos["hora_fin"], PDO::PARAM_STR);
         $stmt->bindParam(":cupo", $datos["cupo"], PDO::PARAM_STR);
-        $stmt->bindParam(":stat", $datos["status"], PDO::PARAM_INT);
         $stmt->bindParam(":precio", $datos["precio"], PDO::PARAM_STR);
         $stmt->bindParam(":lugar", $datos["lugar"], PDO::PARAM_STR);
         if($stmt -> execute()){

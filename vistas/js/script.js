@@ -24,6 +24,9 @@ $(document).ready(() => {
             case 2:
                 $('#card2').toggleClass("visually-hidden-focusable");
                 break;
+            case 3:
+                $('#card3').toggleClass("visually-hidden-focusable");
+                break;
         }
     }
 

@@ -7,13 +7,21 @@ $progress = 0;
 if (isset($rutas[1])) {
     $inscrito = ModeloFormularios::mdlSelecReg("inscritos", "idInscrito", intval($rutas[1]));
     if (isset($inscrito[0]["idInscrito"])) {
-        echo '
-        <script>
-            st = 2;
-            stepAlert("Paso 3: Comprobante de pago","Adjunta tu comprobante de pago..");
-        </script>
-    ';
-        $progress = 200 / 3;
+        if($inscrito[0]["rev1"] && $inscrito[0]["rev2"]){
+            echo '
+            <script>
+                st = 3;
+                stepAlert("Paso 4: Confirmación", "Revisa tu información..");
+            </script>';
+            $progress = 100;
+        }else{
+            echo '
+            <script>
+                st = 2;
+                stepAlert("Paso 3: Comprobante de pago","Adjunta tu comprobante de pago..");
+            </script>';
+            $progress = 200 / 3;
+        }
     } else {
         $_SESSION["toast"] = "error/Usuario no registrado";
         echo '
@@ -220,7 +228,7 @@ if (isset($rutas[1])) {
     </div>
 
     <!-- Paso 4 (Confirmación de información) -->
-    <div class="-visually-hidden-focusable text-center" id="card3">
+    <div class="visually-hidden-focusable text-center" id="card3">
         <h1 class="display-2">¡Ehhorabuena!</h1>
         <hr>
         <?php
