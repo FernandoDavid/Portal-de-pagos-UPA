@@ -308,7 +308,6 @@ class ControladorFormularios
         if (isset($_POST["nombreCurso"]) && !isset($_POST["idCursoModificar"])) {
             
             if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombreCurso"])) {
-                
                 $tabla = "Cursos";
                 $datos = array(
                     "curso" => $_POST["nombreCurso"],
@@ -323,17 +322,16 @@ class ControladorFormularios
                     "precio" => $_POST["precio"],
                     "lugar" => $_POST["lugar"]
                 );
-                
+
                 $insertar = ModeloFormularios::mdlRegistrarCurso($tabla, $datos);
-                echo '<script>alert("3")</script>';
                 if ($insertar == "ok") {
                     $_SESSION["toast"] = "success/Curso creado exitosamente";
                     echo '<script>
                         if(window.history.replaceState){
                             window.history.replaceState(null,null,window.location.href);
                         } 
-                        location.reload();
-                        </>';
+                        window.location = "admin-cursos";
+                        </script>';
                 } else {
                     echo '<script>
                         if(window.history.replaceState){
