@@ -7,6 +7,8 @@ if (!isset($_SESSION["admin"])) {
     window.location = "admin";
     </script>';
 }
+
+
 ?>
 
 <header class="header" id="header">
@@ -54,7 +56,7 @@ $pendientes = array();
 
 $revisor = ModeloFormularios::mdlSelecReg("admins", "nombre", $_SESSION["admin"]);
 $revisor[0]["depto"] == "Posgrado" ? $campo = 10 : $campo = 11;
-echo '<script> var campo='.$campo.'</script>';
+echo '<script> var campo=' . $campo . '</script>';
 foreach ($res as $key => $dato) {
     if ($dato[$campo]) {
         array_push($inscritos, $dato);
@@ -65,8 +67,8 @@ foreach ($res as $key => $dato) {
 ?>
 
 <div class="container-fluid mt-5 pt-4">
-    <!-- Tabla mostrar alumnos inscritos -->
-    <div id="pendientesTable">
+    <!-- Tabla mostrar alumnos pendientes -->
+    <div id="pendientesTable" class="visually-hidden-focusable">
         <h1 class="text-center">Tabla pendientes</h1>
         <div class="table-responsive">
             <table class="table table-striped table-success mb-4">
@@ -101,7 +103,11 @@ foreach ($res as $key => $dato) {
                             <td class="c-<?php echo $datos["idCurso"] ?>">
                                 <?php echo $curso[0]["curso"] ?>
                             </td>
-                            <td><button type="submit" class="btn btn-<?php if(!$datos["pago"]){echo 'secondary';}else{echo 'primary';} ?> btnComprobante"><i class="fas fa-file-invoice-dollar"></i></button></td>
+                            <td><button type="submit" class="btn btn-<?php if (!$datos["pago"]) {
+                                                                            echo 'secondary';
+                                                                        } else {
+                                                                            echo 'primary';
+                                                                        } ?> btnComprobante"><i class="fas fa-file-invoice-dollar"></i></button></td>
                             <td><button type="submit" class="btn btn-warning btnEditarAlumno" style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button></td>
                             <td><button type="button" class="btn btn-danger btnEliminarAlumno" style="border-color: black"><i class="fas fa-trash-alt"></i></button></td>
                         </tr>
@@ -218,9 +224,8 @@ foreach ($res as $key => $dato) {
                                 <?php echo $datos['cupo']  ?>
                             </td>
                             <td><button type="button" class="btn btn-warning btnModificarCurso" style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button></td>
-                            
+
                             <td><button type="button" class="btn btn-danger btnEliminarCurso" style="border-color: black"><i class="fas fa-trash-alt"></i></button></td>
-                            
                         </tr>
                     <?php } ?>
                 </tbody>
@@ -228,6 +233,36 @@ foreach ($res as $key => $dato) {
         </div>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddCurso">Agregar curso</button>
     </div>
+
+    <?php
+    echo '<script>$("#pendientesTable").removeClass("visually-hidden-focusable");</script>';
+    if (isset($_SESSION["vista"])) {
+        switch ($_SESSION["vista"]) {
+            case 1:
+                echo '<script>
+        $("#cursosTable").addClass("visually-hidden-focusable");
+        $("#inscritosTable").addClass("visually-hidden-focusable");
+        $("#pendientesTable").removeClass("visually-hidden-focusable");
+        </script>';
+                break;
+            case 2:
+                echo '<script>
+        $("#cursosTable").addClass("visually-hidden-focusable");
+        $("#inscritosTable").removeClass("visually-hidden-focusable");
+        $("#pendientesTable").addClass("visually-hidden-focusable");
+        </script>';
+                break;
+            case 3:
+                echo '<script>
+        $("#cursosTable").removeClass("visually-hidden-focusable");
+        $("#inscritosTable").addClass("visually-hidden-focusable");
+        $("#pendientesTable").addClass("visually-hidden-focusable");
+        </script>';
+                break;
+        }
+        unset($_SESSION["vista"]);
+    }
+    ?>
 
     <!-- MODALS -->
     <!-- Modificar alumno -->
@@ -341,7 +376,7 @@ foreach ($res as $key => $dato) {
                         <button type="submit" class="btn btn-warning">Actualizar datos</button>
                         <?php
                         $modificar = new ControladorFormularios();
-                        $modificar->ctrModificarRegistroAlumno($dominio);
+                        $modificar->ctrModificarRegistroAlumno($dominio, $campo);
 
                         ?>
                     </div>
@@ -368,7 +403,7 @@ foreach ($res as $key => $dato) {
                         <button type="submit" class="btn btn-danger ">Borrar alumno</button>
                         <?php
                         $delete = new ControladorFormularios();
-                        $delete->ctrEliminarRegistro("inscritos", "idInscrito");
+                        $delete->ctrEliminarRegistro("inscritos", "idInscrito", $campo);
                         ?>
                     </div>
                 </form>
@@ -411,7 +446,7 @@ foreach ($res as $key => $dato) {
                         <input type="submit" class="btn btn-success" name="btnRev" value="Validar">
                         <?php
                         $validar = new ControladorFormularios();
-                        $validar->ctrValidarComprobante($dominio, $revisor);
+                        $validar->ctrValidarComprobante($dominio, $revisor, $campo);
                         ?>
                     </form>
                 </div>
@@ -553,7 +588,7 @@ foreach ($res as $key => $dato) {
                         <button type="submit" class="btn btn-danger">Borrar curso</button>
                         <?php
                         $del = new ControladorFormularios();
-                        $del->ctrEliminarRegistro("cursos", "idCurso");
+                        $del->ctrEliminarRegistro("cursos", "idCurso", $campo);
                         ?>
                     </div>
                 </form>
@@ -770,6 +805,7 @@ foreach ($res as $key => $dato) {
                     // console.log(res);
                     let inputs = $('#modalModificarCurso').find('input');
                     // console.log(inputs);
+                    console.log(tr.children('td')[0].className.split('-')[1]);
                     $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
                     $(inputs[1]).val(res["curso"]);
                     $(inputs[2]).val(res["instructor"]);
@@ -812,23 +848,23 @@ foreach ($res as $key => $dato) {
                 data: datos,
                 dataType: "json",
                 success: function(res) {
-                    if(res["pago"]){
+                    if (res["pago"]) {
                         $('#modalRevisar .modal-body img').attr({
                             "src": dominio + 'vistas/img/comprobantes/' + res["idCurso"] + '/' + res["pago"],
                             "alt": res["pago"]
                         });
-                    }else{
+                    } else {
                         $('#modalRevisar .modal-body img').attr({
-                            "src":"",
+                            "src": "",
                             "alt": ""
                         });
                     }
-                    
+
                     $('#idRev').val(datos["idInscrito"]);
                     $('#idRevCurso').val(res["idCurso"]);
-                    if(res[campo]){
+                    if (res[campo]) {
                         $($('#modalRevisar .modal-footer')[0]).addClass("visually-hidden-focusable");
-                    }else{
+                    } else {
                         $($('#modalRevisar .modal-footer')[0]).removeClass("visually-hidden-focusable");
                     }
                 },

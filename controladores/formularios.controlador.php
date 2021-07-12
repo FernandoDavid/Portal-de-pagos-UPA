@@ -26,7 +26,7 @@ class ControladorFormularios
                     if ($id) {
                         $msg = '<div>
                             <p>Ingresa al siguiente enlace para subir tu comprobante de pago: </p>
-                            <a href="' . $dominio . 'registro/' . $id . '">' . $dominio . 'registro/' . $id . '</a>
+                            <a href="' . $dominio . 'registro/' . $id["idInscrito"] . '">' . $dominio . 'registro/' . $id["idInscrito"] . '</a>
                         </div>';
                         $subject = "Info. cursos";
 
@@ -66,7 +66,7 @@ class ControladorFormularios
         }
     }
     //Modificar registro alumnos
-    public static function ctrModificarRegistroAlumno($dominio)
+    public static function ctrModificarRegistroAlumno($dominio,$campo)
     {
         if (isset($_POST["idAlumno"])) {
             if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombre"])) {
@@ -97,6 +97,7 @@ class ControladorFormularios
                     }
                     // echo '<script>alert("'.$source.', '.$destination.'")</script>';
                     $_SESSION["toast"] = "success/Registro modificado exitosamente";
+                    ($inscrito[$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
                     echo '<script>
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
@@ -118,21 +119,22 @@ class ControladorFormularios
         }
     }
     //Eliminar registro de alumnos
-    public static function ctrEliminarRegistro($tabla, $item)
+    public static function ctrEliminarRegistro($tabla, $item,$campo)
     {
         if (isset($_POST['alumnoEliminar']) || isset($_POST['cursoEliminar'])) {
             if ($tabla == "inscritos" || $tabla == "Inscritos") {
                 $inscrito = ModeloFormularios::mdlSelecReg("Inscritos", "idInscrito", $_POST["alumnoEliminar"])[0];
                 $val = $_POST["alumnoEliminar"];
                 unlink("vistas/img/comprobantes/" . $inscrito['idCurso'] . '/' . $inscrito['pago']);
+                ($inscrito[$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
             } else {
                 $curso = ModeloFormularios::mdlSelecReg("cursos", "idCurso", $_POST["cursoEliminar"])[0];
                 $val = $_POST["cursoEliminar"];
                 rmdir("vistas/img/comprobantes/" . $curso['idCurso']);
+                $_SESSION["vista"] = 3;
             }
             $eliminar = ModeloFormularios::mdlBorrarRegistro($tabla, $item, $val);
             if ($eliminar == "ok") {
-
                 $_SESSION["toast"] = "success/Registro eliminado exitosamente";
                 echo '<script>
                     if(window.history.replaceState){
@@ -244,7 +246,7 @@ class ControladorFormularios
         }
     }
 
-    public static function ctrValidarComprobante($dominio, $revisor)
+    public static function ctrValidarComprobante($dominio, $revisor,$campo)
     {
         if (isset($_POST["idRev"]) && isset($_POST["btnRev"]) && isset($_POST["idRevCurso"])) {
             $inscrito = ModeloFormularios::mdlSelecReg("Inscritos", "idInscrito", $_POST["idRev"]);
@@ -262,6 +264,7 @@ class ControladorFormularios
                     $subject = "Info. cursos";
                     $correo = new ControladorCorreo();
                     $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg);
+                    ($inscrito[$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
                     $_SESSION["toast"] = "success/Comprobante validado";
                     echo '<script>
                         if(window.history.replaceState){
@@ -325,6 +328,7 @@ class ControladorFormularios
 
                 $insertar = ModeloFormularios::mdlRegistrarCurso($tabla, $datos);
                 if ($insertar == "ok") {
+                    $_SESSION["vista"] = 3;
                     $_SESSION["toast"] = "success/Curso creado exitosamente";
                     echo '<script>
                         if(window.history.replaceState){
@@ -368,6 +372,7 @@ class ControladorFormularios
 
                 $actualizar = ModeloFormularios::mdlModificarCurso($tabla, $datos, $_POST['idCursoModificar']);
                 if ($actualizar == "ok") {
+                    $_SESSION["vista"] = 3;
                     $_SESSION["toast"] = "success/Curso modificado exitosamente";
                     echo '<script>
                         if(window.history.replaceState){
