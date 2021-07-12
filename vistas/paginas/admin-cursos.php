@@ -28,7 +28,7 @@ if (!isset($_SESSION["admin"])) {
                 <span class="nav_logo-name">CURSOS UPA</span>
             </a>
             <div class="nav_list">
-                <a class="nav_link active" id="link_pendientes">
+                <a class="nav_link" id="link_pendientes">
                     <i class='fas fa-user-clock nav_icon'></i>
                     <span class="nav_name">Pendientes</span>
                 </a>
@@ -235,7 +235,7 @@ foreach ($res as $key => $dato) {
     </div>
 
     <?php
-    echo '<script>$("#pendientesTable").removeClass("visually-hidden-focusable");</script>';
+    echo '<script>$("#pendientesTable").removeClass("visually-hidden-focusable");$("#link_pendientes").addClass("active");</script>';
     if (isset($_SESSION["vista"])) {
         switch ($_SESSION["vista"]) {
             case 1:
@@ -243,6 +243,9 @@ foreach ($res as $key => $dato) {
         $("#cursosTable").addClass("visually-hidden-focusable");
         $("#inscritosTable").addClass("visually-hidden-focusable");
         $("#pendientesTable").removeClass("visually-hidden-focusable");
+        $("#link_pendientes").addClass("active");
+        $("#link_inscritos").removeClass("active");
+        $("#link_cursos").removeClass("active");
         </script>';
                 break;
             case 2:
@@ -250,6 +253,9 @@ foreach ($res as $key => $dato) {
         $("#cursosTable").addClass("visually-hidden-focusable");
         $("#inscritosTable").removeClass("visually-hidden-focusable");
         $("#pendientesTable").addClass("visually-hidden-focusable");
+        $("#link_pendientes").removeClass("active");
+        $("#link_inscritos").addClass("active");
+        $("#link_cursos").removeClass("active");
         </script>';
                 break;
             case 3:
@@ -257,6 +263,9 @@ foreach ($res as $key => $dato) {
         $("#cursosTable").removeClass("visually-hidden-focusable");
         $("#inscritosTable").addClass("visually-hidden-focusable");
         $("#pendientesTable").addClass("visually-hidden-focusable");
+        $("#link_pendientes").removeClass("active");
+        $("#link_inscritos").removeClass("active");
+        $("#link_cursos").addClass("active");
         </script>';
                 break;
         }

@@ -72,7 +72,7 @@ if (isset($rutas[1])) {
                 $fechafin = strtotime($cupo['fec_fin']);
                 
                 
-                if(($alumnosInscritos[0]<$cupo['cupo']) && ($fechaActual>$fechainicio && $fechaActual<$fechafin)){
+                if(($alumnosInscritos[0]<$cupo['cupo']) && ($fechaActual>=$fechainicio && $fechaActual<$fechafin)){
                 ?>
                 <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" style="border-radius: 0.5rem" class="cursos overflow-hidden mb-3 shadow text light text-center">
                     <div class="curso-title text-white bg-primary px-3 py-2">
@@ -235,8 +235,8 @@ if (isset($rutas[1])) {
                                 <button type="submit" class="btn btn-primary">Guardar</button>
                                 <?php
                                 /*=====================================
-                            INSTANCIA Y LLAMADO DE CLASE DE INGRESO
-                            ======================================*/
+                                INSTANCIA Y LLAMADO DE CLASE DE INGRESO
+                                ======================================*/
                                 $ctrComp = new ControladorFormularios();
                                 $ctrComp->ctrComprobante($inscrito[0]["idInscrito"], $inscrito[0]["idCurso"], $dominio);
                                 ?>
