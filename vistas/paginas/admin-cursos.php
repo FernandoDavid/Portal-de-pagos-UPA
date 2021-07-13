@@ -8,6 +8,13 @@ if (!isset($_SESSION["admin"])) {
     </script>';
 }
 
+$res = ModeloFormularios::mdlSelecReg("inscritos", null, null);
+$inscritos = array();
+$pendientes = array();
+
+$revisor = ModeloFormularios::mdlSelecReg("admins", "nombre", $_SESSION["admin"]);
+$revisor[0]["depto"] == "Posgrado" ? $campo = 10 : $campo = 11;
+echo '<script> var campo=' . $campo . '</script>';
 
 ?>
 
@@ -24,7 +31,6 @@ if (!isset($_SESSION["admin"])) {
         <div>
             <a href="#" class="nav_logo">
                 <img src="<?php echo $dominio; ?>vistas/img/rsc/logo UPA.svg" class='nav_logo-icon'>
-                <!-- <i class='nav_logo-icon'></i> -->
                 <span class="nav_logo-name">CURSOS UPA</span>
             </a>
             <div class="nav_list">
@@ -32,6 +38,7 @@ if (!isset($_SESSION["admin"])) {
                     <i class='fas fa-user-clock nav_icon'></i>
                     <span class="nav_name">Pendientes</span>
                 </a>
+                <?php if($revisor[0]["depto"]=="Posgrado"):?>
                 <a class="nav_link" id="link_inscritos">
                     <i class='fas fa-user-check nav_icon'></i>
                     <span class="nav_name">Inscritos</span>
@@ -40,6 +47,7 @@ if (!isset($_SESSION["admin"])) {
                     <i class='fas fa-bookmark nav_icon'></i>
                     <span class="nav_name">Cursos</span>
                 </a>
+                <?php endif ?>
             </div>
         </div>
         <a href="<?php echo $dominio; ?>salir" class="nav_link">
@@ -50,15 +58,8 @@ if (!isset($_SESSION["admin"])) {
 </div>
 
 <?php
-$res = ModeloFormularios::mdlSelecReg("inscritos", null, null);
-$inscritos = array();
-$pendientes = array();
-
-$revisor = ModeloFormularios::mdlSelecReg("admins", "nombre", $_SESSION["admin"]);
-$revisor[0]["depto"] == "Posgrado" ? $campo = 10 : $campo = 11;
-echo '<script> var campo=' . $campo . '</script>';
 foreach ($res as $key => $dato) {
-    if ($dato[$campo]) {
+    if ($dato["rev1"] && $dato["rev2"]) {
         array_push($inscritos, $dato);
     } else {
         array_push($pendientes, $dato);
@@ -79,8 +80,10 @@ foreach ($res as $key => $dato) {
                     <th scope="col">CURP</th>
                     <th scope="col">Curso</th>
                     <th scope="col">Pago</th>
+                    <?php if($revisor[0]["depto"]=="Posgrado"):?>
                     <th scope="col">Modificar</th>
                     <th scope="col">Eliminar</th>
+                    <?php endif ?>
                 </thead>
                 <tbody>
                     <?php
@@ -103,19 +106,72 @@ foreach ($res as $key => $dato) {
                             <td class="c-<?php echo $datos["idCurso"] ?>">
                                 <?php echo $curso[0]["curso"] ?>
                             </td>
-                            <td><button type="submit" class="btn btn-<?php if (!$datos["pago"]) {
-                                                                            echo 'secondary';
-                                                                        } else {
-                                                                            echo 'primary';
-                                                                        } ?> btnComprobante"><i class="fas fa-file-invoice-dollar"></i></button></td>
+                            <td>
+                                <button type="submit" class="btn btn-<?php if (!$datos["pago"]) {echo 'secondary';} else {echo 'primary';}?> btnComprobante position-relative">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <?php if($datos["rev2"]): ?>
+                                    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
+                                        <span class="visually-hidden">New alerts</span>
+                                    </span>
+                                    <?php endif ?>
+                                </button>
+                            </td>
+                            <?php if($revisor[0]["depto"]=="Posgrado"):?>
                             <td><button type="submit" class="btn btn-warning btnEditarAlumno" style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button></td>
                             <td><button type="button" class="btn btn-danger btnEliminarAlumno" style="border-color: black"><i class="fas fa-trash-alt"></i></button></td>
+                            <?php endif?>
                         </tr>
                     <?php } ?>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <!-- Modal revisar comprobante -->
+    <div class="modal fade" id="modalRevisar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Revisión de comprobante de pago</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div id="info-inscrito" class="col-md-6">
+                        <h4>Fullname</h4>
+                        <hr>
+                        <p>Dirección: ..</p>
+                        <p>CURP: ..</p>
+                        <p>RFC: ..</p>
+                        <p>Teléfono: ..</p>
+                        <p>Curso: ..</p>
+                        <p>Sexo: ..</p>
+                        <p>Estado civil: ..</p>
+                        <p>Curso: ..</p>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <h4>Comprobante</h4>
+                        <img id="revCmprobante" src="" alt="" class="img-fluid" style="max-height: 23rem">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form method="POST">
+                        <input type="text" name="idRev" id="idRev" class="visually-hidden-focusable">
+                        <input type="text" name="idRevCurso" id="idRevCurso" class="visually-hidden-focusable">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-danger" name="btnRev" value="Rechazar">
+                        <input type="submit" class="btn btn-success" name="btnRev" value="Validar">
+                        <?php
+                        $validar = new ControladorFormularios();
+                        $validar->ctrValidarComprobante($dominio, $revisor, $campo);
+                        ?>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php echo '<script>$("#pendientesTable").removeClass("visually-hidden-focusable");$("#link_pendientes").addClass("active");</script>'; ?>
+    <?php if($revisor[0]["depto"]=="Posgrado"):?>
 
     <!-- Tabla mostrar alumnos inscritos -->
     <div id="inscritosTable" class="visually-hidden-focusable">
@@ -235,7 +291,6 @@ foreach ($res as $key => $dato) {
     </div>
 
     <?php
-    echo '<script>$("#pendientesTable").removeClass("visually-hidden-focusable");$("#link_pendientes").addClass("active");</script>';
     if (isset($_SESSION["vista"])) {
         switch ($_SESSION["vista"]) {
             case 1:
@@ -416,49 +471,6 @@ foreach ($res as $key => $dato) {
                         ?>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal revisar comprobante -->
-    <div class="modal fade" id="modalRevisar" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">Revisión de comprobante de pago</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body row">
-                    <div id="info-inscrito" class="col-md-6">
-                        <h4>Fullname</h4>
-                        <hr>
-                        <p>Dirección: ..</p>
-                        <p>CURP: ..</p>
-                        <p>RFC: ..</p>
-                        <p>Teléfono: ..</p>
-                        <p>Curso: ..</p>
-                        <p>Sexo: ..</p>
-                        <p>Estado civil: ..</p>
-                        <p>Curso: ..</p>
-                    </div>
-                    <div class="col-md-6 text-center">
-                        <h4>Comprobante</h4>
-                        <img id="revCmprobante" src="" alt="" class="img-fluid" style="max-height: 23rem">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <form method="POST">
-                        <input type="text" name="idRev" id="idRev" class="visually-hidden-focusable">
-                        <input type="text" name="idRevCurso" id="idRevCurso" class="visually-hidden-focusable">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <input type="submit" class="btn btn-danger" name="btnRev" value="Rechazar">
-                        <input type="submit" class="btn btn-success" name="btnRev" value="Validar">
-                        <?php
-                        $validar = new ControladorFormularios();
-                        $validar->ctrValidarComprobante($dominio, $revisor, $campo);
-                        ?>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
@@ -719,6 +731,8 @@ foreach ($res as $key => $dato) {
             </div>
         </div>
     </div>
+
+    <?php endif ?>
 </div>
 
 <script>
