@@ -153,6 +153,9 @@ foreach ($res as $key => $dato) {
                         <p>Sexo: ..</p>
                         <p>Estado civil: ..</p>
                         <p>Curso: ..</p>
+                        <?php if($campo==10): ?>
+                        <p>Revisión (Administración): ..</p>
+                        <?php endif; ?>
                     </div>
                     <div class="col-md-6 text-center">
                         <h4>Comprobante</h4>
@@ -886,6 +889,7 @@ foreach ($res as $key => $dato) {
                 async: true,
                 success: function(res) {
                     let labels = $('#info-inscrito').children();
+                    // console.log(labels);
                     $(labels[0]).text(res["nombre"]);
                     $(labels[2]).html('<b>Correo: </b>' + res["correo"]);
                     $(labels[3]).html('<b>Teléfono: </b>' + res["telefono"]);
@@ -895,6 +899,9 @@ foreach ($res as $key => $dato) {
                     $(labels[7]).html('<b>Sexo: </b>' + ((res["sexo"] == "H") ? "Masculino" : "Femenino"));
                     $(labels[8]).html('<b>Estado civil: </b>' + res["est_civil"]);
                     $(labels[9]).html('<b>Curso: </b>' + tr.children('td')[4].innerText);
+                    let rev = "No validado";
+                    (res["rev2"]) ? rev="Validado" : rev="No validado" ;
+                    $(labels[10]).html('<b>Validación (Administración): </b>'+rev);
                 },
                 error: function(err) {
                     console.log(err);

@@ -30,5 +30,19 @@ $(document).ready(() => {
         }
     }
 
-    $('.filepond--drop-label label').empty().text("Adjunta tu comprobante de pago aquí");
+    // $('.filepond--drop-label label').empty().text("Adjunta tu comprobante de pago aquí");
+
+    $('#btnRegresar').on('click',function(){
+        if(window.history.replaceState){
+            window.history.replaceState(null,null,window.location.href);
+        }
+        $('#card0').toggleClass("visually-hidden-focusable");
+        $('#card1').toggleClass("visually-hidden-focusable");
+        st = 0;
+        $('#step2').removeClass('btn-primary');
+        $('#step2').addClass('btn-secondary');
+        $('.progress-bar').css("width","0%");
+        $('.progress-bar').attr("aria-valuenow","0");
+        $('#formRegistro1')[0].reset();
+    });
 });
