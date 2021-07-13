@@ -2,6 +2,8 @@
     var st = 0;
 </script>
 <?php
+date_default_timezone_set('America/Mexico_City');
+$fechaActual = strtotime(date('y-m-d'));
 $res = ModeloFormularios::mdlSelecReg("cursos", null, null);
 $progress = 0;
 if (isset($rutas[1])) {
@@ -64,23 +66,32 @@ if (isset($rutas[1])) {
             <?php foreach ($res as $valor) : 
                 // HAcer un query que cuente los registros de alumnos (idCurso) y si es menor al Cupo del curso, muestralo
                 
-                $cupo=ModeloFormularios::mdlVerificarCupo($valor["idCurso"],0);
+                
                 $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($valor["idCurso"],1);
-                date_default_timezone_set('America/Mexico_City');
-                $fechaActual = strtotime(date('y-m-d'));
-                $fechainicio = strtotime($cupo['fec_inicio']);
-                $fechafin = strtotime($cupo['fec_fin']);
                 
+                $fechainicio = strtotime($valor['fec_inicio']);
+                $fechafin = strtotime($valor['fec_fin']);
                 
-                if(($alumnosInscritos[0]<$cupo['cupo']) && ($fechaActual>=$fechainicio && $fechaActual<$fechafin)){
+                if(($alumnosInscritos[0]<$valor['cupo']) && ($fechaActual>=$fechainicio && $fechaActual<$fechafin)){
                 ?>
-                <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" style="border-radius: 0.5rem" class="cursos overflow-hidden mb-3 shadow text light text-center">
-                    <div class="curso-title text-white bg-primary px-3 py-2">
+                <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" style="border-radius: 0.5rem" class="cursos overflow-hidden mb-3 shadow text light">
+                    <div class="curso-title text-white text-center bg-primary px-3 py-2">
                         <h4><?php echo $valor["curso"]?></h4>
                     </div>
-                    <div class="curso-body px-3 py-4">
+                    <div class="curso-body px-3 py-2">
+                        <h6><?php echo "Instructor:".$valor["instructor"] ?></h6>
                         <p><?php echo $valor["desc"] ?></p>
+                        <div class="row">
+                            <div class="col-6">
+                                <p><b><?php echo "Precio: $".$valor["precio"] ?></b></p>
+                            </div>
+                            <div class="col-6 text-end">
+                            <p><b><?php echo "Cupo:".$alumnosInscritos[0]."/".$valor['cupo']?></b></p>
+                            </div>
+                        </div>
+                        
                     </div>
+                    
                 </div>
             <?php 
                 }

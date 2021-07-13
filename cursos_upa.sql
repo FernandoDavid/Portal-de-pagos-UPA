@@ -76,3 +76,4 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 drop user if exists 'Cursos-upa'@'localhost';
 CREATE USER 'Cursos-upa'@'localhost' IDENTIFIED BY '123456';
 GRANT ALL PRIVILEGES ON cursos_upa.* TO 'Cursos-upa'@'localhost';
+-- Codigo de revisiones Rev1-Postgrado Rev2-Administracion
