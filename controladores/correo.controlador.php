@@ -6,7 +6,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class ControladorCorreo
 {
-    static public function ctrEnviarCorreo($correo,$nombre,$subject,$msg)
+    static public function ctrEnviarCorreo($correo,$nombre,$subject,$msg,$dominio)
     {
         if (isset($correo)) {
 
@@ -20,7 +20,7 @@ class ControladorCorreo
 
                 try {
                     //Server settings
-                    // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                    $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
                     $mail->isSMTP();                                            //Send using SMTP
                     $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
                     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
@@ -37,6 +37,8 @@ class ControladorCorreo
                     //Content
                     $mail->isHTML(true);                                  //Set email format to HTML
                     $mail->Subject = $subject;
+                    // $mail->addStringAttachment(file_get_contents($dominio.'vistas/img/rsc/'), "ref-pago.jpeg");
+                    $mail->addEmbeddedImage(dirname(__DIR__).'/vistas/img/rsc/ref-pago.jpeg','imagen','ref-pago.jpeg');
                     $mail->Body=$msg;
 
                     $mail->send();

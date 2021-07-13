@@ -27,12 +27,13 @@ class ControladorFormularios
                         $msg = '<div>
                             <p>Ingresa al siguiente enlace para subir tu comprobante de pago: </p>
                             <a href="' . $dominio . 'registro/' . $id["idInscrito"] . '">' . $dominio . 'registro/' . $id["idInscrito"] . '</a>
-                            <img src="'.$dominio.'vistas/img/rsc/ref-pago.jpeg" style="margin-left:auto;margin-right:auto;margin-top: 2rem;" alt="Instrucciones de pago">
+                            <br>
+                            <img src="cid:imagen" style="margin-left:auto;margin-right:auto;margin-top: 1rem;width: 35rem;" alt="Instrucciones de pago">
                         </div>';
                         $subject = "Info. cursos";
 
                         $correo = new ControladorCorreo();
-                        $correo->ctrEnviarCorreo($datos["correo"],$datos["nombre"],$subject, $msg);
+                        $correo->ctrEnviarCorreo($datos["correo"],$datos["nombre"],$subject, $msg,$dominio);
                     } else {
                         echo '<script>
                             alert("Error al obtener id");
@@ -261,11 +262,11 @@ class ControladorFormularios
                         $msg = '<div>
                             <h3>Felicidades</h3>
                             <p>Tu comprobante de pago ha sido validado, ingresa al siguiente enlace para.. : </p>
-                            <a href="' . $dominio . 'confirmacion/' . $_POST["idRev"] . '">' . $dominio . 'confirmacion/' . $_POST["idRev"] . '</a>
+                            <a href="' . $dominio . 'confirmacion/' . $_POST["idRev"] . '">' . $dominio . 'registro/' . $_POST["idRev"] . '</a>
                         </div>';
                         $subject = "Info. cursos";
                         $correo = new ControladorCorreo();
-                        $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg);
+                        $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg,$dominio);
                     }
                     ($inscrito[$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
                     $_SESSION["toast"] = "success/Comprobante validado";
@@ -296,7 +297,7 @@ class ControladorFormularios
                         </div>';
                 $subject = "Info. cursos";
                 $correo = new ControladorCorreo();
-                $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg);
+                $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg,$dominio);
                 $_SESSION["toast"] = "error/Comprobante rechazado";
                     echo '<script>
                         if(window.history.replaceState){

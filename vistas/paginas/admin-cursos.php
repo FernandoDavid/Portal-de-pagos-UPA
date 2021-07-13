@@ -59,10 +59,16 @@ echo '<script> var campo=' . $campo . '</script>';
 
 <?php
 foreach ($res as $key => $dato) {
-    if ($dato["rev1"] && $dato["rev2"]) {
-        array_push($inscritos, $dato);
-    } else {
-        array_push($pendientes, $dato);
+    if($campo==11){
+        if(!$dato["rev2"]){
+            array_push($pendientes,$dato);
+        }
+    }else{
+        if ($dato["rev1"] && $dato["rev2"]) {
+            array_push($inscritos, $dato);
+        } else {
+            array_push($pendientes, $dato);
+        }
     }
 }
 ?>
@@ -756,9 +762,7 @@ foreach ($res as $key => $dato) {
                 dataType: "json",
                 async: true,
                 success: function(res) {
-                    // console.log(res);
                     let inputs = $('#modalModificarAlumno').find('input');
-                    // console.log(inputs);
                     $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
                     $(inputs[1]).val(res["nombre"]);
                     $(inputs[2]).val(res["telefono"]);
@@ -774,32 +778,6 @@ foreach ($res as $key => $dato) {
                     console.log(err);
                 }
             });
-
-            // var $datos = $tr.children('td').map(function() {
-            //     return $(this)[0].innerText;
-            // }).get();
-            // console.log($datos);
-
-
-            // $('#idAlumno').val($tr.children('td')[0].className.split('-')[1]);
-            // $('#nombre').val($datos[1]);
-            // $('#correo').val($datos[2]);
-            // $('#telefono').val($datos[3]);
-            // $('#domicilio').val($datos[4]);
-            // $('#curp').val($datos[5]);
-            // $('#rfc').val($datos[6]);
-            // if ($datos[7] == "Masculino") {
-            //     document.getElementById('hombreRadio').checked = true;
-            // } else {
-            //     document.getElementById('mujerRadio').checked = true;
-            // }
-
-            // if ($datos[8] == "soltero") {
-            //     document.getElementById('solteroRadio').checked = true;
-            // } else {
-            //     document.getElementById('casadoRadio').checked = true;
-            // }
-            // $('#curso').val($tr.children('td')[9].className.split('-')[1]);
         });
 
         $(".btnEliminarAlumno").on('click', function() {
@@ -826,12 +804,10 @@ foreach ($res as $key => $dato) {
                 dataType: "json",
                 async: true,
                 success: function(res) {
-                    // console.log(res);
                     let inputs = $('#modalModificarCurso').find('input');
-                    // console.log(inputs);
-                    console.log(tr.children('td')[0].className.split('-')[1]);
+                    // console.log(tr.children('td')[0].className.split('-')[1]);
                     $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
-                    console.log(tr.children('td')[0].className.split('-')[1]);
+                    // console.log(tr.children('td')[0].className.split('-')[1]);
                     $(inputs[1]).val(res["curso"]);
                     $(inputs[2]).val(res["instructor"]);
                     $(inputs[3]).val(res["lugar"]);
@@ -909,10 +885,7 @@ foreach ($res as $key => $dato) {
                 dataType: "json",
                 async: true,
                 success: function(res) {
-                    // console.log(res);
-                    // console.log($('#info-inscrito').children());
                     let labels = $('#info-inscrito').children();
-                    // console.log(labels);
                     $(labels[0]).text(res["nombre"]);
                     $(labels[2]).html('<b>Correo: </b>' + res["correo"]);
                     $(labels[3]).html('<b>Teléfono: </b>' + res["telefono"]);
