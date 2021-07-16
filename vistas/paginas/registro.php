@@ -4,10 +4,11 @@
 <?php
 date_default_timezone_set('America/Mexico_City');
 $fechaActual = strtotime(date('y-m-d'));
-$res = ModeloFormularios::mdlSelecReg("cursos", null, null);
+$res = ModeloFormularios::mdlSelecReg("cursos");
 $progress = 0;
 if (isset($rutas[1])) {
-    $inscrito = ModeloFormularios::mdlSelecReg("inscritos", "idInscrito", intval($rutas[1]));
+    $datos = array("idInscrito"=>intval($rutas[1]));
+    $inscrito = ModeloFormularios::mdlSelecReg("inscritos", array_keys($datos), $datos);
     if (isset($inscrito[0]["idInscrito"])) {
         if($inscrito[0]["rev1"] && $inscrito[0]["rev2"]){
             echo '
@@ -223,7 +224,10 @@ if (isset($rutas[1])) {
         <div class="row">
             <div class="col-12">
                 <div class="card p-4 mb-3 bg-dark text-light position-relative">
-                    <?php $curso = ModeloFormularios::mdlSelecReg("cursos", "idCurso", $inscrito[0]["idCurso"]); ?>
+                    <?php 
+                    $datos2 = array("idCurso"=>intval($inscrito[0]["idCurso"]));
+                    $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($datos2), $datos2); 
+                    ?>
                     <h4 class="text-uppercase fw-bolder text-center"><?php echo $curso[0]["curso"] ?></h4>
                     <span class="position-absolute badge rounded-pill bg-success" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important; font-size: 1.25rem !important">$ <?php echo $curso[0]["precio"] ?></span>
                 </div>

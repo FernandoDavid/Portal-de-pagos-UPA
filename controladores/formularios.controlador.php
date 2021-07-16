@@ -22,7 +22,7 @@ class ControladorFormularios
                 );
                 $respuesta = ModeloFormularios::mdlCrearRegistro($tabla, array_keys($datos), $datos);
                 if ($respuesta == "ok") {
-                    $id = ModeloFormularios::mdlSeleccionarId($tabla, $datos);
+                    $id = ModeloFormularios::mdlSelecReg("inscritos",array_keys($datos),$datos)[0];
                     if ($id) {
                         $msg = '<div>
                             <p>Ingresa al siguiente enlace para subir tu comprobante de pago: </p>
@@ -44,7 +44,6 @@ class ControladorFormularios
                     if(window.history.replaceState){
                         window.history.replaceState(null,null,window.location.href);
                     } 
-                    // alert("Registro guardado correctamente");
                     location.reload();
                     </script>';
                 } else {
@@ -68,10 +67,10 @@ class ControladorFormularios
         }
     }
     //Modificar registro alumnos
-    public static function ctrModificarRegistroAlumno($dominio,$campo)
+    public static function ctrModificarRegistroAlumno($campo)
     {
         if (isset($_POST["idAlumno"])) {
-            if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombre"])) {
+            if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nombre"])) {
                 $tabla = "Inscritos";
                 $datos = array(
                     "nombre" => $_POST["nombre"],
@@ -84,20 +83,21 @@ class ControladorFormularios
                     "est_civil" => $_POST["estadoRadio"],
                     "idCurso" => $_POST["curso"]
                 );
-                $inscrito = ModeloFormularios::mdlSelecReg("Inscritos", "idInscrito", $_POST["idAlumno"])[0];
-                $respuesta = ModeloFormularios::mdlModificarRegistro($tabla, array_keys($datos), $datos, $_POST["idAlumno"]);
+                $id = array(
+                    "idInscrito" => $_POST["idAlumno"]
+                );
+                $inscrito = ModeloFormularios::mdlSelecReg("Inscritos", array_keys($id), $id)[0];
+                $respuesta = ModeloFormularios::mdlModificarRegistro($tabla, array_keys($datos), $datos, $id);
                 if ($respuesta == "ok") {
                     if (!file_exists("vistas/img/comprobantes/" . $datos["idCurso"])) {
                         mkdir("vistas/img/comprobantes/" . $datos["idCurso"], 0777, true);
                     }
-
                     if ($inscrito["idCurso"] != $datos["idCurso"]) {
                         $source = "vistas/img/comprobantes/" . $inscrito['idCurso'] . "/" . $inscrito['pago'];
                         $destination = "vistas/img/comprobantes/" . $datos['idCurso'] . "/" . $inscrito['pago'];
                         copy($source, $destination);
                         unlink($source);
                     }
-                    // echo '<script>alert("'.$source.', '.$destination.'")</script>';
                     $_SESSION["toast"] = "success/Registro modificado exitosamente";
                     ($inscrito[$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
                     echo '<script>
@@ -125,12 +125,14 @@ class ControladorFormularios
     {
         if (isset($_POST['alumnoEliminar']) || isset($_POST['cursoEliminar'])) {
             if ($tabla == "inscritos" || $tabla == "Inscritos") {
-                $inscrito = ModeloFormularios::mdlSelecReg("Inscritos", "idInscrito", $_POST["alumnoEliminar"])[0];
+                $id = array("idinscrito"=>$_POST["alumnoEliminar"]);
+                $inscrito = ModeloFormularios::mdlSelecReg("Inscritos", array_keys($id), $id)[0];
                 $val = $_POST["alumnoEliminar"];
                 unlink("vistas/img/comprobantes/" . $inscrito['idCurso'] . '/' . $inscrito['pago']);
                 ($inscrito[$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
             } else {
-                $curso = ModeloFormularios::mdlSelecReg("cursos", "idCurso", $_POST["cursoEliminar"])[0];
+                $id = array("udCurso"=>$_POST["cursoEliminar"]);
+                $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($id), $id)[0];
                 $val = $_POST["cursoEliminar"];
                 rmdir("vistas/img/comprobantes/" . $curso['idCurso']);
                 $_SESSION["vista"] = 3;
@@ -157,18 +159,20 @@ class ControladorFormularios
             }
         }
     }
-    //Registro comprobante
+    //Registro de comprobante (subida de archivp)
     public static function ctrComprobante($idInscrito, $idCurso, $dominio)
     {
         if (isset($_FILES["comprobante"])) {
             $ext = explode("/", $_FILES["comprobante"]["type"]);
             $carpeta = 'vistas/img/comprobantes/' . $idCurso;
-            $name = basename($idInscrito . '.' . $ext[1]);
+            $datos = array(
+                "pago" => basename($idInscrito . '.' . $ext[1])
+            );
             if (!file_exists($carpeta)) {
                 mkdir($carpeta, 0777, true);
             }
-            if (move_uploaded_file($_FILES["comprobante"]["tmp_name"], $carpeta . '/' . $name)) {
-                $respuesta = ModeloFormularios::mdlComprobante("inscritos", $name, $idInscrito);
+            if (move_uploaded_file($_FILES["comprobante"]["tmp_name"], $carpeta . '/' . $datos["pago"])) {
+                $respuesta = ModeloFormularios::mdlModificarRegistro("inscritos",array_keys($datos), $datos,array("idinscrito"=>$idInscrito));
                 if ($respuesta == "ok") {
                     $_SESSION["toast"] = "success/Comprobante subido correctamente";
                     echo '<script>
@@ -198,21 +202,12 @@ class ControladorFormularios
         }
     }
 
-    public static function ctrSelecComprobante($inscrito, $curso)
-    {
-        return ModeloFormularios::mdlSelecComprobante("Inscritos", array("idInscrito" => $inscrito, "idCurso" => $curso));
-    }
-
-    public static function ctrSelectData($tabla, $item, $id)
-    {
-        return ModeloFormularios::mdlSelecReg($tabla, $item, $id);
-    }
-
-    ////////////////////////////ADMIN//////////////////////////////////
+    ////////////////////////////ADMIN/////////////////////////////////
     public static function ctrIngreso()
     {
         if (isset($_POST["correoIngreso"]) && isset($_POST["pwdIngreso"])) {
-            $res = ModeloFormularios::mdlSelecReg("admins", "correo", $_POST["correoIngreso"]);
+            $datos = array("correo"=>$_POST["correoIngreso"]);
+            $res = ModeloFormularios::mdlSelecReg("admins", array_keys($datos), $datos);
             if (isset($res[0])) {
                 if ($res[0]["pwd"] == $_POST["pwdIngreso"]) {
                     $_SESSION["admin"] = $res[0]["nombre"];
@@ -251,12 +246,12 @@ class ControladorFormularios
     public static function ctrValidarComprobante($dominio, $revisor,$campo)
     {
         if (isset($_POST["idRev"]) && isset($_POST["btnRev"]) && isset($_POST["idRevCurso"])) {
-            $inscrito = ModeloFormularios::mdlSelecReg("Inscritos", "idInscrito", $_POST["idRev"]);
+            $id = array("idInscrito"=>$_POST["idRev"]);
+            $inscrito = ModeloFormularios::mdlSelecReg("Inscritos", array_keys($id), $id);
             if ($_POST["btnRev"] == "Validar") {
-                // echo '<script>alert("2 if")</script>';
-                // $revisor = ModeloFormularios::mdlSelecReg("admins", "nombre", $_SESSION["admin"]);
                 $revisor[0]["depto"] == "Posgrado" ? $campo = "rev1" : $campo = "rev2";
-                $res = ModeloFormularios::mdlRevisarComprobante($campo, $_POST["idRev"], $_POST["idRevCurso"]);
+                $datos = array($campo=>"1");
+                $res = ModeloFormularios::mdlModificarRegistro("inscritos",array_keys($datos), $datos,$id);
                 if ($res == "ok") {
                     if($campo=="rev1"){
                         $msg = '<div>
@@ -311,11 +306,10 @@ class ControladorFormularios
         }
     }
 
-    ////////////////////////////////////CURSOS////////////////////////////////////
+    //////////////////////////////CURSOS//////////////////////////////
     public static function ctrRegistrarCurso()
     {
         if (isset($_POST["nombreCurso"]) && !isset($_POST["idCursoModificar"])) {
-            
             if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombreCurso"])) {
                 $tabla = "Cursos";
                 $datos = array(
@@ -331,8 +325,7 @@ class ControladorFormularios
                     "precio" => $_POST["precio"],
                     "lugar" => $_POST["lugar"]
                 );
-
-                $insertar = ModeloFormularios::mdlRegistrarCurso($tabla, $datos);
+                $insertar = ModeloFormularios::mdlCrearRegistro($tabla, array_keys($datos), $datos);
                 if ($insertar == "ok") {
                     $_SESSION["vista"] = 3;
                     $_SESSION["toast"] = "success/Curso creado exitosamente";
@@ -375,8 +368,10 @@ class ControladorFormularios
                     "precio" => $_POST["precio"],
                     "lugar" => $_POST["lugar"]
                 );
-
-                $actualizar = ModeloFormularios::mdlModificarCurso($tabla, $datos, $_POST['idCursoModificar']);
+                $id = array(
+                    "idCurso" => $_POST["idCursoModificar"]
+                );
+                $actualizar = ModeloFormularios::mdlModificarRegistro($tabla, array_keys($datos), $datos, $id);
                 if ($actualizar == "ok") {
                     $_SESSION["vista"] = 3;
                     $_SESSION["toast"] = "success/Curso modificado exitosamente";

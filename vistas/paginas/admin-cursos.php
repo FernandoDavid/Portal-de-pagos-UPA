@@ -8,11 +8,12 @@ if (!isset($_SESSION["admin"])) {
     </script>';
 }
 
-$res = ModeloFormularios::mdlSelecReg("inscritos", null, null);
+$res = ModeloFormularios::mdlSelecReg("inscritos");
 $inscritos = array();
 $pendientes = array();
 
-$revisor = ModeloFormularios::mdlSelecReg("admins", "nombre", $_SESSION["admin"]);
+$datosAdmin = array("nombre"=>$_SESSION["admin"]);
+$revisor = ModeloFormularios::mdlSelecReg("admins", array_keys($datosAdmin), $datosAdmin);
 $revisor[0]["depto"] == "Posgrado" ? $campo = 10 : $campo = 11;
 echo '<script> var campo=' . $campo . '</script>';
 
@@ -94,7 +95,8 @@ foreach ($res as $key => $dato) {
                 <tbody>
                     <?php
                     foreach ($pendientes as $key => $datos) {
-                        $curso = ModeloFormularios::mdlSelecReg("cursos", "idCurso", $datos["idCurso"]);
+                        $datCurso = array("idCurso"=>$datos["idCurso"]);
+                        $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($datCurso), $datCurso);
                     ?>
                         <tr>
                             <td class="i-<?php echo $datos["idInscrito"] ?>">
@@ -200,7 +202,8 @@ foreach ($res as $key => $dato) {
                 <tbody>
                     <?php
                     foreach ($inscritos as $key => $datos) {
-                        $curso = ModeloFormularios::mdlSelecReg("cursos", "idCurso", $datos["idCurso"]);
+                        $datCurso = array("idCurso"=>$datos["idCurso"]);
+                        $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($datCurso), $datCurso);
                     ?>
                         <tr>
                             <td class="i-<?php echo $datos["idInscrito"] ?>">
@@ -251,7 +254,7 @@ foreach ($res as $key => $dato) {
                 <tbody>
                     <?php
 
-                    $res = ModeloFormularios::mdlSelecReg("cursos", null, null);
+                    $res = ModeloFormularios::mdlSelecReg("cursos");
                     foreach ($res as $key => $datos) {
                     ?>
                         <tr>
@@ -356,7 +359,7 @@ foreach ($res as $key => $dato) {
                                     <select class="form-select" id="curso" name="curso" required>
                                         <option selected value="">Elegir...</option>
                                         <?php
-                                        $opcionescursos = ModeloFormularios::mdlSelecReg("cursos", null, null);
+                                        $opcionescursos = ModeloFormularios::mdlSelecReg("cursos");
                                         foreach ($opcionescursos as $key => $opcurso) {
                                         ?>
                                             <option value="<?php echo $opcurso["idCurso"] ?>"><?php echo $opcurso["curso"] ?></option>
@@ -449,8 +452,7 @@ foreach ($res as $key => $dato) {
                         <button type="submit" class="btn btn-warning">Actualizar datos</button>
                         <?php
                         $modificar = new ControladorFormularios();
-                        $modificar->ctrModificarRegistroAlumno($dominio, $campo);
-
+                        $modificar->ctrModificarRegistroAlumno($campo);
                         ?>
                     </div>
                 </form>
@@ -758,9 +760,9 @@ foreach ($res as $key => $dato) {
                 method: 'POST',
                 crossDomain: true,
                 data: {
-                    "tablaFD": "inscritos",
-                    "itemFD": "idInscrito",
-                    "idFD": tr.children('td')[0].className.split('-')[1]
+                    "tabla": "inscritos",
+                    "campo": "idInscrito",
+                    "dato": tr.children('td')[0].className.split('-')[1]
                 },
                 dataType: "json",
                 async: true,
@@ -778,7 +780,7 @@ foreach ($res as $key => $dato) {
                     $($('#modalModificarAlumno').find('select')[0]).val(res["idCurso"]);
                 },
                 error: function(err) {
-                    console.log(err);
+                    console.log("ERR",err);
                 }
             });
         });
@@ -788,7 +790,6 @@ foreach ($res as $key => $dato) {
             var $tr = $(this).closest('tr');
 
             $('#idAlumnoEliminar').val($tr.children('td')[0].className.split('-')[1]);
-
         });
 
 
@@ -800,17 +801,15 @@ foreach ($res as $key => $dato) {
                 url: dominio + 'ajax/formularios.ajax.php',
                 method: 'POST',
                 data: {
-                    "tablaFD": "cursos",
-                    "itemFD": "idCurso",
-                    "idFD": tr.children('td')[0].className.split('-')[1]
+                    "tabla": "cursos",
+                    "campo": "idCurso",
+                    "dato": tr.children('td')[0].className.split('-')[1]
                 },
                 dataType: "json",
                 async: true,
                 success: function(res) {
                     let inputs = $('#modalModificarCurso').find('input');
-                    // console.log(tr.children('td')[0].className.split('-')[1]);
                     $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
-                    // console.log(tr.children('td')[0].className.split('-')[1]);
                     $(inputs[1]).val(res["curso"]);
                     $(inputs[2]).val(res["instructor"]);
                     $(inputs[3]).val(res["lugar"]);
@@ -823,7 +822,7 @@ foreach ($res as $key => $dato) {
                     $(inputs[9]).val(res["hora_fin"]);
                 },
                 error: function(err) {
-                    console.log(err);
+                    console.log("Error",err);
                 }
             });
         });
@@ -837,56 +836,17 @@ foreach ($res as $key => $dato) {
 
         $(".btnComprobante").on('click', function() {
             $('#modalRevisar').modal('show');
-
             var tr = $(this).closest('tr');
-            // console.log(tr.children());
-            // console.log(fillData("inscritos","idInscrito",tr.children('td')[0].className.split('-')[1]));
 
-            let datos = {
-                "idInscrito": tr.children('td')[0].className.split('-')[1],
-                "idCurso": tr.children('td')[4].className.split('-')[1]
-            }
             $.ajax({
                 url: dominio + 'ajax/formularios.ajax.php',
                 method: "POST",
-                data: datos,
-                dataType: "json",
-                success: function(res) {
-                    if (res["pago"]) {
-                        $('#modalRevisar .modal-body img').attr({
-                            "src": dominio + 'vistas/img/comprobantes/' + res["idCurso"] + '/' + res["pago"],
-                            "alt": res["pago"]
-                        });
-                    } else {
-                        $('#modalRevisar .modal-body img').attr({
-                            "src": "",
-                            "alt": ""
-                        });
-                    }
-
-                    $('#idRev').val(datos["idInscrito"]);
-                    $('#idRevCurso').val(res["idCurso"]);
-                    if (res[campo]) {
-                        $($('#modalRevisar .modal-footer')[0]).addClass("visually-hidden-focusable");
-                    } else {
-                        $($('#modalRevisar .modal-footer')[0]).removeClass("visually-hidden-focusable");
-                    }
-                },
-                error: function() {
-                    alert("err");
-                }
-            });
-
-            $.ajax({
-                url: dominio + 'ajax/formularios.ajax.php',
-                method: 'POST',
                 data: {
-                    "tablaFD": "inscritos",
-                    "itemFD": "idInscrito",
-                    "idFD": tr.children('td')[0].className.split('-')[1]
+                    "tabla": "inscritos",
+                    "campo": "idInscrito",
+                    "dato": tr.children('td')[0].className.split('-')[1]
                 },
                 dataType: "json",
-                async: true,
                 success: function(res) {
                     let labels = $('#info-inscrito').children();
                     // console.log(labels);
@@ -902,12 +862,30 @@ foreach ($res as $key => $dato) {
                     let rev = "No validado";
                     (res["rev2"]) ? rev="Validado" : rev="No validado" ;
                     $(labels[10]).html('<b>Validación (Administración): </b>'+rev);
+                    if (res["pago"]) {
+                        $('#modalRevisar .modal-body img').attr({
+                            "src": dominio + 'vistas/img/comprobantes/' + res["idCurso"] + '/' + res["pago"],
+                            "alt": res["pago"]
+                        });
+                    } else {
+                        $('#modalRevisar .modal-body img').attr({
+                            "src": "",
+                            "alt": ""
+                        });
+                    }
+
+                    $('#idRev').val(res["idInscrito"]);
+                    $('#idRevCurso').val(res["idCurso"]);
+                    if (res[campo]) {
+                        $($('#modalRevisar .modal-footer')[0]).addClass("visually-hidden-focusable");
+                    } else {
+                        $($('#modalRevisar .modal-footer')[0]).removeClass("visually-hidden-focusable");
+                    }
                 },
-                error: function(err) {
-                    console.log(err);
+                error: function() {
+                    alert("err");
                 }
             });
-
         });
 
         // LATERAL NAVBAR
