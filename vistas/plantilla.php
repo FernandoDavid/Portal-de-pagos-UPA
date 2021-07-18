@@ -42,13 +42,16 @@ if (isset($_GET["pagina"])) {
     $rutas = explode("/", $_GET["pagina"]);
 
     if (
-        $rutas[0] == "admin-cursos" ||
-        $rutas[0] == "registro" || 
         $rutas[0] == "admin" ||
+        $rutas[0] == "registro" || 
+        $rutas[0] == "login" ||
         $rutas[0] == "salir"
     ) {
         include "modulos/mensajes.php";
         include "paginas/" . $rutas[0] . ".php";
+        if($rutas[0] == "admin"){
+            ($campo==11)? include "modulos/admin-admin.php" : include "modulos/posgrado-admin.php";
+        }
     } else {
         include "paginas/404.php";
     }

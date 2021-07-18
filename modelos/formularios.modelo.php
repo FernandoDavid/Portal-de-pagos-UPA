@@ -4,7 +4,7 @@ require_once "conexion.php";
 
 class ModeloFormularios
 {
-    //Seleccionar un registro de cualquier trabla
+    //Seleccionar un registro(s)
     static public function mdlSelecReg($tabla,$campos=null,$datos=null){
         if($campos==null && $datos==null){
             $stmt=Conexion::conectar()->prepare("SELECT * FROM $tabla");
@@ -27,7 +27,7 @@ class ModeloFormularios
         return $stmt->fetchAll();
     }
 
-    //Borrar un registrode cualquier tabla
+    //Borrar registro
     static public function mdlBorrarRegistro($tabla, $campoId, $valorId){
         $stmt=Conexion::conectar()->prepare("DELETE FROM $tabla WHERE $campoId=:id");
         $stmt->bindParam(":id",$valorId,PDO::PARAM_INT);
@@ -38,7 +38,7 @@ class ModeloFormularios
         }
     }
 
-    //Inserta registro de alumnos
+    //Inserta registro
     static public function mdlCrearRegistro($tabla, $campos, $datos)
     {
         $strCampos = '`' . implode('`,`', $campos) . '`';
@@ -58,7 +58,7 @@ class ModeloFormularios
         }     
     }    
     
-    //Modificar el registro de un alumno
+    //Modificar registro
     static public function mdlModificarRegistro($tabla, $campos, $datos, $id){
         $strSet = "";
         foreach($campos as $key=>$campo){
@@ -81,7 +81,7 @@ class ModeloFormularios
         } 
     }
 
-    ////////////////////////////////CURSOS//////////////////////////////
+    //////////////////////////////CURSOS//////////////////////////////
     static public function mdlVerificarCupo($idCurso, $mode){
         //Traer el cupo total de un curso
         if($mode==0){

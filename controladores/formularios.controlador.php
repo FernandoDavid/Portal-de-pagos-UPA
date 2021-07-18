@@ -18,6 +18,7 @@ class ControladorFormularios
                     "rfc" => $_POST["rfc"],
                     "sexo" => $_POST["sexoRadio"],
                     "est_civil" => $_POST["estadoRadio"],
+                    "subs" => ($_POST["subs"])? 1 : 0,
                     "idCurso" => $_POST["curso"]
                 );
                 $respuesta = ModeloFormularios::mdlCrearRegistro($tabla, array_keys($datos), $datos);
@@ -31,7 +32,6 @@ class ControladorFormularios
                             <img src="cid:imagen" style="margin-left:auto;margin-right:auto;margin-top: 1rem;width: 35rem;" alt="Instrucciones de pago">
                         </div>';
                         $subject = "Info. cursos";
-
                         $correo = new ControladorCorreo();
                         $correo->ctrEnviarCorreo($datos["correo"],$datos["nombre"],$subject, $msg,$dominio,1);
                     } else {
@@ -216,7 +216,7 @@ class ControladorFormularios
                         if(window.history.replaceState){
                             window.history.replaceState(null,null,window.location.href);
                         } 
-                        window.location = "admin-cursos";
+                        window.location = "admin";
                         </script>';
                 } else {
                     echo '<script>
@@ -323,7 +323,8 @@ class ControladorFormularios
                     "cupo" => $_POST["cupo"],
                     "status" => 1,
                     "precio" => $_POST["precio"],
-                    "lugar" => $_POST["lugar"]
+                    "lugar" => $_POST["lugar"],
+                    "descto" => $_POST["descto"]
                 );
                 $insertar = ModeloFormularios::mdlCrearRegistro($tabla, array_keys($datos), $datos);
                 if ($insertar == "ok") {
@@ -366,7 +367,8 @@ class ControladorFormularios
                     "cupo" => $_POST["cupo"],
                     "status" => 1,
                     "precio" => $_POST["precio"],
-                    "lugar" => $_POST["lugar"]
+                    "lugar" => $_POST["lugar"],
+                    "descto" => $_POST["descto"]
                 );
                 $id = array(
                     "idCurso" => $_POST["idCursoModificar"]

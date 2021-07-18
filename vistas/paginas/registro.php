@@ -80,14 +80,14 @@ if (isset($rutas[1])) {
                         <h4><?php echo $valor["curso"]?></h4>
                     </div>
                     <div class="curso-body px-3 py-2">
-                        <h6><?php echo "Instructor:".$valor["instructor"] ?></h6>
+                        <h6><?php echo "Instructor: ".$valor["instructor"] ?></h6>
                         <p><?php echo $valor["desc"] ?></p>
                         <div class="row">
                             <div class="col-6">
-                                <p><b><?php echo "Precio: $".$valor["precio"] ?></b></p>
+                                <p><b><?php echo "Precio: $".number_format($valor["precio"],2) ?></b></p>
                             </div>
                             <div class="col-6 text-end">
-                            <p><b><?php echo "Cupo:".$alumnosInscritos[0]."/".$valor['cupo']?></b></p>
+                            <p><b><?php echo "Cupo: ".$alumnosInscritos[0]."/".$valor['cupo']?></b></p>
                             </div>
                         </div>
                         
@@ -194,7 +194,7 @@ if (isset($rutas[1])) {
                     <div class="row mb-3">
                         <div class="col">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <input class="form-check-input" type="checkbox" value="1" name="subs" id="checkBox-publicidad" checked>
                             <label class="form-check-label" for="flexCheckChecked">
                                 Deseo recibir notificaciones a mi correo sobre las noticias más recientes relacionadas al área de Cursos y diplomados de la UPA
                             </label>
@@ -206,8 +206,8 @@ if (isset($rutas[1])) {
                     /*=====================================
                     INSTANCIA Y LLAMADO DE CLASE DE INGRESO
                     ======================================*/
-                    $ingreso = new ControladorFormularios();
-                    $ingreso->ctrRegistro($dominio);
+                    $Form = new ControladorFormularios();
+                    $Form->ctrRegistro($dominio);
                     ?>
                 </form>
             </div>
@@ -226,10 +226,19 @@ if (isset($rutas[1])) {
                 <div class="card p-4 mb-3 bg-dark text-light position-relative">
                     <?php 
                     $datos2 = array("idCurso"=>intval($inscrito[0]["idCurso"]));
-                    $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($datos2), $datos2); 
+                    $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($datos2), $datos2);
+                    $datos3 = array("curp"=>$inscrito[0]["curp"]);
+                    $alumno = ModeloFormularios::mdlSelecReg("alumnos",array_keys($datos3), $datos3);
                     ?>
                     <h4 class="text-uppercase fw-bolder text-center"><?php echo $curso[0]["curso"] ?></h4>
-                    <span class="position-absolute badge rounded-pill bg-success" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important; font-size: 1.25rem !important">$ <?php echo $curso[0]["precio"] ?></span>
+                    <span class="position-absolute badge rounded-pill bg-success <?php if($alumno[0]):?>text-decoration-line-through<?php endif ?>" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important; font-size: 1.25rem !important">
+                        $ <?php echo number_format($curso[0]["precio"],2) ?>
+                        <?php if($alumno[0]):?>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            $ <?php echo number_format($curso[0]["precio"]*(1-$curso[0]["descto"]/100),2) ?>
+                        </span>
+                        <?php endif ?>
+                    </span>
                 </div>
             </div>
         </div>
@@ -249,18 +258,21 @@ if (isset($rutas[1])) {
                     <?php if ($inscrito[0]["pago"] == null) : ?>
                         <form method="POST" enctype="multipart/form-data">
                             <div class="">
-                                <label for="comprobante" class="form-label">Comprobante de pago</label>
-                                <div class="file-img mb-3">
-                                    <!-- <input name="comprobante" id="comprobante" type="file" class="my-pond" data-max-file-size="3MB" data-max-files="1"> -->
-                                    <input name="comprobante" id="comprobante" type="file" class="" data-max-file-size="3MB" data-max-files="1">
+                                <!-- <label for="comprobante" class="form-label">Comprobante de pago</label> -->
+                                <div class="mb-3">
+                                    <label for="comprobante" class="form-label">Comprobante de pago</label>
+                                    <input class="form-control" type="file" id="comprobante" data-max-file-size="3MB" data-max-files="1">
                                 </div>
+                                <!-- <div class="file-img mb-3">
+                                    <input name="comprobante" id="comprobante" type="file" class="" data-max-file-size="3MB" data-max-files="1">
+                                </div> -->
                                 <button type="submit" class="btn btn-primary">Guardar</button>
                                 <?php
                                 /*=====================================
                                 INSTANCIA Y LLAMADO DE CLASE DE INGRESO
                                 ======================================*/
-                                $ctrComp = new ControladorFormularios();
-                                $ctrComp->ctrComprobante($inscrito[0]["idInscrito"], $inscrito[0]["idCurso"], $dominio);
+                                // $ctrComp = new ControladorFormularios();
+                                $Form->ctrComprobante($inscrito[0]["idInscrito"], $inscrito[0]["idCurso"], $dominio);
                                 ?>
                             </div>
                         </form>

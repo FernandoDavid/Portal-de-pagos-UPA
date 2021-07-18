@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Inscritos` (
   `rfc` VARCHAR(15) NOT NULL,
   `sexo` CHAR(1) NULL,
   `est_civil` VARCHAR(15) NULL,
+  `subs` TINYINT NULL,
   `pago` VARCHAR(45) NULL,
   `rev1` TINYINT NULL,
   `rev2` TINYINT NULL,
@@ -52,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Cursos` (
   `status` TINYINT NOT NULL,
   `precio` DECIMAL(12,2) NOT NULL,
   `lugar` VARCHAR(45) NOT NULL,
+  `descto` INT NOT NULL,
   PRIMARY KEY (`idCurso`)
 )
 ENGINE = InnoDB;
@@ -69,11 +71,21 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Admins` (
 )
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `cursos_upa`.`Alumnos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cursos_upa`.`Alumnos` (
+  `curp` VARCHAR(45) NOT NULL,
+  `matricula` VARCHAR(45) NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`curp`)
+)
+ENGINE = InnoDB;
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-drop user if exists 'Cursos-upa'@'localhost';
+DROP USER IF EXISTS 'Cursos-upa'@'localhost';
 CREATE USER 'Cursos-upa'@'localhost' IDENTIFIED BY '123456';
 GRANT ALL PRIVILEGES ON cursos_upa.* TO 'Cursos-upa'@'localhost';
--- Codigo de revisiones Rev1-Postgrado Rev2-Administracion
