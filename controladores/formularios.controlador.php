@@ -269,7 +269,7 @@ class ControladorFormularios
                         if(window.history.replaceState){
                             window.history.replaceState(null,null,window.location.href);
                         } 
-                        window.location = "admin-cursos";
+                        window.reload();
                         </script>';
                 } else {
                     echo '<script>
@@ -300,7 +300,7 @@ class ControladorFormularios
                         if(window.history.replaceState){
                             window.history.replaceState(null,null,window.location.href);
                         } 
-                        window.location = "admin-cursos";
+                        window.reload();
                         </script>';
             }
         }
@@ -334,7 +334,7 @@ class ControladorFormularios
                         if(window.history.replaceState){
                             window.history.replaceState(null,null,window.location.href);
                         } 
-                        window.location = "admin-cursos";
+                        window.reload();
                         </script>';
                 } else {
                     echo '<script>

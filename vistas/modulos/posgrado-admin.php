@@ -194,6 +194,15 @@ foreach ($res as $key => $dato) {
                     </tbody>
                 </table>
             </div>
+            <div>
+                <form method="POST">
+                    <button type="submit" class="btn btn-primary">Alumnos subscritos</button>
+                    <?php
+                    $File = new ControladorReportes();
+                    $File->ctrSubscritos();
+                    ?>
+                </form>
+            </div>
         </div>
 
         <!-- Tabla Mostrar cursos-->

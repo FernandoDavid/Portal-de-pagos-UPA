@@ -4,7 +4,7 @@ if (!isset($_SESSION["admin"])) {
     if(window.history.replaceState){
         window.history.replaceState(null,null,window.location.href);
     } 
-    window.location = "admin";
+    window.location = "login";
     </script>';
 }
 

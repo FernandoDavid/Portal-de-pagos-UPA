@@ -261,7 +261,7 @@ if (isset($rutas[1])) {
                                 <!-- <label for="comprobante" class="form-label">Comprobante de pago</label> -->
                                 <div class="mb-3">
                                     <label for="comprobante" class="form-label">Comprobante de pago</label>
-                                    <input class="form-control" type="file" id="comprobante" data-max-file-size="3MB" data-max-files="1">
+                                    <input class="form-control" name="comprobante" type="file" id="comprobante" data-max-file-size="3MB" data-max-files="1">
                                 </div>
                                 <!-- <div class="file-img mb-3">
                                     <input name="comprobante" id="comprobante" type="file" class="" data-max-file-size="3MB" data-max-files="1">
