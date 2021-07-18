@@ -113,86 +113,111 @@ if (isset($rutas[1])) {
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-xl-8 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="Nombre completo" name="nombre" required>
+                    <div class="row mb-2">
+                        <div class="col-xl-8 col-lg-6 col-md-12">
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-user fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="Nombre completo"
+                                            name="nombre" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-home fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="Domicilio" name="domicilio"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-hashtag fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="CURP" name="curp" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-address-card fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="RFC" name="rfc" required>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-lg-12 break-lg">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-phone-alt fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="Número de teléfono" name="telefono" required>
+                        <div class="col-xl-4 col-lg-6 col-md-12">
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-phone-alt fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="Número de teléfono"
+                                            name="telefono" required>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-xl-8 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-home fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="Domicilio" name="domicilio" required>
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-envelope fa-lg icons"></i></i></span>
+                                        <input type="text" class="form-control" placeholder="Correo" name="correo"
+                                            required>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-12 break-lg">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-envelope fa-lg icons"></i></i></span>
-                                <input type="text" class="form-control" placeholder="Correo" name="correo" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-xl-8 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-hashtag fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="CURP" name="curp" required>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-12 break-lg">
-                            <div class="row">
-                                <div class="col-4 text-center">
+                            <div class="row mb-2">
+                                <div class="col-sm-4 col-12 text-center">
                                     <div class="input-group-text">
                                         <p style="margin-bottom: 0 !important; margin:0 auto;">Sexo</p>
                                     </div>
                                 </div>
-                                <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio" name="sexoRadio" onclick="document.getElementById('mujerRadio').checked = false" required>
+                                <div class="col-sm-4 col-6 pt-2">
+                                    <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio"
+                                        name="sexoRadio" onclick="document.getElementById('mujerRadio').checked = false"
+                                        required>
                                     <label class="ms-2" for="">Hombre</label>
                                 </div>
-                                <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio" name="sexoRadio" onclick="document.getElementById('hombreRadio').checked = false">
+                                <div class="col-sm-4 col-6 pt-2">
+                                    <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio"
+                                        name="sexoRadio"
+                                        onclick="document.getElementById('hombreRadio').checked = false">
                                     <label class="ms-2" for="">Mujer</label>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-xl-8 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-address-card fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="RFC" name="rfc" required>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-12 break-lg">
-                            <div class="row">
-                                <div class="col-4 text-center">
+                            <div class="row mb-2">
+                                <div class="col-sm-4 col-12 text-center">
                                     <div class="input-group-text">
                                         <p style="margin-bottom: 0 !important; margin:0 auto;">Estado civil</p>
                                     </div>
                                 </div>
-                                <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="soltero" id="casadoRadio" name="estadoRadio" onclick="document.getElementById('solteroRadio').checked = false" required>
+                                <div class="col-sm-4 col-6 pt-2">
+                                    <input class="form-check-input ms-1" type="radio" value="soltero" id="casadoRadio"
+                                        name="estadoRadio"
+                                        onclick="document.getElementById('solteroRadio').checked = false" required>
                                     <label class="ms-2" for="">Soltero/a</label>
                                 </div>
-                                <div class="col-4 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="casado" id="solteroRadio" name="estadoRadio" onclick="document.getElementById('casadoRadio').checked = false">
+                                <div class="col-sm-4 col-6 pt-2">
+                                    <input class="form-check-input ms-1" type="radio" value="casado" id="solteroRadio"
+                                        name="estadoRadio"
+                                        onclick="document.getElementById('casadoRadio').checked = false">
                                     <label class="ms-2" for="">Casado/a</label>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="row mb-3">
-                        <div class="col">
+                        <div class="col text-justify">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="1" name="subs" id="checkBox-publicidad" checked>
                             <label class="form-check-label" for="flexCheckChecked">
@@ -200,7 +225,8 @@ if (isset($rutas[1])) {
                             </label>
                             </div>
                         </div>
-                    </div>
+                    </div>    
+
                     <button type="submit" class="btn btn-primary">Enviar</button>
                     <?php
                     /*=====================================
@@ -233,7 +259,7 @@ if (isset($rutas[1])) {
                     <h4 class="text-uppercase fw-bolder text-center"><?php echo $curso[0]["curso"] ?></h4>
                     <span class="position-absolute badge rounded-pill bg-success <?php if($alumno[0]):?>text-decoration-line-through<?php endif ?>" style="width: inherit !important; bottom: 1rem !important; right: 1rem !important; font-size: 1.25rem !important">
                         $ <?php echo number_format($curso[0]["precio"],2) ?>
-                        <?php if($alumno[0]):?>
+                        <?php if(isset($alumno[0])):?>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             $ <?php echo number_format($curso[0]["precio"]*(1-$curso[0]["descto"]/100),2) ?>
                         </span>

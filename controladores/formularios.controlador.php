@@ -349,6 +349,7 @@ class ControladorFormularios
                 }
             }
         }
+        
     }
 
     public static function ctrModificarCurso()
