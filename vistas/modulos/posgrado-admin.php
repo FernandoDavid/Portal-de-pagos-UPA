@@ -114,7 +114,7 @@ foreach ($res as $key => $dato) {
                 </div>
                 <div class="modal-body row">
                     <div id="info-inscrito" class="col-md-6">
-                        <h4>Fullname</h4>
+                        <h4>Nombre completo</h4>
                         <hr>
                         <p>Dirección: ..</p>
                         <p>CURP: ..</p>

@@ -1,1 +1,1 @@
-https://localhost/Portal-de-pagos-UPA/
+http://localhost/Portal-de-pagos-UPA/
