@@ -196,7 +196,7 @@ foreach ($res as $key => $dato) {
             </div>
             <div>
                 <form method="POST">
-                    <button type="submit" class="btn btn-primary">Alumnos subscritos</button>
+                    <input type="submit" class="btn btn-primary" name="subs" value="Alumnos subscritos">
                     <?php
                     $File = new ControladorReportes();
                     $File->ctrSubscritos();
