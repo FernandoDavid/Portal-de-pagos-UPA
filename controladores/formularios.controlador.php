@@ -309,22 +309,28 @@ class ControladorFormularios
     //////////////////////////////CURSOS//////////////////////////////
     public static function ctrRegistrarCurso()
     {
-        if (isset($_POST["nombreCurso"]) && !isset($_POST["idCursoModificar"])) {
-            if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombreCurso"])) {
+        if (isset($_POST["curso"]) && !isset($_POST["idCursoModificar"])) {
+            if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["curso"])) {
                 $tabla = "Cursos";
                 $datos = array(
-                    "curso" => $_POST["nombreCurso"],
-                    "desc" => $_POST["desc"],
+                    "curso" => $_POST["curso"],
+                    "objetivo" => $_POST["objetivo"],
+                    "tipo" => $_POST["tipo"],
                     "instructor" => $_POST["instructor"],
+                    "aula" => $_POST["aula"],
+                    "modalidad" => $_POST["modalidad"],
+                    "temario" => $_POST["temario"],
+                    "flyer" => $_POST["flyer"],
+                    "reg_inicio" => $_POST["reg_inicio"],
+                    "reg_fin" => $_POST["reg_fin"],
                     "fec_inicio" => $_POST["fec_inicio"],
                     "fec_fin" => $_POST["fec_fin"],
+                    "dia" => $_POST["dia"],
                     "hora_inicio" => $_POST["hora_inicio"],
                     "hora_fin" => $_POST["hora_fin"],
                     "cupo" => $_POST["cupo"],
-                    "status" => 1,
                     "precio" => $_POST["precio"],
-                    "lugar" => $_POST["lugar"],
-                    "descto" => $_POST["descto"]
+                    "desc" => $_POST["desc"]
                 );
                 $insertar = ModeloFormularios::mdlCrearRegistro($tabla, array_keys($datos), $datos);
                 if ($insertar == "ok") {

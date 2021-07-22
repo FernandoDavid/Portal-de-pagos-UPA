@@ -8,7 +8,7 @@ if (!isset($_SESSION["admin"])) {
     </script>';
 }
 
-$res = ModeloFormularios::mdlSelecReg("inscritos");
+$res = ModeloFormularios::mdlSelecReg("Participantes");
 $inscritos = array();
 $pendientes = array();
 

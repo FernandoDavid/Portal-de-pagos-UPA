@@ -1,4 +1,3 @@
-DROP DATABASE IF EXISTS `cursos_upa`;
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -8,55 +7,62 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema cursos_upa
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `cursos_upa` DEFAULT CHARACTER SET utf8 ;
-USE `cursos_upa` ;
 
 -- -----------------------------------------------------
--- Table `cursos_upa`.`Inscritos`
+-- Schema cursos_upa
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cursos_upa`.`Inscritos` (
-  `idInscrito` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45) NOT NULL,
-  `correo` VARCHAR(45) NOT NULL,
-  `telefono` VARCHAR(10) NOT NULL,
-  `direc` VARCHAR(80) NOT NULL,
-  `curp` VARCHAR(20) NOT NULL,
-  `rfc` VARCHAR(15) NOT NULL,
-  `sexo` CHAR(1) NULL,
-  `est_civil` VARCHAR(15) NULL,
-  `subs` TINYINT NULL,
-  `pago` VARCHAR(45) NULL,
-  `rev1` TINYINT NULL,
-  `rev2` TINYINT NULL,
-  `idCurso` INT NOT NULL,
-  PRIMARY KEY (`idInscrito`),
-  CONSTRAINT `fk_Inscritos_Cursos1`
-    FOREIGN KEY (`idCurso`)
-    REFERENCES `cursos_upa`.`Cursos` (`idCurso`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+CREATE SCHEMA IF NOT EXISTS `cursos_upa` DEFAULT CHARACTER SET utf8 ;
+USE `cursos_upa` ;
 
 -- -----------------------------------------------------
 -- Table `cursos_upa`.`Cursos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cursos_upa`.`Cursos` (
-  `idCurso` INT NOT NULL AUTO_INCREMENT,
-  `curso` VARCHAR(60) NOT NULL,
-  `desc` TEXT(255) NULL,
-  `instructor` VARCHAR(45) NOT NULL,
+  `idCurso` INT NOT NULL,
+  `curso` VARCHAR(96) NOT NULL,         
+  `objectivo` TEXT(256) NOT NULL,
+  `tipo` TINYINT NOT NULL,
+  `instructor` VARCHAR(45) NOT NULL,    
+  `aula` VARCHAR(45) NULL,
+  `modalidad` TINYINT NOT NULL,
+  `temario` TEXT(512) NULL,
+  `flyer` VARCHAR(45) NULL,
+  `reg_inicio` DATE NOT NULL,
+  `reg_fin` DATE NOT NULL,
   `fec_inicio` DATE NOT NULL,
   `fec_fin` DATE NOT NULL,
+  `dia` VARCHAR(10) NOT NULL,
   `hora_inicio` TIME NOT NULL,
   `hora_fin` TIME NOT NULL,
   `cupo` INT NOT NULL,
-  `status` TINYINT NOT NULL,
-  `precio` DECIMAL(12,2) NOT NULL,
-  `lugar` VARCHAR(45) NOT NULL,
-  `descto` INT NOT NULL,
-  PRIMARY KEY (`idCurso`)
-)
+  `precio` DOUBLE(10,2) NOT NULL,
+  `desc` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`idCurso`))
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cursos_upa`.`Participantes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cursos_upa`.`Participantes` (
+  `idParticipante` INT NOT NULL,
+  `correo` VARCHAR(45) NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `direc` VARCHAR(80) NOT NULL,
+  `telefono` VARCHAR(10) NOT NULL,
+  `curp` VARCHAR(20) NOT NULL,
+  `sexo` CHAR(1) NULL,
+  `est_civil` VARCHAR(15) NULL,
+  `subs` TINYINT NOT NULL,
+  `idCurso` INT NOT NULL,
+  PRIMARY KEY (`idParticipante`),
+  CONSTRAINT `fk_Inscritos_Cursos`
+    FOREIGN KEY (`idCurso`)
+    REFERENCES `cursos_upa`.`Cursos` (`idCurso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `cursos_upa`.`Admins`
@@ -64,28 +70,61 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `cursos_upa`.`Admins` (
   `correo` VARCHAR(45) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
-  `depto` VARCHAR(45) NOT NULL,
-  `telefono` VARCHAR(10) NOT NULL,
-  `pwd` VARCHAR(25) NOT NULL,
-  PRIMARY KEY (`correo`)
-)
+  `depto` VARCHAR(25) NOT NULL,
+  `pwd` VARCHAR(60) NOT NULL,
+  PRIMARY KEY (`correo`))
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cursos_upa`.`Facturas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cursos_upa`.`Facturas` (
+  `idParticipante` INT NOT NULL,
+  `rfc` VARCHAR(15) NOT NULL,
+  `cfdi` VARCHAR(45) NULL,
+  `obs` TEXT(255) NULL,
+  PRIMARY KEY (`idParticipante`),
+  CONSTRAINT `fk_Facturas_Participantes1`
+    FOREIGN KEY (`idParticipante`)
+    REFERENCES `cursos_upa`.`Participantes` (`idParticipante`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cursos_upa`.`Pagos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cursos_upa`.`Pagos` (
+  `idPago` INT NOT NULL,
+  `comprobante` VARCHAR(45) NOT NULL,
+  `pago` DECIMAL(10,2) NULL,
+  `desc` INT NOT NULL,
+  `r1` VARCHAR(45) NOT NULL DEFAULT 0,
+  `r2` VARCHAR(45) NOT NULL DEFAULT 0,
+  `fec_r1` DATE NULL,
+  `fec_r2` DATE NULL,
+  `idParticipante` INT NOT NULL,
+  PRIMARY KEY (`idPago`),
+  CONSTRAINT `fk_Pagos_Participantes1`
+    FOREIGN KEY (`idParticipante`)
+    REFERENCES `cursos_upa`.`Participantes` (`idParticipante`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `cursos_upa`.`Alumnos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cursos_upa`.`Alumnos` (
-  `curp` VARCHAR(45) NOT NULL,
-  `matricula` VARCHAR(45) NOT NULL,
-  `nombre` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`curp`)
-)
+  `curp` VARCHAR(20) NOT NULL,
+  `tipo` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`curp`))
 ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-DROP USER IF EXISTS 'Cursos-upa'@'localhost';
-CREATE USER 'Cursos-upa'@'localhost' IDENTIFIED BY '123456';
-GRANT ALL PRIVILEGES ON cursos_upa.* TO 'Cursos-upa'@'localhost';

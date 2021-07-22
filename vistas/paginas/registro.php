@@ -102,7 +102,7 @@ if (isset($rutas[1])) {
 
 
     <!-- Paso 2 (Formulario de registro de los aspirantes)-->
-    <div class="visually-hidden-focusable" id="card1">
+    <div class="/visually-hidden-focusable" id="card1">
         <div class="card">
             <div class="card-body">
                 <form method="POST" id="formRegistro1">
@@ -112,7 +112,7 @@ if (isset($rutas[1])) {
                             <input name="curso" id="curso" type="text" class="visually-hidden-focusable">
                         </div>
                     </div>
-
+                    
                     <div class="row mb-2">
                         <div class="col-xl-8 col-lg-6 col-md-12">
                             <div class="row mb-2">
@@ -129,27 +129,8 @@ if (isset($rutas[1])) {
                                 <div class="col">
                                     <div class="input-group">
                                         <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                class="fas fa-home fa-lg icons"></i></span>
-                                        <input type="text" class="form-control" placeholder="Domicilio" name="domicilio"
-                                            required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col">
-                                    <div class="input-group">
-                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                                 class="fas fa-hashtag fa-lg icons"></i></span>
                                         <input type="text" class="form-control" placeholder="CURP" name="curp" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col">
-                                    <div class="input-group">
-                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                class="fas fa-address-card fa-lg icons"></i></span>
-                                        <input type="text" class="form-control" placeholder="RFC" name="rfc" required>
                                     </div>
                                 </div>
                             </div>
@@ -185,13 +166,13 @@ if (isset($rutas[1])) {
                                     <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio"
                                         name="sexoRadio" onclick="document.getElementById('mujerRadio').checked = false"
                                         required>
-                                    <label class="ms-2" for="">Hombre</label>
+                                    <label class="ms-2" for="">Masculino</label>
                                 </div>
                                 <div class="col-sm-4 col-6 pt-2">
                                     <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio"
                                         name="sexoRadio"
                                         onclick="document.getElementById('hombreRadio').checked = false">
-                                    <label class="ms-2" for="">Mujer</label>
+                                    <label class="ms-2" for="">Femenino</label>
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -214,18 +195,52 @@ if (isset($rutas[1])) {
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12">
+                            <div class="input-group">
+                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-home fa-lg icons"></i></span>
+                                <input type="text" class="form-control" placeholder="Domicilio" name="domicilio"
+                                    required>
+                            </div> 
+                        </div>
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col text-justify">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" name="subs" id="checkBox-publicidad" checked>
-                            <label class="form-check-label" for="flexCheckChecked">
-                                Deseo recibir notificaciones a mi correo sobre las noticias más recientes relacionadas al área de Cursos y diplomados de la UPA
-                            </label>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" name="subs" id="checkBox-publicidad" checked>
+                                <label class="form-check-label" for="flexCheckChecked">
+                                    Deseo recibir notificaciones a mi correo sobre las noticias más recientes relacionadas al área de Cursos y diplomados de la UPA
+                                </label>
                             </div>
                         </div>
-                    </div>    
+                    </div>
+
+                    <hr>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <h4>Facturación</h4>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-address-card fa-lg icons"></i></span>
+                                <input type="text" class="form-control" placeholder="RFC" name="rfc" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-file-alt fa-lg icons"></i></span>
+                                <input type="text" class="form-control" placeholder="CFDI" name="cfdi" required>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="obs" class="form-label">Observaciones</label>
+                            <div class="input-group">
+                                <!-- <span class="input-group-text"><i class="fas fa-sticky-note fa-lg icons"></i> </span> -->
+                                <textarea class="form-control" aria-label="Observaciones" id="obs" name="obs" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <button type="submit" class="btn btn-primary">Enviar</button>
                     <?php
