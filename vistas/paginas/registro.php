@@ -118,18 +118,15 @@ if (isset($rutas[1])) {
                             <div class="row mb-2">
                                 <div class="col">
                                     <div class="input-group">
-                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                class="fas fa-user fa-lg icons"></i></span>
-                                        <input type="text" class="form-control" placeholder="Nombre completo"
-                                            name="nombre" required>
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="Nombre completo" name="nombre" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col">
                                     <div class="input-group">
-                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                class="fas fa-hashtag fa-lg icons"></i></span>
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-hashtag fa-lg icons"></i></span>
                                         <input type="text" class="form-control" placeholder="CURP" name="curp" required>
                                     </div>
                                 </div>
@@ -139,71 +136,61 @@ if (isset($rutas[1])) {
                             <div class="row mb-2">
                                 <div class="col">
                                     <div class="input-group">
-                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                class="fas fa-phone-alt fa-lg icons"></i></span>
-                                        <input type="text" class="form-control" placeholder="Número de teléfono"
-                                            name="telefono" required>
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-phone-alt fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="Número de teléfono" name="telefono" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col">
                                     <div class="input-group">
-                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                class="fas fa-envelope fa-lg icons"></i></i></span>
-                                        <input type="text" class="form-control" placeholder="Correo" name="correo"
-                                            required>
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-envelope fa-lg icons"></i></i></span>
+                                        <input type="text" class="form-control" placeholder="Correo" name="correo" required>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-sm-4 col-12 text-center">
-                                    <div class="input-group-text">
-                                        <p style="margin-bottom: 0 !important; margin:0 auto;">Sexo</p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-6 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio"
-                                        name="sexoRadio" onclick="document.getElementById('mujerRadio').checked = false"
-                                        required>
-                                    <label class="ms-2" for="">Masculino</label>
-                                </div>
-                                <div class="col-sm-4 col-6 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio"
-                                        name="sexoRadio"
-                                        onclick="document.getElementById('hombreRadio').checked = false">
-                                    <label class="ms-2" for="">Femenino</label>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-sm-4 col-12 text-center">
-                                    <div class="input-group-text">
-                                        <p style="margin-bottom: 0 !important; margin:0 auto;">Estado civil</p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-6 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="soltero" id="casadoRadio"
-                                        name="estadoRadio"
-                                        onclick="document.getElementById('solteroRadio').checked = false" required>
-                                    <label class="ms-2" for="">Soltero/a</label>
-                                </div>
-                                <div class="col-sm-4 col-6 pt-2">
-                                    <input class="form-check-input ms-1" type="radio" value="casado" id="solteroRadio"
-                                        name="estadoRadio"
-                                        onclick="document.getElementById('casadoRadio').checked = false">
-                                    <label class="ms-2" for="">Casado/a</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-home fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="Domicilio" name="domicilio"
-                                    required>
-                            </div> 
+                            <div class="row">
+                                <div class="col-12 mb-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-home fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="Domicilio" name="domicilio" required>
+                                    </div> 
+                                </div>
+                                <div class="col-sm-6 row mb-2">
+                                    <div class="col-sm-4 col-12 text-center">
+                                        <div class="input-group-text">
+                                            <p style="margin-bottom: 0 !important; margin:0 auto;">Sexo</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-6 pt-2">
+                                        <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio" name="sexoRadio" onclick="document.getElementById('mujerRadio').checked = false" required>
+                                        <label class="ms-2" for="">Masculino</label>
+                                    </div>
+                                    <div class="col-sm-4 col-6 pt-2">
+                                        <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio" name="sexoRadio" onclick="document.getElementById('hombreRadio').checked = false">
+                                        <label class="ms-2" for="">Femenino</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 row mb-2">
+                                    <div class="col-sm-4 col-12 text-center">
+                                        <div class="input-group-text">
+                                            <p style="margin-bottom: 0 !important; margin:0 auto;">Estado civil</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-6 pt-2">
+                                        <input class="form-check-input ms-1" type="radio" value="soltero" id="casadoRadio" name="estadoRadio" onclick="document.getElementById('solteroRadio').checked = false" required>
+                                        <label class="ms-2" for="">Soltero/a</label>
+                                    </div>
+                                    <div class="col-sm-4 col-6 pt-2">
+                                        <input class="form-check-input ms-1" type="radio" value="casado" id="solteroRadio" name="estadoRadio" onclick="document.getElementById('casadoRadio').checked = false">
+                                        <label class="ms-2" for="">Casado/a</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-12">
                             <div class="form-check">
@@ -214,7 +201,6 @@ if (isset($rutas[1])) {
                             </div>
                         </div>
                     </div>
-
                     <hr>
                     <div class="row">
                         <div class="col-12 mb-3">
