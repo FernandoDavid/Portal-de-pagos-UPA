@@ -41,6 +41,7 @@
 }
 .input-group-text2{
     width: 50px !important;
+    min-height: 38px !important;
 }
 
 /*Breackpoints*/
@@ -56,12 +57,16 @@
 :root {
     --header-height: 3rem;
     --nav-width: 68px;
-    --first-color: #4723D9;
     --first-color-light: #AFA5D9;
     --white-color: #F7F6FB;
     --body-font: 'Nunito', sans-serif;
     --normal-font-size: 1rem;
-    --z-fixed: 100
+    --z-fixed: 100;
+    --upa-main: #35789E;
+    --upa-main-dark: #072F4C;
+    --upa-main-light: #ADC8D9;
+    --upa-secondary: #F66B0F;
+    --upa-secondary-light: #F2921D;
 }
 
 .admin-body {
@@ -93,7 +98,7 @@ a {
 }
 
 .header_toggle {
-    color: var(--first-color);
+    color: var(--upa-main-dark);
     font-size: 1.5rem;
     cursor: pointer
 }
@@ -117,7 +122,7 @@ a {
     left: -30%;
     width: var(--nav-width);
     height: 100vh;
-    background-color: var(--first-color);
+    background-color: var(--upa-main-dark);
     padding: .5rem 1rem 0 0;
     transition: .5s;
     z-index: var(--z-fixed)
@@ -157,7 +162,7 @@ a {
 
 .nav_link {
     position: relative;
-    color: var(--first-color-light);
+    color: var(--upa-main-light);
     margin-bottom: 1.5rem;
     transition: .3s
 }
@@ -197,6 +202,48 @@ a {
 
 #inscritosTable,#cursosTable,#pendientesTable{
     transition: all 0.75s;
+}
+
+.bg-upa-main{
+    background-color: var(--upa-main);
+}
+.bg-upa-main-dark{
+    background-color: var(--upa-main-dark);
+}
+button.bg-upa-main-dark, input.bg-upa-main-dark{
+    border-color: var(--upa-main-dark);
+}
+button.bg-upa-main-dark:hover,input.bg-upa-main-dark:hover{
+    background-color: var(--upa-main-dark-light);
+    border-color: var(--upa-main-dark-light);
+}
+button.bg-upa-main-dark:active, button.bg-upa-main-dark:focus,input.bg-upa-main-dark:active, input.bg-upa-main-dark:focus{
+    box-shadow: 0 0 0 .25rem #F2921D88;
+    background-color: var(--upa-main-dark-light);
+    border-color: var(--upa-main-dark-light);
+}
+
+.bg-upa-main-light{
+    background-color: var(--upa-main-light);
+}
+
+.bg-upa-secondary{
+    background-color: var(--upa-secondary);
+}
+button.bg-upa-secondary, input.bg-upa-secondary{
+    border-color: var(--upa-secondary);
+}
+button.bg-upa-secondary:hover,input.bg-upa-secondary:hover{
+    background-color: var(--upa-secondary-light);
+    border-color: var(--upa-secondary-light);
+}
+button.bg-upa-secondary:active, button.bg-upa-secondary:focus,input.bg-upa-secondary:active, input.bg-upa-secondary:focus{
+    box-shadow: 0 0 0 .25rem #F2921D88;
+    background-color: var(--upa-secondary-light);
+    border-color: var(--upa-secondary-light);
+}
+.bg-upa-secondary-light{
+    background-color: var(--upa-secondary-light);
 }
 
 @media screen and (min-width: 768px) {

@@ -18,7 +18,7 @@ USE `cursos_upa` ;
 -- Table `cursos_upa`.`Cursos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cursos_upa`.`Cursos` (
-  `idCurso` INT NOT NULL,
+  `idCurso` INT NOT NULL ,
   `curso` VARCHAR(96) NOT NULL,         
   `objectivo` TEXT(256) NOT NULL,
   `tipo` TINYINT NOT NULL,

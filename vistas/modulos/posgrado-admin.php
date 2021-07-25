@@ -52,9 +52,9 @@ foreach ($res as $key => $dato) {
 <div class="container-fluid mt-5 pt-4">
     <!-- ALUMNOS PENDIENTES-->
     <div id="pendientesTable" class="visually-hidden-focusable">
-        <h1 class="text-center">Tabla pendientes</h1>
+        <h1 class="text-center">Aspirantes pendientes</h1>
         <div class="table-responsive">
-            <table class="table table-striped table-success mb-4">
+            <table class="table table-striped table-primary table-hover mb-4">
                 <thead>
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
@@ -96,7 +96,7 @@ foreach ($res as $key => $dato) {
                                 <?php if ($datos["rev2"]) : ?>
                                 <span
                                     class="position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
-                                    <span class="visually-hidden">New alerts</span>
+                                    <span class="visually-hidden"></span>
                                 </span>
                                 <?php endif ?>
                             </button>
@@ -118,7 +118,7 @@ foreach ($res as $key => $dato) {
     <div id="inscritosTable" class="visually-hidden-focusable">
         <h1 class="text-center">Tabla inscritos</h1>
         <div class="table-responsive">
-            <table class="table table-striped table-success mb-4">
+            <table class="table table-striped table-primary table-hover mb-4">
                 <thead>
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
@@ -165,7 +165,7 @@ foreach ($res as $key => $dato) {
         </div>
         <div>
             <form method="POST">
-                <input type="submit" class="btn btn-primary" name="subs" value="Alumnos subscritos">
+                <input type="submit" class="btn btn-primary bg-upa-secondary" name="subs" value="Alumnos subscritos">
                 <?php
                     // $File = new ControladorReportes();
                     // $File->ctrSubscritos();
@@ -178,7 +178,7 @@ foreach ($res as $key => $dato) {
     <div id="cursosTable" class="visually-hidden-focusable">
         <h1 class="text-center">Tabla Cursos</h1>
         <div class="table-responsive">
-            <table class="table table-striped table-success mb-4">
+            <table class="table table-striped table-primary table-hover mb-4">
                 <thead>
                     <th scope="col">#</th>
                     <th scope="col">Nombre del curso</th>
@@ -201,7 +201,7 @@ foreach ($res as $key => $dato) {
                         foreach ($res as $key => $datos) {
                         ?>
                     <tr>
-                        <td class="c-<?php echo $datos[" idCurso"] ?>">
+                        <td class="c-<?php echo $datos["idCurso"] ?>">
                             <?php echo  $key + 1    ?>
                         </td>
                         <td>
@@ -229,7 +229,7 @@ foreach ($res as $key => $dato) {
                             <?php echo $datos['precio']  ?>
                         </td>
                         <td>
-                            <?php echo $datos['lugar']  ?>
+                            <?php echo $datos['aula']  ?>
                         </td>
                         <td>
                             <?php echo $datos['cupo']  ?>
@@ -244,8 +244,7 @@ foreach ($res as $key => $dato) {
                 </tbody>
             </table>
         </div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddCurso">Agregar
-            curso</button>
+        <button type="button" class="btn btn-primary bg-upa-secondary" data-bs-toggle="modal" data-bs-target="#modalAddCurso">Agregar curso</button>
     </div>
 
     <?php
@@ -286,7 +285,7 @@ foreach ($res as $key => $dato) {
         }
         ?>
 
-    <!-- MODALS -->
+    <!----------------------------------------------------MODALS------------------------------------------------------------------>
     <!-- MODIFICAR ALUMNO -->
     <div class="modal fade" id="modalModificarAlumno" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -419,6 +418,7 @@ foreach ($res as $key => $dato) {
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-warning">Actualizar datos</button>
                         <?php
+                            $Form = new ControladorFormularios();
                             // $Form->ctrModificarRegistroAlumno($campo);
                             ?>
                     </div>
@@ -453,134 +453,12 @@ foreach ($res as $key => $dato) {
         </div>
     </div>
 
-    <!-- AGREGAR CURSO
-        <form method="POST">
-            <div class="modal fade" id="modalAddCurso" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-xl modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title" id="exampleModalLabel">Agregar curso</h2>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-xl-6 col-lg-12">
-                                            <div class="row mb-3">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" id="idCurso" hidden>
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Nombre del curso" name="nombreCurso" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Instructor" name="instructor" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Lugar" name="lugar" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text">Descripción</span>
-                                                        <textarea class="form-control" aria-label="Descripción" name="desc" rows="5"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6 col-lg-12">
-                                            <div class="row mb-3">
-                                                <div class="col-6">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="number" class="form-control" placeholder="Precio" name="precio" step="0.01" min="0" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="number" class="form-control" placeholder="Cupo" name="cupo" min="0" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <h5 class="text-center">Fechas de curso</h5>
-                                            </div>
-                                            <div class="row mb-4">
-                                                <div class="col-6">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="date" class="form-control" name="fec_inicio" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="date" class="form-control" name="fec_fin" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <h5 class="text-center">Horas del curso</h5>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-6">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="time" class="form-control" name="hora_inicio" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-user fa-lg icons"></i></span>
-                                                        <input type="time" class="form-control" name="hora_fin" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <h5 class="text-center">Precio preferencial</h5>
-                                                    <div class="input-group">
-                                                        <input type="number" class="form-control" placeholder="Descuento" min="0" max="100" name="descto" id="descto" required>
-                                                        <span class="input-group-text"><i class="fas fa-percentage"></i></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Guardar curso</button>
-                            <?php
-                            // $Form->ctrRegistrarCurso();
-                            ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-        -->
+    
 
 
 
-    <!--Nuevo modal-->
-    <form method="POST">
+    <!--AGREGAR CURSO-->
+    <form method="POST" enctype="multipart/form-data">
         <div class="modal fade" id="modalAddCurso" tabindex="-1">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
@@ -589,11 +467,14 @@ foreach ($res as $key => $dato) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
+                        <div class="row justify-content-center">
                             <!--Columna izq-->
-                            <div class="col-7">
-                                <div class="row">
-                                    <div class="col-12 my-1">
+                            <div class="col-xl-5 col-lg-11 col-md-12 ">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 text-center">
+                                        <h5><b>Datos generales del curso</b></h5>
+                                    </div>
+                                    <div class="col-12 mb-2">
                                         <div class="input-group">
                                             <input type="text" id="idCurso" hidden>
                                             <span class="input-group-text input-group-text2" id="addon-wrapping"><i
@@ -602,7 +483,7 @@ foreach ($res as $key => $dato) {
                                                 name="curso" required>
                                         </div>
                                     </div>
-                                    <div class="col-12 my-1">
+                                    <div class="col-12 mb-2">
                                         <div class="input-group">
                                             <input type="text" id="idCurso" hidden>
                                             <span class="input-group-text input-group-text2" id="addon-wrapping"><i
@@ -611,7 +492,7 @@ foreach ($res as $key => $dato) {
                                                 name="instructor" required>
                                         </div>
                                     </div>
-                                    <div class="col-12 my-1">
+                                    <div class="col-12 mb-2">
                                         <div class="input-group">
                                             <input type="text" id="idCurso" hidden>
                                             <span class="input-group-text input-group-text2" id="addon-wrapping"><i
@@ -620,52 +501,312 @@ foreach ($res as $key => $dato) {
                                                 name="aula" required>
                                         </div>
                                     </div>
-                                    <div class="col-12 my-1">
+                                    <div class="col-12 mb-2">
                                         <div class="input-group">
-                                            <span class="input-group-text">Descripción</span>
-                                            <textarea class="form-control" aria-label="Descripción" name="desc"
-                                                rows="3"></textarea>
+                                            <textarea class="form-control" placeholder="Objetivo" aria-label="Objetivo" name="objetivo"
+                                                rows="7" required></textarea>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-                            <!--Columna der-->
-                            <div class="col-5">
-                                <div class="row">
-                                    <div class="col-6 my-1">
+                            <!--Columna enmedio-->
+                            <div class="col-xl-5 col-lg-7 col-md-12 ">
+                                <div class="col-12 mb-1">
+                                    <h5 class="text-center"><b>Inscripciones</b></h5>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-12  mb-4">
                                         <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
+                                            <span class="input-group-text input-group-text2" id="addon-wrapping">Del</span>
+                                            <input type="date"  class="form-control" name="reg_inicio" id="reg_inicio" required>
+                                            <span class="input-group-text input-group-text2" id="addon-wrapping">al</i></span>
+                                            <input type="date" class="form-control" name="reg_fin" id="reg_fin" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-1">
+                                    <h5 class="text-center"><b>Inicio y fin de clases</b></h5>
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping">Del</span>
+                                        <input type="date" class="form-control" name="fec_inicio" id="fec_inicio" required>
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping">al</i></span>
+                                        <input type="date" class="form-control" name="fec_fin" id="fec_fin" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-1">
+                                    <h5 class="text-center"><b>Horario de clases</b></h5>
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2 text-center" id="addon-wrapping">De</span>
+                                        <input type="time" class="form-control" name="hora_inicio" id="fec_inicio" required>
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping">a</i></span>
+                                        <input type="time" class="form-control" name="hora_fin" id="fec_fin" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-1">
+                                    <h5 class="text-center"><b>Flyer</b></h5>
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" name="flyer" id="flyer" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---Columna derecha-->
+                            <div class="col-xl-2 col-lg-3 col-md-12 align-self-center">
+                                <div class="row justify-content-center align-items-center">
+                                    <div class="col-12 text-center">
+                                        <h5><b>Texto sample</b></h5>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="input-group">
                                             <input type="number" class="form-control" placeholder="Precio" name="precio"
                                                 step="0.01" min="0" required>
                                         </div>
                                     </div>
-                                    <div class="col-6 my-1">
+                                    <div class="col-12 mb-2">
                                         <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
+                                            
+                                            <input type="number" class="form-control" placeholder="Descuento" name="desc"
+                                                step="0" min="0" max="100" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-4">
+                                        <div class="input-group">
+                                            
                                             <input type="number" class="form-control" placeholder="Cupo" name="cupo"
                                                 min="0" required>
                                         </div>
                                     </div>
-                                    <div class="col-6 my-1">
+                                    <div class="col-12 text-center">
+                                        <h5><b>Texto sample</b></h5>
+                                    </div>
+                                    <div class="col-12 mb-2">
                                         <div class="input-group">
+                                            <select class="form-select" id="tipo" name="tipo" required>
+                                                <option value="" selected>Tipo...</option>
+                                                <option value="0">Diplomado</option>
+                                                <option value="1">Curso</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="input-group">
+                                            <select class="form-select" id="modalidad" name="modalidad" required>
+                                                <option value="" selected>Modalidad...</option>
+                                                <option value="0">Presencial</option>
+                                                <option value="1">En línea</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-4">
+                                        <div class="input-group">
+                                            <select class="form-select" id="dia" name="dia" required>
+                                                <option value="" selected>Días de clases...</option>
+                                                <option value="lunes">Lunes</option>
+                                                <option value="martes">Martes</option>
+                                                <option value="miercoles">Miércoles</option>
+                                                <option value="jueves">Jueves</option>
+                                                <option value="viernes">Viernes</option>
+                                                <option value="sabado">Sábados</option>
+                                            </select>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <h5><b>Temario</b></h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="input-group">
+                                    <textarea class="form-control" placeholder="Ingresar los temas que serán impartidos por el/la instructor/a durante el curso" aria-label="Temario" name="temario"
+                                    style="min-height: 200px; max-height: 200px;"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-6 col-md-12">
+                                    <h5 class="text-center"><b>Recursos</b></h5>
+                                    <div class="input-group">
+                                        <textarea class="form-control" placeholder="Ingresar las ligas de documentos, libros, software, etc., necesarios para el curso" aria-label="recursos" name="recursos"
+                                        style="min-height: 200px; max-height: 200px;"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-md-12">
+                                    <h5 class="text-center"><b>Materiales</b></h5>
+                                    <div class="input-group">
+                                        <textarea class="form-control" placeholder="Indicar todos los materiales necesarios para la realización de las prácticas del curso (cables, conectores, dispositivos, etc.)" aria-label="materias" name="materiales"
+                                            style="min-height: 200px; max-height: 200px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn text-white bg-upa-secondary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <?php
+                            $Form->ctrRegistrarCurso();
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+     <!--MODIFICAR CURSO-->
+     <form method="POST">
+        <div class="modal fade" id="modalModificarCurso" tabindex="-1">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Modificar información del curso</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <input type="text" name="idCursoModificar" id="idCursoModificar" hidden>
+                        <div class="row justify-content-center">
+                            <!--Columna izq-->
+                            <div class="col-xl-5 col-lg-11 col-md-12 ">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 text-center">
+                                        <h5><b>Datos generales del curso</b></h5>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="input-group">
+                                            <input type="text" id="idCurso" hidden>
                                             <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                class="fas fa-user fa-lg icons"></i></span>
-                                            <select class="form-select" id="modalidad">
+                                                    class="fas fa-graduation-cap fa-lg icons"></i></span>
+                                            <input type="text" class="form-control" placeholder="Nombre del curso"
+                                                name="curso" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="input-group">
+                                            <input type="text" id="idCurso" hidden>
+                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                    class="fas fa-chalkboard-teacher fa-lg icons"></i></span>
+                                            <input type="text" class="form-control" placeholder="Instructor"
+                                                name="instructor" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="input-group">
+                                            <input type="text" id="idCurso" hidden>
+                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                    class="fas fa-school fa-lg icons"></i></span>
+                                            <input type="text" class="form-control" placeholder="Aula y/o ubicación"
+                                                name="aula" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="input-group">
+                                            <textarea class="form-control" placeholder="Objetivo" aria-label="Objetivo" name="objetivo"
+                                                rows="7"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Columna enmedio-->
+                            <div class="col-xl-5 col-lg-7 col-md-12 ">
+                                <div class="col-12 mb-1">
+                                    <h5 class="text-center"><b>Inscripciones</b></h5>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-12  mb-4">
+                                        <div class="input-group">
+                                            <span class="input-group-text input-group-text2" id="addon-wrapping">Del</span>
+                                            <input type="date"  class="form-control" name="reg_inicio" id="reg_inicio" required>
+                                            <span class="input-group-text input-group-text2" id="addon-wrapping">al</i></span>
+                                            <input type="date" class="form-control" name="reg_fin" id="reg_fin" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-1">
+                                    <h5 class="text-center"><b>Inicio y fin de clases</b></h5>
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping">Del</span>
+                                        <input type="date" class="form-control" name="fec_inicio" id="fec_inicio" required>
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping">al</i></span>
+                                        <input type="date" class="form-control" name="fec_fin" id="fec_fin" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-1">
+                                    <h5 class="text-center"><b>Horario de clases</b></h5>
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2 text-center" id="addon-wrapping">De</span>
+                                        <input type="time" class="form-control" name="hora_inicio" id="fec_inicio" required>
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping">a</i></span>
+                                        <input type="time" class="form-control" name="hora_fin" id="fec_fin" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-1">
+                                    <h5 class="text-center"><b>Flyer</b></h5>
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" name="flyer" id="flyer" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---Columna derecha-->
+                            <div class="col-xl-2 col-lg-3 col-md-12 align-self-center">
+                                <div class="row justify-content-center align-items-center">
+                                    <div class="col-12 text-center">
+                                        <h5><b>Texto sample</b></h5>
+                                    </div>
+                                    
+                                    <div class="col-12 mb-2">
+                                        <div class="input-group">
+                                            
+                                            <input type="number" class="form-control" placeholder="Precio" name="precio"
+                                                step="0.01" min="0" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="input-group">
+                                            
+                                            <input type="number" class="form-control" placeholder="Descuento" name="desc"
+                                                step="0" min="0" max="100" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-4">
+                                        <div class="input-group">
+                                            
+                                            <input type="number" class="form-control" placeholder="Cupo" name="cupo"
+                                                min="0" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <h5><b>Texto sample</b></h5>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="input-group">
+                                            <select class="form-select" id="tipo" name="tipo" required>
+                                                <option selected>Tipo...</option>
+                                                <option value="0">Diplomado</option>
+                                                <option value="1">Curso</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="input-group">
+                                            <select class="form-select" id="modalidad" name="modalidad" required>
                                                 <option selected>Modalidad...</option>
                                                 <option value="0">Presencial</option>
                                                 <option value="1">En línea</option>
                                             </select>
                                         </div>
-                                        
                                     </div>
-                                    <div class="col-6 my-1">
+                                    <div class="col-12 mb-4">
                                         <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                class="fas fa-user fa-lg icons"></i></span>
-                                            <select class="form-select" id="dia">
+                                            <select class="form-select" id="dia" name="dia" required>
                                                 <option selected>Días de clases...</option>
                                                 <option value="lunes">Lunes</option>
                                                 <option value="martes">Martes</option>
@@ -676,26 +817,48 @@ foreach ($res as $key => $dato) {
                                             </select>
                                         </div>  
                                     </div>
-
-                                    
-
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <h5><b>Temario</b></h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="input-group">
+                                    <textarea class="form-control" placeholder="Ingresar los temas que serán impartidos por el/la instructor/a durante el curso" aria-label="Temario" name="temario"
+                                    style="min-height: 200px; max-height: 200px;"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-6 col-md-12">
+                                    <h5 class="text-center"><b>Recursos</b></h5>
+                                    <div class="input-group">
+                                        <textarea class="form-control" placeholder="Ingresar las ligas de documentos, libros, software, etc., necesarios para el curso" aria-label="recursos" name="recursos"
+                                        style="min-height: 200px; max-height: 200px;"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-md-12">
+                                    <h5 class="text-center"><b>Materiales</b></h5>
+                                    <div class="input-group">
+                                        <textarea class="form-control" placeholder="Indicar todos los materiales necesarios para la realización de las prácticas del curso (cables, conectores, dispositivos, etc.)" aria-label="materias" name="materiales"
+                                            style="min-height: 200px; max-height: 200px;"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn text-white bg-upa-secondary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <?php
+                            // $Form->ctrRegistrarCurso();
+                        ?>
                     </div>
                 </div>
             </div>
         </div>
     </form>
 
-
-
-
-
-
-
-
-    <!-- EDITAR CURSO -->
+    <!-- EDITAR CURSO antiguo NO BORRAR HASTA QUE EL NUEVO QUEDE JALANDO AL 100 
     <div class="modal fade" id="modalModificarCurso" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
@@ -828,12 +991,13 @@ foreach ($res as $key => $dato) {
                         <button type="submit" class="btn btn-warning">Actualizar datos</button>
                         <?php
                             // $Form->ctrModificarCurso();
-                            ?>
+                        ?>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+-->
 
     <!-- ELIMINAR CURSO -->
     <div class="modal fade" id="modalEliminarCurso" tabindex="-1" aria-hidden="true">
@@ -853,7 +1017,7 @@ foreach ($res as $key => $dato) {
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-danger">Borrar curso</button>
                         <?php
-                            // $Form->ctrEliminarRegistro("cursos", "idCurso", $campo);
+                             $Form->ctrEliminarRegistro("Cursos", "idCurso", $campo);
                             ?>
                     </div>
                 </form>
@@ -896,7 +1060,6 @@ foreach ($res as $key => $dato) {
                         <input type="submit" class="btn btn-danger" name="btnRev" value="Rechazar">
                         <input type="submit" class="btn btn-success" name="btnRev" value="Validar">
                         <?php
-                        // $Form = new ControladorFormularios();
                         // $Form->ctrValidarComprobante($dominio, $revisor, $campo);
                         ?>
                     </form>

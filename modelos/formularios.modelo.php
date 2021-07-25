@@ -43,6 +43,7 @@ class ModeloFormularios
     {
         $strCampos = '`' . implode('`,`', $campos) . '`';
         $strValues = ':' . implode(', :', $campos);
+        $query = "INSERT INTO $tabla($strCampos) VALUES ($strValues)";
         $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla($strCampos) VALUES ($strValues)");
         foreach($datos as $key=>&$dato){
             if(is_int($dato)){
@@ -89,7 +90,7 @@ class ModeloFormularios
         }
         //Cantidad de alumnos inscritos a un curso
         else if($mode==1){
-            $stmt = Conexion::conectar()->prepare("SELECT COUNT(i.idInscrito) as cuenta FROM Inscritos i INNER JOIN Cursos c ON i.idCurso=c.idCurso where c.idCurso=$idCurso");
+            $stmt = Conexion::conectar()->prepare("SELECT COUNT(i.idParticipante) as cuenta FROM Participantes i INNER JOIN Cursos c ON i.idCurso=c.idCurso where c.idCurso=$idCurso");
         }
         $stmt -> execute();
         return $stmt->fetch();

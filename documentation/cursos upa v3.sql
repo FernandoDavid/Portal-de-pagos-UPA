@@ -18,12 +18,12 @@ USE `cursos_upa` ;
 -- Table `cursos_upa`.`Cursos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cursos_upa`.`Cursos` (
-  `idCurso` INT NOT NULL,
+  `idCurso` INT NOT NULL AUTO_INCREMENT,
   `curso` VARCHAR(96) NOT NULL,
-  `objectivo` TEXT(256) NOT NULL,
+  `objetivo` TEXT(256) NOT NULL,
   `tipo` TINYINT NOT NULL,
   `instructor` VARCHAR(45) NOT NULL,
-  `aula` VARCHAR(45) NULL,
+  `aula` VARCHAR(45) NOT NULL,
   `modalidad` TINYINT NOT NULL,
   `temario` TEXT(512) NULL,
   `flyer` VARCHAR(45) NULL,
@@ -45,7 +45,7 @@ ENGINE = InnoDB;
 -- Table `cursos_upa`.`Participantes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cursos_upa`.`Participantes` (
-  `idParticipante` INT NOT NULL,
+  `idParticipante` INT NOT NULL AUTO_INCREMENT,
   `correo` VARCHAR(45) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `direc` VARCHAR(80) NOT NULL,
@@ -97,7 +97,7 @@ ENGINE = InnoDB;
 -- Table `cursos_upa`.`Pagos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cursos_upa`.`Pagos` (
-  `idPago` INT NOT NULL,
+  `idPago` INT NOT NULL AUTO_INCREMENT,
   `comprobante` VARCHAR(45) NOT NULL,
   `pago` DECIMAL(10,2) NULL,
   `desc` INT NOT NULL,

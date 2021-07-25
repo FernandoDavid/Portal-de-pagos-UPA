@@ -51,14 +51,16 @@ $(document).ready(function() {
             url: dominio + 'ajax/formularios.ajax.php',
             method: 'POST',
             data: {
-                "tabla": "cursos",
+                "tabla": "Cursos",
                 "campo": "idCurso",
                 "dato": tr.children('td')[0].className.split('-')[1]
             },
             dataType: "json",
             async: true,
             success: function(res) {
+                console.log(res.keys());
                 let inputs = $('#modalModificarCurso').find('input');
+                console.log(inputs);
                 $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
                 $(inputs[1]).val(res["curso"]);
                 $(inputs[2]).val(res["instructor"]);
@@ -70,7 +72,7 @@ $(document).ready(function() {
                 $(inputs[7]).val(res["fec_fin"]);
                 $(inputs[8]).val(res["hora_inicio"]);
                 $(inputs[9]).val(res["hora_fin"]);
-                $(inputs[10]).val(res["descto"]);
+                $(inputs[10]).val(res["desc"]);
             },
             error: function(err) {
                 console.log("Error",err);

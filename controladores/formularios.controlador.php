@@ -266,7 +266,7 @@ class ControladorFormularios
                         if(window.history.replaceState){
                             window.history.replaceState(null,null,window.location.href);
                         } 
-                        window.reload();
+                        location.reload();
                     </script>';
                 } else {
                     echo '<script>
@@ -297,7 +297,7 @@ class ControladorFormularios
                         if(window.history.replaceState){
                             window.history.replaceState(null,null,window.location.href);
                         } 
-                        window.reload();
+                        location.reload();
                     </script>';
             }
         }
@@ -311,12 +311,12 @@ class ControladorFormularios
                 $datos = array(
                     "curso" => $_POST["curso"],
                     "objetivo" => $_POST["objetivo"],
-                    "tipo" => $_POST["tipo"],
+                    "tipo" => ($_POST["tipo"])? 1 : 0,
                     "instructor" => $_POST["instructor"],
                     "aula" => $_POST["aula"],
-                    "modalidad" => $_POST["modalidad"],
-                    "temario" => $_POST["temario"],
-                    "reg_inicio" => $_POST["inicio"],
+                    "modalidad" => ($_POST["modalidad"])? 1 : 0,
+                    "temario" => ($_POST["temario"].'|||'.$_POST["recursos"].'|||'.$_POST["materiales"]),
+                    "reg_inicio" => $_POST["reg_inicio"],
                     "reg_fin" => $_POST["reg_fin"],
                     "fec_inicio" => $_POST["fec_inicio"],
                     "fec_fin" => $_POST["fec_fin"],
@@ -328,22 +328,25 @@ class ControladorFormularios
                     "desc" => $_POST["desc"]
                 );
 
+                // echo "<script>console.log(".json_encode(var_export($datos, true)).");</script>";
+
                 $insertar = ModeloFormularios::mdlCrearRegistro("Cursos", array_keys($datos), $datos);
                 if ($insertar == "ok") {
                     $id = ModeloFormularios::mdlSelecReg("Cursos", array_keys($datos), $datos);
                     $extFile = explode("/", $_FILES["flyer"]["type"]);
+                    // echo '<script>console.log("'.$id[0]["idCurso"].'.'.$extFile[1].'")</script>';
                     $datos = [
                         "flyer" => basename($id[0]['idCurso'].'.'.$extFile[1])
                     ];
                     $flyer = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos,array("idCurso" => $id[0]['idCurso']));
-                    if($flyer == 'ok' && move_uploaded_file($_FILES["flyer"]["tmp_name"], 'vistas/img/flyers/' . $datos["pago"])){
+                    if($flyer == 'ok' && move_uploaded_file($_FILES["flyer"]["tmp_name"], 'vistas/img/flyers/' . $datos["flyer"])){
                         $_SESSION["vista"] = 3;
                         $_SESSION["toast"] = "success/Curso creado exitosamente";
                         echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null,null,window.location.href);
                             } 
-                            window.reload();
+                            location.reload();
                             </script>';
                     }else{
                         echo '<script>
