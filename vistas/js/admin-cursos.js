@@ -58,21 +58,34 @@ $(document).ready(function() {
             dataType: "json",
             async: true,
             success: function(res) {
-                console.log(res.keys());
-                let inputs = $('#modalModificarCurso').find('input');
-                console.log(inputs);
-                $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
-                $(inputs[1]).val(res["curso"]);
-                $(inputs[2]).val(res["instructor"]);
-                $(inputs[3]).val(res["lugar"]);
-                $('#modalModificarCurso').find('textarea').val(res["desc"]);
-                $(inputs[4]).val(res["precio"]);
-                $(inputs[5]).val(res["cupo"]);
-                $(inputs[6]).val(res["fec_inicio"]);
-                $(inputs[7]).val(res["fec_fin"]);
-                $(inputs[8]).val(res["hora_inicio"]);
-                $(inputs[9]).val(res["hora_fin"]);
-                $(inputs[10]).val(res["desc"]);
+                console.log(res);
+                var keys = Object.keys(res);
+                console.log(keys);
+                for(var i=Number.parseInt(keys.length/2);i<=keys.length-1;i++){
+                    console.log(keys[i]+' | '+res[keys[i]]);
+                    let selector = "#modalModificarCurso [name='"+keys[i]+"']";
+                    console.log(selector);
+                    console.log($(selector));
+                    try{
+                        $(selector).val(res[keys[i]]);
+                    }catch(e){
+                        console.log(e);
+                    }
+                }
+                // let inputs = $('#modalModificarCurso').find('input');
+                // console.log(inputs);
+                // $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
+                // $(inputs[1]).val(res["curso"]);
+                // $(inputs[2]).val(res["instructor"]);
+                // $(inputs[3]).val(res["lugar"]);
+                // $('#modalModificarCurso').find('textarea').val(res["desc"]);
+                // $(inputs[4]).val(res["precio"]);
+                // $(inputs[5]).val(res["cupo"]);
+                // $(inputs[6]).val(res["fec_inicio"]);
+                // $(inputs[7]).val(res["fec_fin"]);
+                // $(inputs[8]).val(res["hora_inicio"]);
+                // $(inputs[9]).val(res["hora_fin"]);
+                // $(inputs[10]).val(res["desc"]);
             },
             error: function(err) {
                 console.log("Error",err);
