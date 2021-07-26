@@ -68,16 +68,18 @@ if (isset($rutas[1])) {
     <!-- Paso 1 (Carrousel con los cursos) -->
 
     <div class="visually-hidden-focusable container" id="card0">
+
+        
         <div class="d-flex justify-content-evenly">
             <?php foreach ($res as $valor) : 
                 // HAcer un query que cuente los registros de alumnos (idCurso) y si es menor al Cupo del curso, muestralo
-                $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($valor["idCurso"],1);
+                $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($valor["idCurso"]);
                 
-                $fechainicio = strtotime($valor['fec_inicio']);
-                $fechafin = strtotime($valor['fec_fin']);
+                $fechainicio = strtotime($valor['reg_inicio']);
+                $fechafin = strtotime($valor['reg_fin']);
                 
-                if(($alumnosInscritos[0]<$valor['cupo']) && ($fechaActual>=$fechainicio && $fechaActual<$fechafin)){
-                ?>
+                if(($alumnosInscritos[0]<$valor['cupo']) && ($fechaActual>=$fechainicio && $fechaActual<=$fechafin)){
+            ?>
             <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" style="border-radius: 0.5rem" class="cursos
                 overflow-hidden mb-3 shadow text light">
                 <div class="curso-title text-white text-center bg-primary px-3 py-2">
@@ -104,14 +106,18 @@ if (isset($rutas[1])) {
                                 </b></p>
                         </div>
                     </div>
-
                 </div>
-
             </div>
             <?php 
                 }
             endforeach ?>
         </div>
+    
+            
+    
+    
+    
+    
     </div>
 
     <!-- Paso 2 (Formulario de registro de los aspirantes)-->

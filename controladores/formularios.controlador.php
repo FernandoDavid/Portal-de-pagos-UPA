@@ -375,19 +375,19 @@ class ControladorFormularios
         
     }
 
-    public static function ctrModificarCurso()
+    public static function ctrModificarCurso($dominio)
     {
         if (isset($_POST["idCursoModificar"])) {
-            if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombreCurso"])) {
+            if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["curso"])) {
                 $datos = array(
                     "curso" => $_POST["curso"],
                     "objetivo" => $_POST["objetivo"],
-                    "tipo" => $_POST["tipo"],
+                    "tipo" => ($_POST["tipo"])? 1 : 0,
                     "instructor" => $_POST["instructor"],
                     "aula" => $_POST["aula"],
-                    "modalidad" => $_POST["modalidad"],
-                    "temario" => $_POST["temario"],
-                    "reg_inicio" => $_POST["inicio"],
+                    "modalidad" => ($_POST["modalidad"])? 1 : 0,
+                    "temario" => ($_POST["temario"].'|||'.$_POST["recursos"].'|||'.$_POST["materiales"]),
+                    "reg_inicio" => $_POST["reg_inicio"],
                     "reg_fin" => $_POST["reg_fin"],
                     "fec_inicio" => $_POST["fec_inicio"],
                     "fec_fin" => $_POST["fec_fin"],
@@ -398,16 +398,47 @@ class ControladorFormularios
                     "precio" => $_POST["precio"],
                     "desc" => $_POST["desc"]
                 );
-                $actualizar = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos, array("idCurso" => $_POST["idCursoModificar"]));
+                $data = array("idCurso" => $_POST["idCursoModificar"]);
+                // $old = ModeloFormularios::mdlSelecReg("Cursos",array_keys($data),$data);
+                $actualizar = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos, $data);
                 if ($actualizar == "ok") {
-                    $_SESSION["vista"] = 3;
-                    $_SESSION["toast"] = "success/Curso modificado exitosamente";
-                    echo '<script>
-                        if(window.history.replaceState){
-                            window.history.replaceState(null,null,window.location.href);
+                    if(isset($_FILES["flyer"]) && $_FILES["flyer"]["type"]!=""){
+                        // unlink('vistas/img/flyers/'.$old[0]['flyer']);
+                        $extFile = explode("/", $_FILES["flyer"]["type"]);
+                        $datos = [
+                            "flyer" => basename($data["idCurso"].'.'.$extFile[1])
+                        ];
+                        $flyer = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos,$data);
+                        if(move_uploaded_file($_FILES["flyer"]["tmp_name"], 'vistas/img/flyers/' . $datos["flyer"])){
+                            $_SESSION["vista"] = 3;
+                            $_SESSION["toast"] = "success/Curso modificado exitosamente";
+                            echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null,null,window.location.href);
+                                } 
+                                location.reload();
+                                </script>'; 
+                        }else{
+                            echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null,null,window.location.href);
+                            }
+                            Toast.fire({
+                                icon: "error",
+                                title: "Error al subir flyer"
+                            });
+                            </script>';
                         } 
-                        location.reload();
-                        </script>';
+                    }else{
+                        $_SESSION["vista"] = 3;
+                        $_SESSION["toast"] = "success/Curso modificado exitosamente";
+                        echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null,null,window.location.href);
+                            } 
+                            location.reload();
+                            </script>';
+                    }
                 } else {
                     echo '<script>
                         if(window.history.replaceState){

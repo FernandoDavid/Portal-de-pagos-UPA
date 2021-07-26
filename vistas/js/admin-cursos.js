@@ -62,35 +62,54 @@ $(document).ready(function() {
                 var keys = Object.keys(res);
                 console.log(keys);
                 for(var i=Number.parseInt(keys.length/2);i<=keys.length-1;i++){
-                    console.log(keys[i]+' | '+res[keys[i]]);
+                    // console.log(keys[i]+' | '+res[keys[i]]);
                     let selector = "#modalModificarCurso [name='"+keys[i]+"']";
-                    console.log(selector);
-                    console.log($(selector));
-                    try{
-                        $(selector).val(res[keys[i]]);
-                    }catch(e){
-                        console.log(e);
+                    // console.log(selector);
+                    // console.log($(selector));
+                    $('#idCursoModificar').val(tr.children('td')[0].className.split('-')[1]);
+                    if(keys[i]=="temario"){
+                        let str = res[keys[i]].split('|||');
+                        console.log(str);
+                        $("#modalModificarCurso [name='temario']").val(str[0]);
+                        $("#modalModificarCurso [name='recursos']").val(str[1]);
+                        $("#modalModificarCurso [name='materiales']").val(str[2]);
+                    }else{
+                        if(keys[i]=="flyer"){
+                            url = dominio+'vistas/img/flyers/'+res[keys[i]];
+                            console.log(url);
+                            $('#editFlyer').fileinput({
+                                uploadAsync: false,
+                                showUpload: false,
+                                required: true,
+                                overwriteInitial: false,
+                                // minFileCount: 1,
+                                maxFileCount: 1,
+                                validateInitialCount: true,
+                                initialPreviewAsData: true,                   
+                                initialPreview: [url],                            
+                                initialPreviewConfig: [{
+                                    // caption: res[keys[i]],
+                                    url: dominio + 'ajax/formularios.ajax.php',
+                                    type: 'image',
+                                    key: Number.parseInt(tr.children('td')[0].className.split('-')[1])
+                                    // filename: 
+                                }]
+                            });
+                        }else{
+                            $(selector).val(res[keys[i]]);
+                        }
                     }
                 }
-                // let inputs = $('#modalModificarCurso').find('input');
-                // console.log(inputs);
-                // $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
-                // $(inputs[1]).val(res["curso"]);
-                // $(inputs[2]).val(res["instructor"]);
-                // $(inputs[3]).val(res["lugar"]);
-                // $('#modalModificarCurso').find('textarea').val(res["desc"]);
-                // $(inputs[4]).val(res["precio"]);
-                // $(inputs[5]).val(res["cupo"]);
-                // $(inputs[6]).val(res["fec_inicio"]);
-                // $(inputs[7]).val(res["fec_fin"]);
-                // $(inputs[8]).val(res["hora_inicio"]);
-                // $(inputs[9]).val(res["hora_fin"]);
-                // $(inputs[10]).val(res["desc"]);
             },
             error: function(err) {
                 console.log("Error",err);
             }
         });
+    });
+
+    $('#editFlyer').on('filedeleted', function(event, key, jqXHR, data) {
+        event.preventDefault();
+        console.log('Key = ' + key);
     });
 
     $(".btnEliminarCurso").on('click', function() {

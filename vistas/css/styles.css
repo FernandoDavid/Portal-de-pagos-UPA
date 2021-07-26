@@ -5,6 +5,10 @@
     transition: all 0.3s;
 }
 
+img {
+    max-height: 500px !important;
+}
+
 .cursos:hover{
     margin-top:-0.5rem !important;
     margin-bottom: 0.5rem !important;

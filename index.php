@@ -1,4 +1,5 @@
 <?php
+
 ob_start();
 require_once "controladores/plantilla.controlador.php";
 
