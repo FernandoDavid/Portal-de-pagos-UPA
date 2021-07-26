@@ -73,9 +73,7 @@ if (isset($rutas[1])) {
         
         <div class="d-flex justify-content-evenly">
             <?php foreach ($res as $valor) : 
-                // HAcer un query que cuente los registros de alumnos (idCurso) y si es menor al Cupo del curso, muestralo
                 $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($valor["idCurso"]);
-                
                 $fechainicio = strtotime($valor['reg_inicio']);
                 $fechafin = strtotime($valor['reg_fin']);
                 
@@ -214,6 +212,9 @@ if (isset($rutas[1])) {
                                     <label class="ms-2" for="">Casado/a</label>
                                 </div>
                             </div>
+                            <div class="row gx-0 mb-2">
+                                Factura
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -229,7 +230,7 @@ if (isset($rutas[1])) {
                         </div>
                     </div>
                     <hr>
-                    <div class="row">
+                    <div class="row" id="facturacion-form">
                         <div class="col-12 mb-3">
                             <h4>Facturación</h4>
                         </div>

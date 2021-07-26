@@ -813,7 +813,7 @@ foreach ($res as $key => $dato) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="text" name="idCursoModificar" id="idCursoModificar" >
+                        <input type="text" name="idCursoModificar" id="idCursoModificar" hidden>
                         <div class="row justify-content-center">
                             <!--Columna izq-->
                             <div class="col-xl-5 col-lg-11 col-md-12 ">
