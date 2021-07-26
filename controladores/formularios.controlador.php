@@ -22,28 +22,78 @@ class ControladorFormularios
                 $respuesta = ModeloFormularios::mdlCrearRegistro("Participantes", array_keys($datos), $datos);
                 if ($respuesta == "ok") {
                     $id = ModeloFormularios::mdlSelecReg("Participantes",array_keys($datos),$datos)[0];
+                    $datosCurso = ["idCurso"=>$datos["idCurso"]];
+                    $curso = ModeloFormularios::mdlSelecReg("Cursos",array_keys($datosCurso),$datosCurso);
                     if ($id) {
-                        $msg = '<div>
-                            <p>Ingresa al siguiente enlace para subir tu comprobante de pago: </p>
-                            <a href="' . $dominio . 'registro/' . $id["idParticipante"] . '">' . $dominio . 'registro/' . $id["idParticipante"] . '</a>
-                            <br>
-                            <img src="cid:imagen" style="margin-left:auto;margin-right:auto;margin-top: 1rem;width: 35rem;" alt="Instrucciones de pago">
-                        </div>';
-                        $subject = "Info. cursos";
-                        $correo = new ControladorCorreo();
-                        $correo->ctrEnviarCorreo($datos["correo"],$datos["nombre"],$subject, $msg,$dominio,1);
+                        $datosAlumno = [
+                            "curp" => $id["curp"]
+                        ];
+                        $alumno = ModeloFormularios::mdlSelecReg("Alumnos",array_keys($datosAlumno), $datosAlumno);
+                        $descuento = 0;
+                        if(isset($alumno[0])){
+                            $descuento =  $curso[0]["desc"];
+                        }
+                        $datosPago = [
+                            "idParticipante" => $id["idParticipante"],
+                            "desc"=>$descuento,
+                            "pago"=>$curso[0]["precio"]
+                        ];
+                        $res = ModeloFormularios::mdlCrearRegistro("Pagos",array_keys($datosPago),$datosPago);
+                        if($res=="ok"){
+
+                            if(isset($_POST["rfc"]) && $_POST["rfc"]!=""){
+                                $datosFac = [
+                                    "idParticipante" => $id["idParticipante"],
+                                    "rfc" => $_POST["rfc"],
+                                    "cfdi" => $_POST["cfdi"],
+                                    "obs" => $_POST["obs"]
+                                ];
+                                $resRfc = ModeloFormularios::mdlCrearRegistro("Facturas", array_keys($datosFac), $datosFac);
+                                if($resRfc != "ok"){
+                                    echo '<script>
+                                        alert("Error al crear registro de Factura");
+                                    </script>';
+                                }
+                            }
+
+                            $msg = '<div>
+                                <p>Ingresa al siguiente enlace para subir tu comprobante de pago: </p>
+                                <a href="' . $dominio . 'registro/' . $id["idParticipante"] . '">' . $dominio . 'registro/' . $id["idParticipante"] . '</a>
+                                <br>
+                                <img src="cid:imagen" style="margin-left:auto;margin-right:auto;margin-top: 1rem;width: 35rem;" alt="Instrucciones de pago">
+                            </div>';
+                            $subject = "Info. cursos";
+                            $correo = new ControladorCorreo();
+                            $correo->ctrEnviarCorreo($datos["correo"],$datos["nombre"],$subject, $msg,$dominio,1);
+
+                            $_SESSION["toast"] = "success/Registro exitoso, revisa tu correo";
+                            echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null,null,window.location.href);
+                                } 
+                                location.reload();
+                            </script>';
+                        }else{
+                            $_SESSION["toast"] = "error/Error al realizar registro de pago";
+                            echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null,null,window.location.href);
+                                }
+                                location.reload();
+                            </script>';
+                        }
                     } else {
                         echo '<script>
                             alert("Error al obtener id");
                         </script>';
                     }
-                    $_SESSION["toast"] = "success/Registro exitoso, revisa tu correo";
-                    echo '<script>
-                        if(window.history.replaceState){
-                            window.history.replaceState(null,null,window.location.href);
-                        } 
-                        location.reload();
-                    </script>';
+                    // $_SESSION["toast"] = "success/Registro exitoso, revisa tu correo";
+                    // echo '<script>
+                    //     if(window.history.replaceState){
+                    //         window.history.replaceState(null,null,window.location.href);
+                    //     } 
+                    //     location.reload();
+                    // </script>';
                 } else {
                     $_SESSION["toast"] = "error/Error al realizar registro";
                     echo '<script>
@@ -157,19 +207,19 @@ class ControladorFormularios
         }
     }
     //Registro de comprobante (subida de archivp)
-    public static function ctrComprobante($idAspirante, $idCurso, $dominio)
+    public static function ctrComprobante($idParticipante, $idCurso, $dominio)
     {
         if (isset($_FILES["comprobante"])) {
             $ext = explode("/", $_FILES["comprobante"]["type"]);
             $carpeta = 'vistas/img/comprobantes/' . $idCurso;
             $datos = array(
-                "pago" => basename($idAspirante . '.' . $ext[1])
+                "comprobante" => basename($idParticipante . '.' . $ext[1])
             );
             if (!file_exists($carpeta)) {
                 mkdir($carpeta, 0777, true);
             }
             if (move_uploaded_file($_FILES["comprobante"]["tmp_name"], $carpeta . '/' . $datos["pago"])) {
-                $respuesta = ModeloFormularios::mdlModificarRegistro("Participantes",array_keys($datos), $datos,array("idParticipante"=>$idAspirante));
+                $respuesta = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,array("idParticipante"=>$idParticipante));
                 if ($respuesta == "ok") {
                     $_SESSION["toast"] = "success/Comprobante subido correctamente";
                     echo '<script>
@@ -246,11 +296,11 @@ class ControladorFormularios
             $id = array("idParticipante"=>$_POST["idRev"]);
             $inscrito = ModeloFormularios::mdlSelecReg("Participantes", array_keys($id), $id);
             if ($_POST["btnRev"] == "Validar") {
-                $revisor[0]["depto"] == "Posgrado" ? $campo = "rev1" : $campo = "rev2";
+                $revisor[0]["depto"] == "Posgrado" ? $campo = "r1" : $campo = "r2";
                 $datos = array($campo=>"1");
-                $res = ModeloFormularios::mdlModificarRegistro("Participantes",array_keys($datos), $datos,$id);
+                $res = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,$id);
                 if ($res == "ok") {
-                    if($campo=="rev1"){
+                    if($campo=="r1"){
                         $msg = '<div>
                             <h3>Felicidades</h3>
                             <p>Tu comprobante de pago ha sido validado, ingresa al siguiente enlace para.. : </p>

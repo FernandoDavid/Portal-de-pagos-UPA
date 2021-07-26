@@ -11,8 +11,8 @@ $(document).ready(function() {
             method: 'POST',
             crossDomain: true,
             data: {
-                "tabla": "inscritos",
-                "campo": "idInscrito",
+                "tabla": "Participantes",
+                "campo": "idParticipante",
                 "dato": tr.children('td')[0].className.split('-')[1]
             },
             dataType: "json",
@@ -26,7 +26,7 @@ $(document).ready(function() {
                 $(inputs[4]).val(res["correo"]);
                 (res["sexo"] == "H") ? inputs[6].checked = true: inputs[7].checked = true;
                 $(inputs[5]).val(res["curp"]);
-                $(inputs[8]).val(res["rfc"]);
+                // $(inputs[8]).val(res["rfc"]);
                 (res["est_civil"] == "soltero") ? inputs[9].checked = true: inputs[10].checked = true;
                 $($('#modalModificarAlumno').find('select')[0]).val(res["idCurso"]);
             },
@@ -58,9 +58,9 @@ $(document).ready(function() {
             dataType: "json",
             async: true,
             success: function(res) {
-                console.log(res);
+                // console.log(res);
                 var keys = Object.keys(res);
-                console.log(keys);
+                // console.log(keys);
                 for(var i=Number.parseInt(keys.length/2);i<=keys.length-1;i++){
                     // console.log(keys[i]+' | '+res[keys[i]]);
                     let selector = "#modalModificarCurso [name='"+keys[i]+"']";
@@ -121,14 +121,22 @@ $(document).ready(function() {
 
     $(".btnComprobante").on('click', function() {
         $('#modalRevisar').modal('show');
+
+        let tipo = $(this).closest('tr').parent().parent().parent().parent().attr("id");
+        // console.log(tipo);
+        if (tipo=="inscritosTable") {
+            $($('#modalRevisar .modal-footer')[0]).addClass("visually-hidden-focusable");
+        } else {
+            $($('#modalRevisar .modal-footer')[0]).removeClass("visually-hidden-focusable");
+        }
         var tr = $(this).closest('tr');
 
         $.ajax({
             url: dominio + 'ajax/formularios.ajax.php',
             method: "POST",
             data: {
-                "tabla": "inscritos",
-                "campo": "idInscrito",
+                "tabla": "participantes",
+                "campo": "idParticipante",
                 "dato": tr.children('td')[0].className.split('-')[1]
             },
             dataType: "json",
@@ -144,27 +152,55 @@ $(document).ready(function() {
                 $(labels[8]).html('<b>Estado civil: </b>' + res["est_civil"]);
                 $(labels[9]).html('<b>Curso: </b>' + tr.children('td')[4].innerText);
                 let rev = "No validado";
-                (res["rev2"]) ? rev="Validado" : rev="No validado" ;
-                $(labels[10]).html('<b>Validación (Administración): </b>'+rev);
-                if (res["pago"]) {
-                    $('#modalRevisar .modal-body img').attr({
-                        "src": dominio + 'vistas/img/comprobantes/' + res["idCurso"] + '/' + res["pago"],
-                        "alt": res["pago"]
-                    });
-                } else {
-                    $('#modalRevisar .modal-body img').attr({
-                        "src": "",
-                        "alt": ""
-                    });
-                }
 
-                $('#idRev').val(res["idInscrito"]);
+                $.ajax({
+                    url: dominio + 'ajax/formularios.ajax.php',
+                    method: "POST",
+                    data: {
+                        "tabla": "Pagos",
+                        "campo": "idParticipante",
+                        "dato": tr.children('td')[0].className.split('-')[1]
+                    },
+                    dataType: "json",
+                    success: function(resPago){
+                        (resPago["r2"]) ? rev="Validado" : rev="No validado" ;
+                        $(labels[10]).html('<b>Validación (Administración): </b>'+rev);
+                        if(resPago["comprobante"]){
+                            $('#modalRevisar .modal-body img').attr({
+                                "src": dominio + 'vistas/img/comprobantes/' + res["idCurso"] + '/' + resPago["comprobante"],
+                                "alt": resPago["comprobante"]
+                            });
+                        }else {
+                            $('#modalRevisar .modal-body img').attr({
+                                "src": "",
+                                "alt": ""
+                            });
+                        }
+                        // console.log("campo: ",campo);
+                    }
+                });
+
+                // (res["rev2"]) ? rev="Validado" : rev="No validado" ;
+                // $(labels[10]).html('<b>Validación (Administración): </b>'+rev);
+                // if (res["pago"]) {
+                //     $('#modalRevisar .modal-body img').attr({
+                //         "src": dominio + 'vistas/img/comprobantes/' + res["idCurso"] + '/' + res["pago"],
+                //         "alt": res["pago"]
+                //     });
+                // } else {
+                //     $('#modalRevisar .modal-body img').attr({
+                //         "src": "",
+                //         "alt": ""
+                //     });
+                // }
+
+                $('#idRev').val(res["idParticipante"]);
                 $('#idRevCurso').val(res["idCurso"]);
-                if (res[campo]) {
-                    $($('#modalRevisar .modal-footer')[0]).addClass("visually-hidden-focusable");
-                } else {
-                    $($('#modalRevisar .modal-footer')[0]).removeClass("visually-hidden-focusable");
-                }
+                // if (res[campo]) {
+                //     $($('#modalRevisar .modal-footer')[0]).addClass("visually-hidden-focusable");
+                // } else {
+                //     $($('#modalRevisar .modal-footer')[0]).removeClass("visually-hidden-focusable");
+                // }
             },
             error: function() {
                 alert("err");

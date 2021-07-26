@@ -98,8 +98,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cursos_upa`.`Pagos` (
   `idPago` INT NOT NULL AUTO_INCREMENT,
-  `comprobante` VARCHAR(45) NOT NULL,
-  `pago` DECIMAL(10,2) NULL,
+  `comprobante` VARCHAR(45) NULL,
+  `pago` DECIMAL(10,2) NOT NULL,
   `desc` INT NOT NULL,
   `r1` VARCHAR(45) NOT NULL DEFAULT 0,
   `r2` VARCHAR(45) NOT NULL DEFAULT 0,

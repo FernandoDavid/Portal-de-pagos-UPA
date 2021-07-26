@@ -54,7 +54,8 @@ if (isset($_GET["pagina"])) {
         include "modulos/mensajes.php";
         include "paginas/" . $rutas[0] . ".php";
         if($rutas[0] == "admin"){
-            ($campo==11)? include "modulos/admin-admin.php" : include "modulos/posgrado-admin.php";
+            echo '<script>console.log("'.$campo.'");</script>';
+            ($campo=="r2")? include "modulos/admin-admin.php" : include "modulos/posgrado-admin.php";
         }
     } else {
         include "paginas/404.php";

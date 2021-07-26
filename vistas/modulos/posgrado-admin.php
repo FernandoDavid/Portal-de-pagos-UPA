@@ -1,11 +1,21 @@
 <?php
 foreach ($res as $key => $dato) {
     if ($dato["r1"] && $dato["r2"]) {
-        array_push($inscritos, $dato);
+        $datParticipante = ["idParticipante"=>$dato["idParticipante"]];
+        $participante = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datParticipante),$datParticipante);
+        array_push($inscritos, $participante[0]);
     } else {
-        array_push($pendientes, $dato);
+        $datParticipante = ["idParticipante"=>$dato["idParticipante"]];
+        $participante = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datParticipante),$datParticipante);
+        array_push($pendientes, $participante[0]);
     }
 }
+// echo $campo;
+// echo '<pre>';
+// var_dump($inscritos);
+// var_dump($pendientes);
+// echo '</pre>';
+// die;
 ?>
 <!-- Barra de navegación -->
 <header class="header" id="header">
@@ -62,14 +72,14 @@ foreach ($res as $key => $dato) {
                     <th scope="col">CURP</th>
                     <th scope="col">Curso</th>
                     <th scope="col">Pago</th>
-                    <?php if ($revisor[0]["depto"] == "Posgrado") : ?>
                     <th scope="col">Modificar</th>
                     <th scope="col">Eliminar</th>
-                    <?php endif ?>
                 </thead>
                 <tbody>
                     <?php
                     foreach ($pendientes as $key => $datos) {
+                        $pagoDato = ["idParticipante"=>$datos["idParticipante"]];
+                        $pagoPart = ModeloFormularios::mdlSelecReg("Pagos", array_keys($pagoDato),$pagoDato);
                         $datCurso = array("idCurso" => $datos["idCurso"]);
                         $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($datCurso), $datCurso);
                     ?>
@@ -90,10 +100,10 @@ foreach ($res as $key => $dato) {
                             <?php echo $curso[0]["curso"] ?>
                         </td>
                         <td>
-                            <button type="submit" class="btn btn-<?php if (!$datos[" pago"]) {echo 'secondary' ;} else
+                            <button type="submit" class="btn btn-<?php if (!$pagoPart[0]["comprobante"]) {echo 'secondary' ;} else
                                 {echo 'primary' ;}?> btnComprobante position-relative">
                                 <i class="fas fa-file-invoice-dollar"></i>
-                                <?php if ($datos["rev2"]) : ?>
+                                <?php if ($pagoPart[0]["r2"]) : ?>
                                 <span
                                     class="position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
                                     <span class="visually-hidden"></span>
@@ -148,7 +158,7 @@ foreach ($res as $key => $dato) {
                         <td>
                             <?php echo $datos['curp']  ?>
                         </td>
-                        <td class="c-<?php echo $datos[" idCurso"] ?>">
+                        <td class="c-<?php echo $datos["idCurso"] ?>">
                             <?php echo $curso[0]["curso"] ?>
                         </td>
                         <td><button type="button" class="btn btn-primary btnComprobante"><i
@@ -1208,7 +1218,7 @@ foreach ($res as $key => $dato) {
                         <input type="submit" class="btn btn-danger" name="btnRev" value="Rechazar">
                         <input type="submit" class="btn btn-success" name="btnRev" value="Validar">
                         <?php
-                        // $Form->ctrValidarComprobante($dominio, $revisor, $campo);
+                        $Form->ctrValidarComprobante($dominio, $revisor, $campo);
                         ?>
                     </form>
                 </div>
@@ -1216,7 +1226,6 @@ foreach ($res as $key => $dato) {
         </div>
     </div>
 </div>
-
 <script src="<?php echo $dominio; ?>vistas/js/admin-cursos.js"></script>
 
 </body>

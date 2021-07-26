@@ -1,7 +1,9 @@
     <?php
     foreach ($res as $key => $dato) {
-        if (!$dato["rev2"]) {
-            array_push($pendientes, $dato);
+        if (!$dato["r2"]) {
+            $datParticipante = ["idParticipante"=>$dato["idParticipante"]];
+            $participante = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datParticipante),$datParticipante);
+            array_push($pendientes, $participante[0]);
         }
     }
     ?>
@@ -52,11 +54,13 @@
                     <tbody>
                         <?php
                         foreach ($pendientes as $key => $datos) {
+                            $pagoDato = ["idParticipante"=>$datos["idParticipante"]];
+                            $pagoPart = ModeloFormularios::mdlSelecReg("Pagos", array_keys($pagoDato),$pagoDato);
                             $datCurso = array("idCurso" => $datos["idCurso"]);
                             $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($datCurso), $datCurso);
                         ?>
                             <tr>
-                                <td class="i-<?php echo $datos["idInscrito"] ?>">
+                                <td class="i-<?php echo $datos["idParticipante"] ?>">
                                     <?php echo $key + 1 ?>
                                 </td>
                                 <td>
@@ -72,7 +76,7 @@
                                     <?php echo $curso[0]["curso"] ?>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-<?php if (!$datos["pago"]) {echo 'secondary';} else {echo 'primary';}?> btnComprobante position-relative">
+                                    <button type="submit" class="btn btn-<?php if (!$pagoPart[0]["comprobante"]) {echo 'secondary';} else {echo 'primary';}?> btnComprobante position-relative">
                                         <i class="fas fa-file-invoice-dollar"></i>
                                     </button>
                                 </td>

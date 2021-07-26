@@ -9,8 +9,9 @@ $progress = 0;
 if (isset($rutas[1])) {
     $datos = array("idParticipante"=>intval($rutas[1]));
     $inscrito = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datos), $datos);
+    $pagoParticipante = ModeloFormularios::mdlSelecReg("Pagos", array_keys($datos), $datos);
     if (isset($inscrito[0]["idParticipante"])) {
-        if($inscrito[0]["rev1"] && $inscrito[0]["rev2"]){
+        if($pagoParticipante[0]["r1"] && $pagoParticipante[0]["r2"]){
             echo '
             <script>
                 st = 3;
@@ -97,13 +98,13 @@ if (isset($rutas[1])) {
                     <div class="row">
                         <div class="col-6">
                             <p><b>
-                                    <?php echo "Precio: $".number_format($valor["precio"],2) ?>
-                                </b></p>
+                                <?php echo "Precio: $".number_format($valor["precio"],2) ?>
+                            </b></p>
                         </div>
                         <div class="col-6 text-end">
                             <p><b>
-                                    <?php echo "Cupo: ".$alumnosInscritos[0]."/".$valor['cupo']?>
-                                </b></p>
+                                <?php echo "Cupo: ".$alumnosInscritos[0]."/".$valor['cupo']?>
+                            </b></p>
                         </div>
                     </div>
                 </div>
@@ -275,6 +276,7 @@ if (isset($rutas[1])) {
         </div>
     </div>
 
+    <?php if(isset($rutas[1])): ?>
     <!-- Paso 3 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
     <div class="visually-hidden-focusable" id="card2">
         <div class="row">
@@ -282,7 +284,7 @@ if (isset($rutas[1])) {
                 <div class="card p-4 mb-3 bg-dark text-light position-relative">
                     <?php 
                     $datos2 = array("idCurso"=>intval($inscrito[0]["idCurso"]));
-                    $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($datos2), $datos2);
+                    $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($datos2), $datos2);
                     $datos3 = array("curp"=>$inscrito[0]["curp"]);
                     $alumno = ModeloFormularios::mdlSelecReg("alumnos",array_keys($datos3), $datos3);
                     ?>
@@ -297,7 +299,7 @@ if (isset($rutas[1])) {
                         <?php if(isset($alumno[0])):?>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             $
-                            <?php echo number_format($curso[0]["precio"]*(1-$curso[0]["descto"]/100),2) ?>
+                            <?php echo number_format($curso[0]["precio"]*(1-$curso[0]["desc"]/100),2) ?>
                         </span>
                         <?php endif ?>
                     </span>
@@ -327,7 +329,7 @@ if (isset($rutas[1])) {
             </div>
             <div class="col-sm-6 mb-3">
                 <div class="card p-4 h-100">
-                    <?php if ($inscrito[0]["pago"] == null) : ?>
+                    <?php if ($pagoParticipante[0]["comprobante"] == null) : ?>
                     <form method="POST" enctype="multipart/form-data">
                         <div class="">
                             <!-- <label for="comprobante" class="form-label">Comprobante de pago</label> -->
@@ -345,15 +347,15 @@ if (isset($rutas[1])) {
                                 INSTANCIA Y LLAMADO DE CLASE DE INGRESO
                                 ======================================*/
                                 // $ctrComp = new ControladorFormularios();
-                                $Form->ctrComprobante($inscrito[0]["idInscrito"], $inscrito[0]["idCurso"], $dominio);
+                                $Form->ctrComprobante($inscrito[0]["idParticipante"], $inscrito[0]["idCurso"], $dominio);
                                 ?>
                         </div>
                     </form>
                     <?php else : ?>
                     <h4 class="fw-bolder text-center">Comprobante</h4>
-                    <img src="<?php echo $dominio . 'vistas/img/comprobantes/' . $inscrito[0][" idCurso"] . '/' .
-                        $inscrito[0]["pago"] ?>" alt="
-                    <?php echo $inscrito[0]["pago"] ?>" class="img-fluid">
+                    <img src="<?php echo $dominio . 'vistas/img/comprobantes/' . $inscrito[0]["idCurso"] . '/' .
+                        $pagoParticipante[0]["comprobante"] ?>" alt="
+                    <?php echo $pagoParticipante[0]["comprobante"] ?>" class="img-fluid">
                     <?php endif ?>
                 </div>
             </div>
@@ -379,4 +381,5 @@ if (isset($rutas[1])) {
             <?php echo $curso[0]["lugar"] ?>.
         </p>
     </div>
+    <?php endif; ?>
 </div>

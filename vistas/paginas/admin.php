@@ -8,12 +8,12 @@ if (!isset($_SESSION["admin"])) {
     </script>';
 }
 
-$res = ModeloFormularios::mdlSelecReg("Participantes");
+$res = ModeloFormularios::mdlSelecReg("Pagos");
 $inscritos = array();
 $pendientes = array();
 
 $datosAdmin = array("nombre" => $_SESSION["admin"]);
 $revisor = ModeloFormularios::mdlSelecReg("admins", array_keys($datosAdmin), $datosAdmin);
-$revisor[0]["depto"] == "Posgrado" ? $campo = 10 : $campo = 11;
-echo '<script> var campo=' . $campo . '</script>';
+$revisor[0]["depto"] == "Posgrado" ? $campo = "r1" : $campo = "r2";
+// echo '<script> var campo=' . $campo . '</script>';
 ?>
