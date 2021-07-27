@@ -55,6 +55,9 @@ class ControladorFormularios
                                 }
                             }
 
+                            $doc = new ControladorReportes();
+                            $doc -> ctrRegistro($curso[0]['idCurso']);
+
                             $msg = '<div>
                                 <p>Ingresa al siguiente enlace para subir tu comprobante de pago: </p>
                                 <a href="' . $dominio . 'registro/' . $id["idParticipante"] . '">' . $dominio . 'registro/' . $id["idParticipante"] . '</a>
@@ -63,7 +66,7 @@ class ControladorFormularios
                             </div>';
                             $subject = "Info. cursos";
                             $correo = new ControladorCorreo();
-                            $correo->ctrEnviarCorreo($datos["correo"],$datos["nombre"],$subject, $msg,$dominio,1);
+                            $correo->ctrEnviarCorreo($datos["correo"],$datos["nombre"],$subject, $msg,$curso[0]['idCurso'],1);
 
                             $_SESSION["toast"] = "success/Registro exitoso, revisa tu correo";
                             echo '<script>
@@ -117,24 +120,27 @@ class ControladorFormularios
     public static function ctrModificarRegistroAlumno($campo)
     {
         if (isset($_POST["idAlumno"])) {
+            
             if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nombre"])) {
+                // echo '<script>alert("ctr");</script>';
                 $datos = array(
                     "nombre" => $_POST["nombre"],
                     "telefono" => $_POST["telefono"],
-                    "direc" => $_POST["domicilio"],
+                    "direc" => $_POST["direc"],
                     "correo" => $_POST["correo"],
                     "curp" => $_POST["curp"],
-                    "rfc" => $_POST["rfc"],
                     "sexo" => $_POST["sexoRadio"],
                     "est_civil" => $_POST["estadoRadio"],
-                    "idCurso" => $_POST["curso"]
+                    "idCurso" => $_POST["idCurso"]
                 );
+                // echo "<script>console.log(".json_encode(var_export($datos, true)).");</script>";
                 $id = array(
                     "idParticipante" => $_POST["idAlumno"]
                 );
                 $participante = ModeloFormularios::mdlSelecReg("Participantes", array_keys($id), $id)[0];
                 $respuesta = ModeloFormularios::mdlModificarRegistro("Participantes", array_keys($datos), $datos, $id);
                 if ($respuesta == "ok") {
+                    // echo "<script>console.log(".json_encode(var_export($respuesta, true)).");</script>";
                     if (!file_exists("vistas/img/comprobantes/" . $datos["idCurso"])) {
                         mkdir("vistas/img/comprobantes/" . $datos["idCurso"], 0777, true);
                     }
@@ -159,7 +165,7 @@ class ControladorFormularios
                         } 
                         Toast.fire({
                             icon: "error",
-                            title: "Error al crear curso"
+                            title: "Error al modificar registro"
                         });
                     </script>';
                 }
@@ -171,11 +177,15 @@ class ControladorFormularios
     {
         if (isset($_POST['alumnoEliminar']) || isset($_POST['cursoEliminar'])) {
             if ($tabla == "participantes" || $tabla == "Participantes") {
-                $id = array("idAspirante"=>$_POST["alumnoEliminar"]);
+                $id = array("idParticipante"=>$_POST["alumnoEliminar"]);
                 $participante = ModeloFormularios::mdlSelecReg("Participantes", array_keys($id), $id)[0];
                 $val = $_POST["alumnoEliminar"];
-                unlink("vistas/img/comprobantes/" . $participante['idCurso'] . '/' . $participante['pago']);
-                ($participante[$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
+                $comprobante = ModeloFormularios::mdlSelecReg("Pagos", array_keys($id), $id);
+                $deletePago = ModeloFormularios::mdlBorrarRegistro("Pagos","idParticipante",$id);
+                if($comprobante[0]['comprobante']!=null){
+                    unlink("vistas/img/comprobantes/" . $participante['idCurso'] . '/' . $comprobante[0]['comprobante']);
+                }
+                ($comprobante[0][$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
             } else {
                 $id = array("idCurso"=>$_POST["cursoEliminar"]);
                 $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($id), $id)[0];
@@ -209,6 +219,7 @@ class ControladorFormularios
     public static function ctrComprobante($idParticipante, $idCurso, $dominio)
     {
         if (isset($_FILES["comprobante"])) {
+            
             $ext = explode("/", $_FILES["comprobante"]["type"]);
             $carpeta = 'vistas/img/comprobantes/' . $idCurso;
             $datos = array(
@@ -217,7 +228,8 @@ class ControladorFormularios
             if (!file_exists($carpeta)) {
                 mkdir($carpeta, 0777, true);
             }
-            if (move_uploaded_file($_FILES["comprobante"]["tmp_name"], $carpeta . '/' . $datos["pago"])) {
+            if (move_uploaded_file($_FILES["comprobante"]["tmp_name"], $carpeta . '/' . $datos["comprobante"])) {
+                // echo '<script>alert("hi");</script>';
                 $respuesta = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,array("idParticipante"=>$idParticipante));
                 if ($respuesta == "ok") {
                     $_SESSION["toast"] = "success/Comprobante subido correctamente";
@@ -300,6 +312,9 @@ class ControladorFormularios
                 $res = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,$id);
                 if ($res == "ok") {
                     if($campo=="r1"){
+                        $doc = new ControladorReportes();
+                        $doc -> ctrInscrito($_POST["idRevCurso"]);
+
                         $msg = '<div>
                             <h3>Felicidades</h3>
                             <p>Tu comprobante de pago ha sido validado, ingresa al siguiente enlace para.. : </p>
@@ -307,7 +322,7 @@ class ControladorFormularios
                         </div>';
                         $subject = "Info. cursos";
                         $correo = new ControladorCorreo();
-                        $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg,$dominio,0);
+                        $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg,$_POST["idRevCurso"],0);
                     }
                     ($inscrito[$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
                     $_SESSION["toast"] = "success/Comprobante validado";

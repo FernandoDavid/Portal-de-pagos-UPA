@@ -59,8 +59,8 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Participantes` (
   CONSTRAINT `fk_Inscritos_Cursos`
     FOREIGN KEY (`idCurso`)
     REFERENCES `cursos_upa`.`Cursos` (`idCurso`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -88,8 +88,8 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Facturas` (
   CONSTRAINT `fk_Facturas_Participantes1`
     FOREIGN KEY (`idParticipante`)
     REFERENCES `cursos_upa`.`Participantes` (`idParticipante`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -110,8 +110,8 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Pagos` (
   CONSTRAINT `fk_Pagos_Participantes1`
     FOREIGN KEY (`idParticipante`)
     REFERENCES `cursos_upa`.`Participantes` (`idParticipante`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 

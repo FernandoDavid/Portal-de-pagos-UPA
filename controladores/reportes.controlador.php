@@ -5,6 +5,8 @@ use \PhpOffice\PhpSpreadsheet\Style\Fill;
 use \PhpOffice\PhpSpreadsheet\Style\Border;
 use \PhpOffice\PhpSpreadsheet\Style\Alignment;
 
+use \PhpOffice\PhpWord\TemplateProcessor;
+
 class ControladorReportes
 {
     public static function ctrSubscritos()
@@ -36,7 +38,7 @@ class ControladorReportes
             $datos = array(
                 "subs" => 1
             );
-            $res = ModeloFormularios::mdlSelecReg("inscritos", array_keys($datos), $datos);
+            $res = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datos), $datos);
             foreach($res as $key=>$alumno){
                 $activeSheet->setCellValue('A'.$key+2, $alumno["correo"]);
                 $activeSheet->setCellValue('B'.$key+2, $alumno["nombre"]);  
@@ -61,5 +63,73 @@ class ControladorReportes
             $writer = IOFactory::createWriter($spreadsheet, 'Xls');
             $writer->save('php://output');
         }
+    }
+
+    public static function ctrRegistro($idCurso){
+        $template = new TemplateProcessor('controladores/plantillas/plantilla_ficha_tecnica.docx');
+        
+        $id = ["idCurso"=>$idCurso];
+        $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($id), $id);
+
+        $dia = '';
+        switch($curso[0]['dia']){
+            case "lunes": $dia="Lunes";break;
+            case "martes": $dia="Martes";break;
+            case "miercoles": $dia="Miércoles";break;
+            case "jueves": $dia="Jueves";break;
+            case "viernes": $dia="Viernes";break;
+            case "sabado": $dia="Sábados";break;
+        }
+
+        $template->setValues([
+            'curso'=>$curso[0]['curso'],
+            'fec_inicio'=>$curso[0]['fec_inicio'],
+            'fec_fin'=>$curso[0]['fec_fin'],
+            'dia'=>$dia,
+            'hora_inicio'=>$curso[0]['hora_inicio'],
+            'hora_fin'=>$curso[0]['hora_fin'],
+            'aula'=>$curso[0]['aula'],
+            'modalidad'=>($curso[0]['modalidad']==1)? "En línea" : "Presencial"
+        ]);
+
+        $pathToSave = 'controladores/docs/ft-'.$curso[0]["idCurso"].'.docx';
+        $template->saveAs($pathToSave);
+    }
+
+    public static function ctrInscrito($idCurso){
+        $template = new TemplateProcessor('controladores/plantillas/plantilla_bienvenida_curso.docx');
+        
+        $id = ["idCurso"=>$idCurso];
+        $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($id), $id);
+
+        $dia = '';
+        switch($curso[0]['dia']){
+            case "lunes": $dia="Lunes";break;
+            case "martes": $dia="Martes";break;
+            case "miercoles": $dia="Miércoles";break;
+            case "jueves": $dia="Jueves";break;
+            case "viernes": $dia="Viernes";break;
+            case "sabado": $dia="Sábados";break;
+        }
+
+        $tem = explode("|||",$curso[0]["temario"]);
+
+        $template->setValues([
+            'curso'=>$curso[0]['curso'],
+            'objetivo'=>$curso[0]["objetivo"],
+            'fec_inicio'=>$curso[0]['fec_inicio'],
+            'fec_fin'=>$curso[0]['fec_fin'],
+            'dia'=>$dia,
+            'temario'=>$tem[0],
+            'recursos'=>$tem[1],
+            'materiales'=>$tem[2],
+            'hora_inicio'=>$curso[0]['hora_inicio'],
+            'hora_fin'=>$curso[0]['hora_fin'],
+            'aula'=>$curso[0]['aula'],
+            'modalidad'=>($curso[0]['modalidad']==1)? "En línea" : "Presencial"
+        ]);
+
+        $pathToSave = 'controladores/docs/bc-'.$curso[0]["idCurso"].'.docx';
+        $template->saveAs($pathToSave);
     }
 }

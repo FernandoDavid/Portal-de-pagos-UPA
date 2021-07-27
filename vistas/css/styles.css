@@ -250,6 +250,10 @@ button.bg-upa-secondary:active, button.bg-upa-secondary:focus,input.bg-upa-secon
     background-color: var(--upa-secondary-light);
 }
 
+#facturacion-form{
+    transition: all 0.5s;
+}
+
 @media screen and (min-width: 768px) {
     .admin-body {
         margin: calc(var(--header-height) + 1rem) 0 0 0;

@@ -18,17 +18,43 @@ $(document).ready(function() {
             dataType: "json",
             async: true,
             success: function(res) {
-                let inputs = $('#modalModificarAlumno').find('input');
-                $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
-                $(inputs[1]).val(res["nombre"]);
-                $(inputs[2]).val(res["telefono"]);
-                $(inputs[3]).val(res["direc"]);
-                $(inputs[4]).val(res["correo"]);
-                (res["sexo"] == "H") ? inputs[6].checked = true: inputs[7].checked = true;
-                $(inputs[5]).val(res["curp"]);
+                // console.log(res);
+                let keys = Object.keys(res);
+                for(var i=Number.parseInt(keys.length/2);i<=keys.length-1;i++){
+                    // console.log(keys[i]+' | '+res[keys[i]]);
+                    let selector = "#modalModificarAlumno [name='"+keys[i]+"']";
+                    $('#idAlumno').val(tr.children('td')[0].className.split('-')[1]);
+                    
+                    if(keys[i]=="sexo"){
+                        if(res[keys[i]]=="H"){
+                            $('#modalModificarAlumno #hombreRadio')[0].checked = true;
+                        }else{
+                            $('#modalModificarAlumno #mujerRadio')[0].checked = true
+                        }
+                    }else{
+                        if(keys[i]=="est_civil"){
+                            if(res[keys[i]]=="soltero"){
+                                $('#modalModificarAlumno #solteroRadio')[0].checked = true;
+                            }else{
+                                $('#modalModificarAlumno #casadoRadio')[0].checked = true;
+                            }
+                        }
+                    }
+                    
+                    $(selector).val(res[keys[i]]);
+                }
+
+                // let inputs = $('#modalModificarAlumno').find('input');
+                // $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
+                // $(inputs[1]).val(res["nombre"]);
+                // $(inputs[2]).val(res["telefono"]);
+                // $(inputs[3]).val(res["direc"]);
+                // $(inputs[4]).val(res["correo"]);
+                // (res["sexo"] == "H") ? inputs[6].checked = true: inputs[7].checked = true;
+                // $(inputs[5]).val(res["curp"]);
                 // $(inputs[8]).val(res["rfc"]);
-                (res["est_civil"] == "soltero") ? inputs[9].checked = true: inputs[10].checked = true;
-                $($('#modalModificarAlumno').find('select')[0]).val(res["idCurso"]);
+                // (res["est_civil"] == "soltero") ? inputs[9].checked = true: inputs[10].checked = true;
+                // $($('#modalModificarAlumno').find('select')[0]).val(res["idCurso"]);
             },
             error: function(err) {
                 console.log("ERR",err);

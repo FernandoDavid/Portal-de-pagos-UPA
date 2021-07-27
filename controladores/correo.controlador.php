@@ -6,7 +6,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class ControladorCorreo
 {
-    static public function ctrEnviarCorreo($correo,$nombre,$subject,$msg,$dominio,$img)
+    static public function ctrEnviarCorreo($correo,$nombre,$subject,$msg,$idCurso,$img)
     {
         if (isset($correo)) {
 
@@ -38,12 +38,22 @@ class ControladorCorreo
                     $mail->isHTML(true);                                  //Set email format to HTML
                     $mail->Subject = $subject;
                     // $mail->addStringAttachment(file_get_contents($dominio.'vistas/img/rsc/'), "ref-pago.jpeg");
+                    $path = '';
+                    
                     if($img==1){
+                        $path = dirname(__DIR__).'/controladores/docs/ft-'.$idCurso.'.docx';
                         $mail->addEmbeddedImage(dirname(__DIR__).'/vistas/img/rsc/ref-pago.jpeg','imagen','ref-pago.jpeg');
+                    }else{
+                        $path = dirname(__DIR__).'/controladores/docs/bc-'.$idCurso.'.docx';
+                        $mail->AddAttachment(dirname(__DIR__).'/controladores/docs/Protocolo_covid19_UPA.pdf');
                     }
+                    $mail->AddAttachment($path);
                     $mail->Body=$msg;
 
                     $mail->send();
+                    if($path!=''){
+                        unlink($path);
+                    }
                     return "ok";
                 } catch (Exception $e) {
                     // echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";

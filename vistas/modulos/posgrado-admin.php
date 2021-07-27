@@ -177,8 +177,8 @@ foreach ($res as $key => $dato) {
             <form method="POST">
                 <input type="submit" class="btn btn-primary bg-upa-secondary" name="subs" value="Alumnos subscritos">
                 <?php
-                    // $File = new ControladorReportes();
-                    // $File->ctrSubscritos();
+                    $File = new ControladorReportes();
+                    $File->ctrSubscritos();
                     ?>
             </form>
         </div>
@@ -287,7 +287,6 @@ foreach ($res as $key => $dato) {
     <!----------------------------------------------------MODALS------------------------------------------------------------------>
 
     <!--MODIFICAR ALUMNO -->
-    <form method="POST">
         <div class="modal fade" id="modalModificarAlumno" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
@@ -302,10 +301,10 @@ foreach ($res as $key => $dato) {
                                 <div class="input-group mb-3">
                                     <input type="text" id="idAlumno" name="idAlumno" hidden>
                                     <label class="input-group-text" for="inputGroupSelect01">Nombre del curso</label>
-                                    <select class="form-select" id="curso" name="curso" required>
+                                    <select class="form-select" id="idCurso" name="idCurso" required>
                                         <option selected value="">Elegir...</option>
                                         <?php
-                                            $opcionescursos = ModeloFormularios::mdlSelecReg("cursos");
+                                            $opcionescursos = ModeloFormularios::mdlSelecReg("Cursos");
                                             foreach ($opcionescursos as $key => $opcurso) {
                                             ?>
                                         <option value="<?php echo $opcurso["idCurso"] ?>">
@@ -338,7 +337,7 @@ foreach ($res as $key => $dato) {
                                             <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                                     class="fas fa-home fa-lg icons"></i></span>
                                             <input type="text" class="form-control" placeholder="Domicilio"
-                                                name="domicilio" required>
+                                                name="direc" required>
                                         </div>
                                     </div>
                                     <div class="col mb-2">
@@ -388,14 +387,14 @@ foreach ($res as $key => $dato) {
                                         </div>
                                         <div class="col-4 pt-1">
                                             <input class="form-check-input ms-1" type="radio" value="soltero"
-                                                id="casadoRadio" name="estadoRadio"
+                                                id="solteroRadio" name="estadoRadio"
                                                 onclick="document.getElementById('solteroRadio').checked = false"
                                                 required>
                                             <label class="ms-2" for="">Soltero/a</label>
                                         </div>
                                         <div class="col-4 pt-1">
                                             <input class="form-check-input ms-1" type="radio" value="casado"
-                                                id="solteroRadio" name="estadoRadio"
+                                                id="casadoRadio" name="estadoRadio"
                                                 onclick="document.getElementById('casadoRadio').checked = false">
                                             <label class="ms-2" for="">Casado/a</label>
                                         </div>
@@ -408,17 +407,14 @@ foreach ($res as $key => $dato) {
                             <button type="submit" class="btn bg-upa-secondary text-white ">Modificar</button>
                             <?php
                                 //añadir la modificación del alumno PHP
+                                $Form = new ControladorFormularios();
+                                $Form -> ctrModificarRegistroAlumno($campo);
                             ?>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </form>
-
-
-
-
 
     <!-- MODIFICAR ALUMNO viejito
     <div class="modal fade" id="modalModificarAlumno" tabindex="-1" aria-hidden="true">
@@ -552,7 +548,7 @@ foreach ($res as $key => $dato) {
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-warning">Actualizar datos</button>
                         <?php
-                            $Form = new ControladorFormularios();
+                            
                             // $Form->ctrModificarRegistroAlumno($campo);
                             ?>
                     </div>
@@ -579,17 +575,13 @@ foreach ($res as $key => $dato) {
                         <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-danger ">Borrar alumno</button>
                         <?php
-                            // $Form->ctrEliminarRegistro("inscritos", "idInscrito", $campo);
-                            ?>
+                            $Form->ctrEliminarRegistro("Participantes", "idParticipante", $campo);
+                        ?>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-
-
-
 
     <!--AGREGAR CURSO-->
     <form method="POST" enctype="multipart/form-data">
