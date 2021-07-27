@@ -40,7 +40,6 @@ class ControladorFormularios
                         ];
                         $res = ModeloFormularios::mdlCrearRegistro("Pagos",array_keys($datosPago),$datosPago);
                         if($res=="ok"){
-
                             if(isset($_POST["rfc"]) && $_POST["rfc"]!=""){
                                 $datosFac = [
                                     "idParticipante" => $id["idParticipante"],

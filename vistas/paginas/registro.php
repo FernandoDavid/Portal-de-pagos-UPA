@@ -59,7 +59,6 @@ if (isset($rutas[1])) {
         <button id="step4" type="button"
             class="position-absolute top-0 start-100 translate-middle btn btn-sm <?php if ($progress == 100) : ?>btn-primary<?php else : ?>btn-secondary<?php endif ?> rounded-circle">4</button>
     </div>
-
     <div class="text-center" id="loader">
         <div class="spinner-border" role="status">
             <span class="visually-hidden">Cargando...</span>
@@ -67,10 +66,7 @@ if (isset($rutas[1])) {
     </div>
 
     <!-- Paso 1 (Carrousel con los cursos) -->
-
     <div class="visually-hidden-focusable container" id="card0">
-
-        
         <div class="d-flex justify-content-evenly">
             <?php foreach ($res as $valor) : 
                 $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($valor["idCurso"]);
@@ -111,12 +107,6 @@ if (isset($rutas[1])) {
                 }
             endforeach ?>
         </div>
-    
-            
-    
-    
-    
-    
     </div>
 
     <!-- Paso 2 (Formulario de registro de los aspirantes)-->
@@ -212,8 +202,13 @@ if (isset($rutas[1])) {
                                     <label class="ms-2" for="">Casado/a</label>
                                 </div>
                             </div>
-                            <div class="row gx-0 mb-2">
-                                Factura
+                            <div class="row gx-0 mb-2 ">
+                                <div class="col-12 ms-2 mt-2 ">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="checkfactura" onclick="mostrarFactura()">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Quiero generar mi factura de registro</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -230,7 +225,7 @@ if (isset($rutas[1])) {
                         </div>
                     </div>
                     <hr>
-                    <div class="row" id="facturacion-form">
+                    <div class="row" id="facturacion-form" hidden>
                         <div class="col-12 mb-3">
                             <h4>Facturación</h4>
                         </div>
@@ -238,14 +233,14 @@ if (isset($rutas[1])) {
                             <div class="input-group">
                                 <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                         class="fas fa-address-card fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="RFC" name="rfc" required>
+                                <input type="text" class="form-control" placeholder="RFC" name="rfc" id="rfc">
                             </div>
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                             <div class="input-group">
                                 <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                         class="fas fa-file-alt fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="CFDI" name="cfdi" required>
+                                <input type="text" class="form-control" placeholder="CFDI" name="cfdi" id="cfdi">
                             </div>
                         </div>
                         <div class="col-12 mb-3">
@@ -276,6 +271,25 @@ if (isset($rutas[1])) {
             </div>
         </div>
     </div>
+    <script>
+        function mostrarFactura(){
+            var facturacion=document.getElementById("facturacion-form");
+            var checkfactura=document.getElementById("checkfactura");
+            var i1=document.getElementById("rfc");
+            var i2=document.getElementById("cfdi");
+            if(checkfactura.checked==true){
+                facturacion.hidden=false;
+                i1.required=true;
+                i2.required=true;
+            }
+            else{
+                facturacion.hidden=true;
+                i1.required=false;
+                i2.required=false;
+            }
+        }
+        
+    </script>
 
     <?php if(isset($rutas[1])): ?>
     <!-- Paso 3 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
