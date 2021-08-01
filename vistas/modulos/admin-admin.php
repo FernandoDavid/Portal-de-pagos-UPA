@@ -85,6 +85,13 @@
                     </tbody>
                 </table>
             </div>
+            <form method="POST">
+                <input type="submit" class="btn btn-primary bg-upa-secondary" name="ingresos" value="Ingresos">
+                <?php
+                    $File = new ControladorReportes();
+                    $File->ctrIngresos();
+                    ?>
+            </form>
         </div>
 
         <!-- Modal revisar comprobante -->
@@ -128,6 +135,7 @@
                     </div>
                 </div>
             </div>
+            <div>
         </div>
 
         <?php echo '<script>$("#pendientesTable").removeClass("visually-hidden-focusable");$("#link_pendientes").addClass("active");</script>'; ?>

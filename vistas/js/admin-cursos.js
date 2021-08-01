@@ -161,7 +161,7 @@ $(document).ready(function() {
             url: dominio + 'ajax/formularios.ajax.php',
             method: "POST",
             data: {
-                "tabla": "participantes",
+                "tabla": "Participantes",
                 "campo": "idParticipante",
                 "dato": tr.children('td')[0].className.split('-')[1]
             },
@@ -173,7 +173,23 @@ $(document).ready(function() {
                 $(labels[3]).html('<b>Teléfono: </b>' + res["telefono"]);
                 $(labels[4]).html('<b>Dirección: </b>' + res["direc"]);
                 $(labels[5]).html('<b>CURP: </b>' + res["curp"]);
-                $(labels[6]).html('<b>RFC: </b>' + res["rfc"]);
+
+                $.ajax({
+                    url: dominio + 'ajax/formularios.ajax.php',
+                    method: "POST",
+                    data: {
+                        "tabla": "Facturas",
+                        "campo": "idParticipante",
+                        "dato": tr.children('td')[0].className.split('-')[1]
+                    },
+                    dataType: "json",
+                    success: function(res) {
+                        $(labels[6]).html('<b>RFC: </b>' + res["rfc"]);
+                    },
+                    error: function(){
+                        $(labels[6]).html('<b>RFC: </b> Sin facturación');
+                    }
+                });
                 $(labels[7]).html('<b>Sexo: </b>' + ((res["sexo"] == "H") ? "Masculino" : "Femenino"));
                 $(labels[8]).html('<b>Estado civil: </b>' + res["est_civil"]);
                 $(labels[9]).html('<b>Curso: </b>' + tr.children('td')[4].innerText);

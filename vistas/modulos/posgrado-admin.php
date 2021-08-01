@@ -1175,7 +1175,7 @@ foreach ($res as $key => $dato) {
         </div>
     </div>
 
-    <!-- ELIMINAR COMPROBANTE -->
+    <!-- REVISAR COMPROBANTE -->
     <div class="modal fade" id="modalRevisar" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
@@ -1210,6 +1210,7 @@ foreach ($res as $key => $dato) {
                         <input type="submit" class="btn btn-danger" name="btnRev" value="Rechazar">
                         <input type="submit" class="btn btn-success" name="btnRev" value="Validar">
                         <?php
+                        
                         $Form->ctrValidarComprobante($dominio, $revisor, $campo);
                         ?>
                     </form>

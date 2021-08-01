@@ -55,8 +55,8 @@ class ControladorFormularios
                                 }
                             }
 
-                            $doc = new ControladorReportes();
-                            $doc -> ctrRegistro($curso[0]['idCurso']);
+                            // $doc = new ControladorReportes();
+                            // $doc -> ctrRegistro($curso[0]['idCurso']);
 
                             $msg = '<div>
                                 <p>Ingresa al siguiente enlace para subir tu comprobante de pago: </p>
@@ -308,11 +308,14 @@ class ControladorFormularios
             $inscrito = ModeloFormularios::mdlSelecReg("Participantes", array_keys($id), $id);
             if ($_POST["btnRev"] == "Validar") {
                 $revisor[0]["depto"] == "Posgrado" ? $campo = "r1" : $campo = "r2";
-                $datos = array($campo=>"1");
+                date_default_timezone_set('America/Mexico_City');
+                $datos = array($campo=>"1","fec_".$campo=>date('y-m-d'));
                 $res = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,$id);
                 if ($res == "ok") {
                     if($campo=="r1"){
                         $doc = new ControladorReportes();
+                        // $doc = new ControladorReportes();
+                        $doc -> ctrRegistro($_POST["idRevCurso"]);
                         $doc -> ctrInscrito($_POST["idRevCurso"]);
 
                         $msg = '<div>
@@ -396,13 +399,14 @@ class ControladorFormularios
 
                 $insertar = ModeloFormularios::mdlCrearRegistro("Cursos", array_keys($datos), $datos);
                 if ($insertar == "ok") {
-                    $id = ModeloFormularios::mdlSelecReg("Cursos", array_keys($datos), $datos);
+                    $datCurso = ["idCurso"=>$_POST["curso"]];
+                    $id = ModeloFormularios::mdlSelecReg("Cursos", array_keys($datCurso), $datCurso);
                     $extFile = explode("/", $_FILES["flyer"]["type"]);
                     // echo '<script>console.log("'.$id[0]["idCurso"].'.'.$extFile[1].'")</script>';
                     $datos = [
-                        "flyer" => basename($id[0]['idCurso'].'.'.$extFile[1])
+                        "flyer" => basename($id[0]["idCurso"].'.'.$extFile[1])
                     ];
-                    $flyer = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos,array("idCurso" => $id[0]['idCurso']));
+                    $flyer = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos,array("idCurso" => $id[0]["idCurso"]));
                     if($flyer == 'ok' && move_uploaded_file($_FILES["flyer"]["tmp_name"], 'vistas/img/flyers/' . $datos["flyer"])){
                         $_SESSION["vista"] = 3;
                         $_SESSION["toast"] = "success/Curso creado exitosamente";

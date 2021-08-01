@@ -40,19 +40,26 @@ class ControladorCorreo
                     // $mail->addStringAttachment(file_get_contents($dominio.'vistas/img/rsc/'), "ref-pago.jpeg");
                     $path = '';
                     
+                    $idC = ["idCurso"=>$idCurso];
+                    $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($idC), $idC);
+
                     if($img==1){
-                        $path = dirname(__DIR__).'/controladores/docs/ft-'.$idCurso.'.docx';
+                        // $path = dirname(__DIR__).'/controladores/docs/ft-'.$idCurso.'.docx';
                         $mail->addEmbeddedImage(dirname(__DIR__).'/vistas/img/rsc/ref-pago.jpeg','imagen','ref-pago.jpeg');
                     }else{
-                        $path = dirname(__DIR__).'/controladores/docs/bc-'.$idCurso.'.docx';
+                        // $path = ;
                         $mail->AddAttachment(dirname(__DIR__).'/controladores/docs/Protocolo_covid19_UPA.pdf');
+                        $mail->AddAttachment(dirname(__DIR__).'/vistas/img/flyers/'.$curso[0]["flyer"]);
+                        $mail->AddAttachment(dirname(__DIR__).'/controladores/docs/ft-'.$idCurso.'.docx');
+                        $mail->AddAttachment(dirname(__DIR__).'/controladores/docs/bc-'.$idCurso.'.docx');
                     }
-                    $mail->AddAttachment($path);
+                    
                     $mail->Body=$msg;
 
                     $mail->send();
-                    if($path!=''){
-                        unlink($path);
+                    if($img==0){
+                        unlink(dirname(__DIR__).'/controladores/docs/ft-'.$idCurso.'.docx');
+                        unlink(dirname(__DIR__).'/controladores/docs/bc-'.$idCurso.'.docx');
                     }
                     return "ok";
                 } catch (Exception $e) {
