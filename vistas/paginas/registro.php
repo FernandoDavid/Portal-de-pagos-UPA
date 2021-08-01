@@ -72,7 +72,6 @@ if (isset($rutas[1])) {
                 $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($valor["idCurso"]);
                 $fechainicio = strtotime($valor['reg_inicio']);
                 $fechafin = strtotime($valor['reg_fin']);
-                
                 if(($alumnosInscritos[0]<$valor['cupo']) && ($fechaActual>=$fechainicio && $fechaActual<=$fechafin)){
             ?>
             <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" style="border-radius: 0.5rem" class="cursos
