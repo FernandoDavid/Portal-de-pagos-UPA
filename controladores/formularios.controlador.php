@@ -173,7 +173,7 @@ class ControladorFormularios
         }
     }
     //Eliminar registro de alumnos
-    public static function ctrEliminarRegistro($tabla, $item,$campo)
+    public static function ctrEliminarRegistro($tabla, $item,$campo,$dominio)
     {
         if (isset($_POST['alumnoEliminar']) || isset($_POST['cursoEliminar'])) {
             if ($tabla == "participantes" || $tabla == "Participantes") {
@@ -183,15 +183,15 @@ class ControladorFormularios
                 $comprobante = ModeloFormularios::mdlSelecReg("Pagos", array_keys($id), $id);
                 $deletePago = ModeloFormularios::mdlBorrarRegistro("Pagos","idParticipante",$id);
                 if($comprobante[0]['comprobante']!=null){
-                    unlink("vistas/img/comprobantes/" . $participante['idCurso'] . '/' . $comprobante[0]['comprobante']);
+                    unlink($dominio."vistas/img/comprobantes/" . $participante['idCurso'] . '/' . $comprobante[0]['comprobante']);
                 }
                 ($comprobante[0][$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
             } else {
                 $id = array("idCurso"=>$_POST["cursoEliminar"]);
                 $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($id), $id)[0];
                 $val = $_POST["cursoEliminar"];
-                rmdir("vistas/img/comprobantes/" . $curso['idCurso']);
-                unlink("vistas/img/flyers/".$curso["flyer"]);
+                rmdir($dominio."vistas/img/comprobantes/" . $curso['idCurso']);
+                unlink($dominio."vistas/img/flyers/".$curso["flyer"]);
                 $_SESSION["vista"] = 3;
             }
             $eliminar = ModeloFormularios::mdlBorrarRegistro($tabla, $item, $val);
@@ -325,9 +325,8 @@ class ControladorFormularios
                         $doc -> ctrInscrito($_POST["idRevCurso"]);
 
                         $msg = '<div>
-                            <h3>Felicidades</h3>
-                            <p>Tu comprobante de pago ha sido validado, ingresa al siguiente enlace para.. : </p>
-                            <a href="' . $dominio . 'registro/' . $_POST["idRev"] . '">' . $dominio . 'registro/' . $_POST["idRev"] . '</a>
+                            <h3>Felicidades!</h3>
+                            <p>Tu comprobante de pago ha sido validado. Revisa los archivos adjuntos para obtener mayor información sobre el curso al cual te registraste : </p>
                         </div>';
                         $subject = "Info. cursos";
                         $correo = new ControladorCorreo();
@@ -353,11 +352,15 @@ class ControladorFormularios
                     </script>';
                 }
             } else {
-                $source = "vistas/img/comprobantes/" . $_POST["idRevCurso"] . "/" . $_POST["idRev"];
+                $id = array("idParticipante"=>$_POST["idRev"]);
+                $revisor[0]["depto"] == "Posgrado" ? $campo = "r1" : $campo = "r2";
+                $datos = ["comprobante"=>null];
+                $res = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,$id);
+                $source = "vistas/img/comprobantes/" . $_POST["idRevCurso"] . "/" . $res[0]["comprobante"];
                 unlink($source);
                 $msg = '<div>
                             <h3>Lo sentimos</h3>
-                            <p>Tu comprobante de pago ha sido rechazado, ingresa al siguiente enlace para.. : </p>
+                            <p>Tu comprobante de pago ha sido rechazado, ingresa al siguiente enlace para reenviar la captura de tu comprobante. Asegúrate que se vean claramente los datos del mismo en la fotografía que vayas a mandar. : </p>
                             <a href="' . $dominio . 'registro/' . $_POST["idRev"] . '">' . $dominio . 'registro/' . $_POST["idRev"] . '</a>
                             <br>
                             <img src="cid:imagen" style="margin-left:auto;margin-right:auto;margin-top: 1rem;width: 35rem;" alt="Instrucciones de pago">

@@ -194,7 +194,7 @@ $(document).ready(function() {
                     },
                     dataType: "json",
                     success: function(resPago){
-                        (resPago["r2"]) ? rev="Validado" : rev="No validado" ;
+                        (resPago["r2"]==1) ? rev="Validado" : rev="No validado" ;
                         try{
                             $(labels[8]).html('<b>Validación (Administración): </b>'+rev);
                         }catch(err){}

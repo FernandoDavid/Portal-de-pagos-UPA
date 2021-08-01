@@ -69,6 +69,13 @@ if (isset($_GET["pagina"])) {
 
 <!-- Own JavaScript -->
 <script src="<?php echo $dominio ?>vistas/js/script.js"></script>
+
+<script>
+    $(window).on('load',function(){
+        console.log("Loading...");
+    });
+</script>
+
 </body>
 
 </html>

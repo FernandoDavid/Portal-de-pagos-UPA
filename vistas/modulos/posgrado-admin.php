@@ -434,7 +434,7 @@ foreach ($res as $key => $dato) {
                         <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-danger ">Borrar alumno</button>
                         <?php
-                            $Form->ctrEliminarRegistro("Participantes", "idParticipante", $campo);
+                            $Form->ctrEliminarRegistro("Participantes", "idParticipante", $campo,$dominio);
                         ?>
                     </div>
                 </form>
@@ -887,8 +887,8 @@ foreach ($res as $key => $dato) {
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-danger">Borrar curso</button>
                         <?php
-                             $Form->ctrEliminarRegistro("Cursos", "idCurso", $campo);
-                            ?>
+                            $Form->ctrEliminarRegistro("Cursos", "idCurso", $campo,$ominio);
+                        ?>
                     </div>
                 </form>
             </div>
