@@ -40,21 +40,8 @@ $(document).ready(function() {
                             }
                         }
                     }
-                    
                     $(selector).val(res[keys[i]]);
                 }
-
-                // let inputs = $('#modalModificarAlumno').find('input');
-                // $(inputs[0]).val(tr.children('td')[0].className.split('-')[1]);
-                // $(inputs[1]).val(res["nombre"]);
-                // $(inputs[2]).val(res["telefono"]);
-                // $(inputs[3]).val(res["direc"]);
-                // $(inputs[4]).val(res["correo"]);
-                // (res["sexo"] == "H") ? inputs[6].checked = true: inputs[7].checked = true;
-                // $(inputs[5]).val(res["curp"]);
-                // $(inputs[8]).val(res["rfc"]);
-                // (res["est_civil"] == "soltero") ? inputs[9].checked = true: inputs[10].checked = true;
-                // $($('#modalModificarAlumno').find('select')[0]).val(res["idCurso"]);
             },
             error: function(err) {
                 console.log("ERR",err);
@@ -167,12 +154,14 @@ $(document).ready(function() {
             },
             dataType: "json",
             success: function(res) {
-                let labels = $('#info-inscrito').children();
-                $(labels[0]).text(res["nombre"]);
-                $(labels[2]).html('<b>Correo: </b>' + res["correo"]);
-                $(labels[3]).html('<b>Teléfono: </b>' + res["telefono"]);
-                $(labels[4]).html('<b>Dirección: </b>' + res["direc"]);
-                $(labels[5]).html('<b>CURP: </b>' + res["curp"]);
+                let labels = $('#info-inscrito').find('p');
+                // console.log(labels);
+                $($('#info-inscrito h4')[0]).text(res["nombre"]);
+                // $(labels[0]).text(res["nombre"]);
+                $(labels[0]).html('<b>Correo: </b>' + res["correo"]);
+                $(labels[1]).html('<b>Teléfono: </b>' + res["telefono"]);
+                $(labels[2]).html('<b>Dirección: </b>' + res["direc"]);
+                $(labels[3]).html('<b>CURP: </b>' + res["curp"]);
 
                 $.ajax({
                     url: dominio + 'ajax/formularios.ajax.php',
@@ -184,15 +173,15 @@ $(document).ready(function() {
                     },
                     dataType: "json",
                     success: function(res) {
-                        $(labels[6]).html('<b>RFC: </b>' + res["rfc"]);
+                        $(labels[4]).html('<b>RFC: </b>' + res["rfc"]);
                     },
                     error: function(){
-                        $(labels[6]).html('<b>RFC: </b> Sin facturación');
+                        $(labels[4]).html('<b>RFC: </b> Sin facturación');
                     }
                 });
-                $(labels[7]).html('<b>Sexo: </b>' + ((res["sexo"] == "H") ? "Masculino" : "Femenino"));
-                $(labels[8]).html('<b>Estado civil: </b>' + res["est_civil"]);
-                $(labels[9]).html('<b>Curso: </b>' + tr.children('td')[4].innerText);
+                $(labels[5]).html('<b>Sexo: </b>' + ((res["sexo"] == "H") ? "Masculino" : "Femenino"));
+                $(labels[6]).html('<b>Estado civil: </b>' + res["est_civil"]);
+                $(labels[7]).html('<b>Curso: </b>' + tr.children('td')[4].innerText);
                 let rev = "No validado";
 
                 $.ajax({
@@ -206,7 +195,10 @@ $(document).ready(function() {
                     dataType: "json",
                     success: function(resPago){
                         (resPago["r2"]) ? rev="Validado" : rev="No validado" ;
-                        $(labels[10]).html('<b>Validación (Administración): </b>'+rev);
+                        try{
+                            $(labels[8]).html('<b>Validación (Administración): </b>'+rev);
+                        }catch(err){}
+                        
                         if(resPago["comprobante"]){
                             $('#modalRevisar .modal-body img').attr({
                                 "src": dominio + 'vistas/img/comprobantes/' + res["idCurso"] + '/' + resPago["comprobante"],
@@ -218,31 +210,11 @@ $(document).ready(function() {
                                 "alt": ""
                             });
                         }
-                        // console.log("campo: ",campo);
                     }
                 });
 
-                // (res["rev2"]) ? rev="Validado" : rev="No validado" ;
-                // $(labels[10]).html('<b>Validación (Administración): </b>'+rev);
-                // if (res["pago"]) {
-                //     $('#modalRevisar .modal-body img').attr({
-                //         "src": dominio + 'vistas/img/comprobantes/' + res["idCurso"] + '/' + res["pago"],
-                //         "alt": res["pago"]
-                //     });
-                // } else {
-                //     $('#modalRevisar .modal-body img').attr({
-                //         "src": "",
-                //         "alt": ""
-                //     });
-                // }
-
                 $('#idRev').val(res["idParticipante"]);
                 $('#idRevCurso').val(res["idCurso"]);
-                // if (res[campo]) {
-                //     $($('#modalRevisar .modal-footer')[0]).addClass("visually-hidden-focusable");
-                // } else {
-                //     $($('#modalRevisar .modal-footer')[0]).removeClass("visually-hidden-focusable");
-                // }
             },
             error: function() {
                 alert("err");

@@ -102,26 +102,29 @@
                         <h2 class="modal-title">Revisión de comprobante de pago</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body row">
-                        <div id="info-inscrito" class="col-md-6">
-                            <h4>Fullname</h4>
-                            <hr>
-                            <p>Dirección: ..</p>
-                            <p>CURP: ..</p>
-                            <p>RFC: ..</p>
-                            <p>Teléfono: ..</p>
-                            <p>Curso: ..</p>
-                            <p>Sexo: ..</p>
-                            <p>Estado civil: ..</p>
-                            <p>Curso: ..</p>
+                    <form method="POST">
+                        <div class="modal-body row">
+                            <div id="info-inscrito" class="col-md-6">
+                                <h4>Fullname</h4>
+                                <hr>
+                                <p>Dirección: ..</p>
+                                <p>CURP: ..</p>
+                                <p>RFC: ..</p>
+                                <p>Teléfono: ..</p>
+                                <p>Curso: ..</p>
+                                <p>Sexo: ..</p>
+                                <p>Estado civil: ..</p>
+                                <p>Curso: ..</p>
+                                <div class="rev-date">
+                                    <input type="date" class="form-control revDate" name="revDate" placeholder="Fecha de revisión" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <h4>Comprobante</h4>
+                                <img id="revCmprobante" src="" alt="" class="img-fluid" style="max-height: 23rem">
+                            </div>
                         </div>
-                        <div class="col-md-6 text-center">
-                            <h4>Comprobante</h4>
-                            <img id="revCmprobante" src="" alt="" class="img-fluid" style="max-height: 23rem">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <form method="POST">
+                        <div class="modal-footer">
                             <input type="text" name="idRev" id="idRev" class="visually-hidden-focusable">
                             <input type="text" name="idRevCurso" id="idRevCurso" class="visually-hidden-focusable">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -131,8 +134,8 @@
                             $Form = new ControladorFormularios();
                             $Form->ctrValidarComprobante($dominio, $revisor, $campo);
                             ?>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div>

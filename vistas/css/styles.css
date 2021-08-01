@@ -5,6 +5,10 @@
     transition: all 0.3s;
 }
 
+.rev-date{
+    width: 200px;
+}
+
 img {
     max-height: 500px !important;
 }

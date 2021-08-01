@@ -416,147 +416,6 @@ foreach ($res as $key => $dato) {
             </div>
         </div>
 
-    <!-- MODIFICAR ALUMNO viejito
-    <div class="modal fade" id="modalModificarAlumno" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="exampleModalLabel">Actualizar datos del alumno</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form method="POST">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="input-group mb-3">
-                                    <input type="text" id="idAlumno" name="idAlumno" hidden>
-                                    <label class="input-group-text" for="inputGroupSelect01">Nombre del curso</label>
-                                    <select class="form-select" id="curso" name="curso" required>
-                                        <option selected value="">Elegir...</option>
-                                        <?php
-                                            $opcionescursos = ModeloFormularios::mdlSelecReg("cursos");
-                                            foreach ($opcionescursos as $key => $opcurso) {
-                                            ?>
-                                        <option value="<?php echo $opcurso[" idCurso"] ?>">
-                                            <?php echo $opcurso["curso"] ?>
-                                        </option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-xl-8 col-lg-12">
-                                <div class="input-group">
-                                    <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                            class="fas fa-user fa-lg icons"></i></span>
-                                    <input type="text" value="" class="form-control" placeholder="Nombre completo"
-                                        id="nombre" name="nombre" required>
-                                </div>
-                            </div>
-                            <div class="col-xl-4 col-lg-12 break-lg">
-                                <div class="input-group">
-                                    <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                            class="fas fa-phone-alt fa-lg icons"></i></span>
-                                    <input type="text" class="form-control" placeholder="Número de teléfono"
-                                        id="telefono" name="telefono" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-xl-8 col-lg-12">
-                                <div class="input-group">
-                                    <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                            class="fas fa-home fa-lg icons"></i></span>
-                                    <input type="text" class="form-control" placeholder="Domicilio" id="domicilio"
-                                        name="domicilio" required>
-                                </div>
-                            </div>
-                            <div class="col-xl-4 col-lg-12 break-lg">
-                                <div class="input-group">
-                                    <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                            class="fas fa-envelope fa-lg icons"></i></i></span>
-                                    <input type="text" class="form-control" placeholder="Correo" id="correo"
-                                        name="correo" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-xl-8 col-lg-12">
-                                <div class="input-group">
-                                    <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                            class="fas fa-hashtag fa-lg icons"></i></span>
-                                    <input type="text" class="form-control" placeholder="CURP" id="curp" name="curp"
-                                        required>
-                                </div>
-                            </div>
-                            <div class="col-xl-4 col-lg-12 break-lg">
-                                <div class="row">
-                                    <div class="col-4 text-center">
-                                        <div class="input-group-text">
-                                            <p style="margin-bottom: 0 !important; margin:0 auto;">Sexo</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-4 pt-2">
-                                        <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio"
-                                            name="sexoRadio"
-                                            onclick="document.getElementById('mujerRadio').checked = false" required>
-                                        <label class="ms-2" for="">Hombre</label>
-                                    </div>
-                                    <div class="col-4 pt-2">
-                                        <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio"
-                                            name="sexoRadio"
-                                            onclick="document.getElementById('hombreRadio').checked = false">
-                                        <label class="ms-2" for="">Mujer</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-xl-8 col-lg-12">
-                                <div class="input-group">
-                                    <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                            class="fas fa-address-card fa-lg icons"></i></span>
-                                    <input type="text" class="form-control" placeholder="RFC" id="rfc" name="rfc"
-                                        required>
-                                </div>
-                            </div>
-                            <div class="col-xl-4 col-lg-12 break-lg">
-                                <div class="row">
-                                    <div class="col-4 text-center">
-                                        <div class="input-group-text">
-                                            <p style="margin-bottom: 0 !important; margin:0 auto;">Estado civil</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-4 pt-2">
-                                        <input class="form-check-input ms-1" type="radio" value="soltero"
-                                            id="solteroRadio" name="estadoRadio"
-                                            onclick="document.getElementById('casadoRadio').checked = false" required>
-                                        <label class="ms-2" for="">Soltero/a</label>
-                                    </div>
-                                    <div class="col-4 pt-2">
-                                        <input class="form-check-input ms-1" type="radio" value="casado"
-                                            id="casadoRadio" name="estadoRadio"
-                                            onclick="document.getElementById('solteroRadio').checked = false">
-                                        <label class="ms-2" for="">Casado/a</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-warning">Actualizar datos</button>
-                        <?php
-                            
-                            // $Form->ctrModificarRegistroAlumno($campo);
-                            ?>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    -->
     <!-- ELIMINAR ALUMNO -->
     <div class="modal fade" id="modalEliminarAlumno" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -623,7 +482,7 @@ foreach ($res as $key => $dato) {
                                             <input type="text" id="idCurso" hidden>
                                             <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                                     class="fas fa-school fa-lg icons"></i></span>
-                                            <input type="text" class="form-control" placeholder="Aula y/o ubicación"
+                                            <input type="text" class="form-control" placeholder="Lugar de impartición"
                                                 name="aula" required>
                                         </div>
                                     </div>
@@ -655,7 +514,7 @@ foreach ($res as $key => $dato) {
                                     </div>
                                 </div>
                                 <div class="col-12 mb-1">
-                                    <h5 class="text-center"><b>Inicio y fin de clases</b></h5>
+                                    <h5 class="text-center"><b>Inicio y fin de curso</b></h5>
                                 </div>
                                 <div class="col-12 mb-4">
                                     <div class="input-group">
@@ -668,7 +527,7 @@ foreach ($res as $key => $dato) {
                                     </div>
                                 </div>
                                 <div class="col-12 mb-1">
-                                    <h5 class="text-center"><b>Horario de clases</b></h5>
+                                    <h5 class="text-center"><b>Horario de entrenamiento</b></h5>
                                 </div>
                                 <div class="col-12 mb-4">
                                     <div class="input-group">
@@ -1008,146 +867,7 @@ foreach ($res as $key => $dato) {
         </div>
     </form>
 
-    <!-- EDITAR CURSO antiguo NO BORRAR HASTA QUE EL NUEVO QUEDE JALANDO AL 100 
-    <div class="modal fade" id="modalModificarCurso" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <form method="POST">
-                    <div class="modal-header">
-                        <h2 class="modal-title" id="exampleModalLabel">Actualizar datos del curso</h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-12">
-                                <div class="row mb-3">
-                                    <div class="col-12">
-                                        <div class="input-group">
-                                            <input type="text" name="idCursoModificar" id="idCursoModificar" hidden>
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
-                                            <input type="text" class="form-control" placeholder="Nombre del curso"
-                                                name="nombreCurso" id="nombreCurso" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-12">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
-                                            <input type="text" class="form-control" placeholder="Instructor"
-                                                id="instructor" name="instructor" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-12">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
-                                            <input type="text" class="form-control" placeholder="Lugar" id="lugar"
-                                                name="lugar" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="input-group">
-                                            <span class="input-group-text">Descripción</span>
-                                            <textarea class="form-control" aria-label="Descripción" id="descripcion"
-                                                name="desc" rows="4"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-12">
-                                <div class="row mb-3">
-                                    <div class="col-6">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
-                                            <input type="number" class="form-control" placeholder="Precio" id=precio
-                                                name="precio" step="0.01" min="0" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
-                                            <input type="number" class="form-control" placeholder="Cupo" id="cupo"
-                                                name="cupo" min="0" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <h5 class="text-center">Fechas de curso</h5>
-                                </div>
-                                <div class="row mb-4">
-                                    <div class="col-6">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
-                                            <input type="date" class="form-control" id="fec_inicio" name="fec_inicio"
-                                                required>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
-                                            <input type="date" class="form-control" id="fec_fin" name="fec_fin"
-                                                required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row ">
-                                    <h5 class="text-center">Horas del curso</h5>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
-                                            <input type="time" class="form-control" id="hora_inicio" name="hora_inicio"
-                                                required>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
-                                            <input type="time" class="form-control" id="hora_fin" name="hora_fin"
-                                                required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h5 class="text-center">Precio preferencial</h5>
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" placeholder="Descuento" min="0"
-                                                max="100" name="descto" id="descto" required>
-                                            <span class="input-group-text"><i class="fas fa-percentage"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-warning">Actualizar datos</button>
-                        <?php
-                            // $Form->ctrModificarCurso();
-                        ?>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
--->
+    
 
     <!-- ELIMINAR CURSO -->
     <div class="modal fade" id="modalEliminarCurso" tabindex="-1" aria-hidden="true">

@@ -308,8 +308,13 @@ class ControladorFormularios
             $inscrito = ModeloFormularios::mdlSelecReg("Participantes", array_keys($id), $id);
             if ($_POST["btnRev"] == "Validar") {
                 $revisor[0]["depto"] == "Posgrado" ? $campo = "r1" : $campo = "r2";
-                date_default_timezone_set('America/Mexico_City');
-                $datos = array($campo=>"1","fec_".$campo=>date('y-m-d'));
+                if($campo=="r1"){
+                    date_default_timezone_set('America/Mexico_City');
+                    $datos = array($campo=>"1","fec_".$campo=>date('y-m-d'));
+                }else{
+                    $datos = [$campo=>"1","fec_".$campo=>$_POST["revDate"]];
+                }
+                
                 $res = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,$id);
                 if ($res == "ok") {
                     if($campo=="r1"){
