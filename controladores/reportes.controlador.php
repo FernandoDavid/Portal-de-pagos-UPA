@@ -140,7 +140,8 @@ class ControladorReportes
             $spreadsheet = IOFactory::load('controladores/plantillas/plantilla_ingresos.xls');
             $spreadsheet->getProperties()->setCreator("Cursos UPA")->setTitle("Ingresos");
             $spreadsheet->setActiveSheetIndex(0);
-            $activeSheet = $spreadsheet->getActiveSheet();
+            $activeSheet = $spreadsheet->getSheet(0);
+            $rfcSheet = $spreadsheet->getSheet(1);
 
             $styles_v1 = [
                 'borders' => [
@@ -159,9 +160,10 @@ class ControladorReportes
             ];
 
             $activeSheet->getStyle('A1:J1')->applyFromArray($styles_v1); 
+            $rfcSheet->getStyle('A1:E1')->applyFromArray($styles_v1);
             $participantes = ModeloFormularios::mdlSelecReg("Participantes");
-            $lastRow = 1;
-            // $row = [];
+            $lastRow = [1,2];
+
             foreach($participantes as $key=>$participante){
                 $idCurso = ["idCurso"=>$participante["idCurso"]];
                 $idParticipante = ["idParticipante"=>$participante["idParticipante"]];
@@ -181,7 +183,25 @@ class ControladorReportes
                     "fec_rev"=>$pago[0]["fec_r2"]
                 ];
 
-                $activeSheet->getStyle('C'.$key+2)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                if(isset($factura[0]["rfc"])){
+                    $record = [
+                        "participante"=>$participante["nombre"],
+                        "curp"=>$participante["curp"],
+                        "rfc"=>$factura[0]["rfc"],
+                        "cfdi"=>$factura[0]["cfdi"],
+                        "obs"=>$factura[0]["obs"]
+                    ];
+                    if($lastRow[1]%2==0){
+                        $rfcSheet->getStyle('A'.($lastRow[1]).':E'.($lastRow[1]))->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFD9E1F2');
+                    }else{
+                        $rfcSheet->getStyle('A'.($lastRow[1]).':E'.($lastRow[1]))->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFB4C6E7');
+                    }
+                    $rfcSheet->getStyle('A'.$lastRow[1].':E'.$lastRow[1])->getBorders()->getInside()->setBorderStyle(Border::BORDER_THIN)->getColor()->setARGB('FFFFFFFF');
+                    $rfcSheet->fromArray($record,null,'A'.$lastRow[1]);
+                    $lastRow[1]++;
+                }
+
+                // $activeSheet->getStyle('C'.$key+2)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
                 if($key%2==0){
                     $activeSheet->getStyle('A'.($key+2).':J'.($key+2))->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFD9E1F2');
                 }else{
@@ -189,11 +209,11 @@ class ControladorReportes
                 }
                 $activeSheet->getStyle('A'.($key+2).':J'.($key+2))->getBorders()->getInside()->setBorderStyle(Border::BORDER_THIN)->getColor()->setARGB('FFFFFFFF');
 
-                $lastRow = $key+2;
-                $activeSheet->fromArray($row,null,'A'.$lastRow);
+                $lastRow[0] = $key+2;
+                $activeSheet->fromArray($row,null,'A'.$lastRow[0]);
             }
-
-            $activeSheet->getStyle('A1:J'.$lastRow)->getAlignment()->setWrapText(true);
+            $activeSheet->getStyle('A1:J'.$lastRow[0])->getAlignment()->setWrapText(true);
+            $rfcSheet->getStyle('A1:E'.$lastRow[1])->getAlignment()->setWrapText(true);
 
             ob_end_clean();
             header('Content-Type: application/vnd.ms-excel');

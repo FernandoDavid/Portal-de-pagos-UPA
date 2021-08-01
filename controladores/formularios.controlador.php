@@ -191,6 +191,7 @@ class ControladorFormularios
                 $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($id), $id)[0];
                 $val = $_POST["cursoEliminar"];
                 rmdir("vistas/img/comprobantes/" . $curso['idCurso']);
+                unlink("vistas/img/flyers/".$curso["flyer"]);
                 $_SESSION["vista"] = 3;
             }
             $eliminar = ModeloFormularios::mdlBorrarRegistro($tabla, $item, $val);
@@ -404,8 +405,8 @@ class ControladorFormularios
 
                 $insertar = ModeloFormularios::mdlCrearRegistro("Cursos", array_keys($datos), $datos);
                 if ($insertar == "ok") {
-                    $datCurso = ["idCurso"=>$_POST["curso"]];
-                    $id = ModeloFormularios::mdlSelecReg("Cursos", array_keys($datCurso), $datCurso);
+                    // $datCurso = ["curso"=>$_POST["curso"]];
+                    $id = ModeloFormularios::mdlSelecReg("Cursos", array_keys($datos), $datos);
                     $extFile = explode("/", $_FILES["flyer"]["type"]);
                     // echo '<script>console.log("'.$id[0]["idCurso"].'.'.$extFile[1].'")</script>';
                     $datos = [
