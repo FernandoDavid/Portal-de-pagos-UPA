@@ -84,7 +84,7 @@ class ModeloFormularios
 
     //////////////////////////////CURSOS//////////////////////////////
     static public function mdlVerificarCupo($idCurso){
-        $stmt = Conexion::conectar()->prepare("SELECT COUNT(i.idParticipante) FROM Participantes i INNER JOIN Cursos c ON i.idCurso=c.idCurso where c.idCurso=$idCurso");
+        $stmt = Conexion::conectar()->prepare("Select count(*) from pagos pag inner join participantes par on pag.idParticipante=par.idParticipante inner join cursos c on par.idCurso=c.idCurso where pag.comprobante<>'' and c.idCurso=$idCurso");
         $stmt -> execute();
         return $stmt->fetch();
     }
