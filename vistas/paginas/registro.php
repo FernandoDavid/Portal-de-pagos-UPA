@@ -127,14 +127,15 @@ if (isset($rutas[1])) {
                                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                             class="fas fa-user fa-lg icons"></i></span>
                                     <input type="text" class="form-control" placeholder="Nombre completo" name="nombre"
-                                        required>
+                                        required pattern='[^0-9\.\,\"\?\!\;\:\#\$\%\&\(\)\*\+\-\/\<\>\=\@\[\]\\\^\_\{\}\|\~]+'>
                                 </div>
                             </div>
                             <div class="col mb-2">
                                 <div class="input-group">
                                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                             class="fas fa-hashtag fa-lg icons"></i></span>
-                                    <input type="text" class="form-control" placeholder="CURP" name="curp" required>
+                                    <input type="text" class="form-control" placeholder="CURP" name="curp" required
+                                    pattern="[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}">
                                 </div>
                             </div>
                             <div class="col mb-2">
@@ -150,7 +151,7 @@ if (isset($rutas[1])) {
                                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                             class="fas fa-phone-alt fa-lg icons"></i></span>
                                     <input type="text" class="form-control" placeholder="Número de teléfono"
-                                        name="telefono" required>
+                                        name="telefono" required pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})">
                                 </div>
                             </div>
                         </div>
@@ -160,7 +161,8 @@ if (isset($rutas[1])) {
                                 <div class="input-group">
                                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                             class="fas fa-envelope fa-lg icons"></i></i></span>
-                                    <input type="text" class="form-control" placeholder="Correo" name="correo" required>
+                                    <input type="text" class="form-control" placeholder="Correo" name="correo" required
+                                    pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])">
                                 </div>
                             </div>
                             <div class="row mb-2 gx-0">
@@ -232,7 +234,8 @@ if (isset($rutas[1])) {
                             <div class="input-group">
                                 <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                         class="fas fa-address-card fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="RFC" name="rfc" id="rfc">
+                                <input type="text" class="form-control" placeholder="RFC" name="rfc" id="rfc"
+                                pattern="^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$">
                             </div>
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-12 mb-3">

@@ -7,7 +7,7 @@
             <div class="col-12 mb-3">
                 <div class="input-group">
                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fas fa-envelope fa-lg icons"></i></span>
-                    <input type="text" class="form-control" placeholder="Correo" name="correoIngreso" required>
+                    <input type="text" class="form-control" placeholder="Correo" name="correoIngreso" required pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])">
                 </div>
             </div>
             <div class="col-12 mb-3">
