@@ -86,7 +86,7 @@ if (isset($rutas[1])) {
                         <?php echo "Instructor: ".$valor["instructor"] ?>
                     </h6>
                     <p>
-                        <?php echo $valor["desc"] ?>
+                        <?php echo $valor["objetivo"] ?>
                     </p>
                     <div class="row">
                         <div class="col-6">

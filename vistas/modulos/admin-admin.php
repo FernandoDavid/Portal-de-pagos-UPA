@@ -37,10 +37,10 @@
         </nav>
     </div>
 
-    <div class="container-fluid mt-5 pt-4">
+    <div class="container-fluid mt-5 pt-3">
         <!-- Tabla mostrar alumnos pendientes -->
-        <div id="pendientesTable" class="visually-hidden-focusable">
-            <h1 class="text-center">Tabla pendientes</h1>
+        <div id="pendientesTable" class="visually-hidden-focusable mb-4">
+            <h1 class="text-center">Pendientes por revisar</h1>
             <div class="table-responsive">
                 <table class="table table-striped table-success mb-4">
                     <thead>
@@ -93,6 +93,8 @@
                     ?>
             </form>
         </div>
+
+
 
         <!-- Modal revisar comprobante -->
         <div class="modal fade" id="modalRevisar" tabindex="-1" aria-hidden="true">

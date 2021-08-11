@@ -191,7 +191,7 @@ foreach ($res as $key => $dato) {
             <table class="table table-striped table-primary table-hover mb-4">
                 <thead>
                     <th scope="col">#</th>
-                    <th scope="col">Nombre del curso</th>
+                    <th scope="col">Curso</th>
                     <th scope="col">Instructor</th>
                     <th scope="col">Registro del curso</th>
                     <th scope="col">Inicio del curso</th>
@@ -226,16 +226,16 @@ foreach ($res as $key => $dato) {
                         <td>
                             <?php echo "De ".$datos['hora_inicio']." a ".$datos['hora_fin']  ?>
                         </td>
-                        <td>
+                        <td class="text-center">
                             <?php echo $datos['precio']  ?>
                         </td>
-                        <td>
+                        <td class="text-center">
                             <?php echo $alumnosInscritos[0]."/".$datos['cupo']  ?>
                         </td>
-                        <td><button type="button" class="btn btn-warning btnModificarCurso"
+                        <td class="text-center"><button type="button" class="btn btn-warning btnModificarCurso"
                                 style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button>
                         </td>
-                        <td><button type="button" class="btn btn-danger btnEliminarCurso" style="border-color: black"><i
+                        <td class="text-center"><button type="button" class="btn btn-danger btnEliminarCurso" style="border-color: black"><i
                                     class="fas fa-trash-alt"></i></button></td>
                     </tr>
                     <?php } ?>
@@ -546,7 +546,7 @@ foreach ($res as $key => $dato) {
                             <div class="col-xl-2 col-lg-3 col-md-12 align-self-center">
                                 <div class="row justify-content-center align-items-center">
                                     <div class="col-12 text-center">
-                                        <h5><b>Texto sample</b></h5>
+                                        <h5><b>Detalles</b></h5>
                                     </div>
                                     <div class="col-12 mb-2">
                                         <div class="input-group">
@@ -569,7 +569,7 @@ foreach ($res as $key => $dato) {
                                         </div>
                                     </div>
                                     <div class="col-12 text-center">
-                                        <h5><b>Texto sample</b></h5>
+                                        <h5><b>Clases</b></h5>
                                     </div>
                                     <div class="col-12 mb-2">
                                         <div class="input-group">
@@ -758,19 +758,17 @@ foreach ($res as $key => $dato) {
                             <div class="col-xl-2 col-lg-3 col-md-12 align-self-center">
                                 <div class="row justify-content-center align-items-center">
                                     <div class="col-12 text-center">
-                                        <h5><b>Texto sample</b></h5>
+                                        <h5><b>Detalles</b></h5>
                                     </div>
 
                                     <div class="col-12 mb-2">
                                         <div class="input-group">
-
                                             <input type="number" class="form-control" placeholder="Precio" name="precio"
                                                 step="0.01" min="0" required>
                                         </div>
                                     </div>
                                     <div class="col-12 mb-2">
                                         <div class="input-group">
-
                                             <input type="number" class="form-control" placeholder="Descuento"
                                                 name="desc" step="0" min="0" max="100" required>
                                         </div>
@@ -783,7 +781,7 @@ foreach ($res as $key => $dato) {
                                         </div>
                                     </div>
                                     <div class="col-12 text-center">
-                                        <h5><b>Texto sample</b></h5>
+                                        <h5><b>Clases</b></h5>
                                     </div>
                                     <div class="col-12 mb-2">
                                         <div class="input-group">
