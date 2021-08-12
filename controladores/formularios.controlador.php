@@ -59,12 +59,18 @@ class ControladorFormularios
                             // $doc -> ctrRegistro($curso[0]['idCurso']);
 
                             $msg = '<div>
-                                <p>Ingresa al siguiente enlace para subir tu comprobante de pago: </p>
+                                <p>Gracias por registrarte a través de nuestra plataforma.   </p>
+                                <br>
+                                <p>Para continuar con tu proceso de registro debes de hacer el depósito por la cantidad que se te indica en el siguiente link:</p>
                                 <a href="' . $dominio . 'registro/' . $id["idParticipante"] . '">' . $dominio . 'registro/' . $id["idParticipante"] . '</a>
                                 <br>
+                                <p>
+                                    Dentro de este mismo link deberás subir una captura o foto de tu comprobante de pago para pasar a la validación de tu lugar dentro del curso.
+                                    <b>HASTA NO TENER VALIDADO TU COMPROBANTE NO SE TE DARÁ TU LUGAR DENTRO DEL CURSO</b>
+                                </p>
                                 <img src="cid:imagen" style="margin-left:auto;margin-right:auto;margin-top: 1rem;width: 35rem;" alt="Instrucciones de pago">
                             </div>';
-                            $subject = "Info. cursos";
+                            $subject = "Regsitro a un curso UPA";
                             $correo = new ControladorCorreo();
                             $correo->ctrEnviarCorreo($datos["correo"],$datos["nombre"],$subject, $msg,$curso[0]['idCurso'],1);
 
@@ -328,7 +334,7 @@ class ControladorFormularios
                             <h3>Felicidades!</h3>
                             <p>Tu comprobante de pago ha sido validado. Revisa los archivos adjuntos para obtener mayor información sobre el curso al cual te registraste : </p>
                         </div>';
-                        $subject = "Info. cursos";
+                        $subject = "Registro Exitoso";
                         $correo = new ControladorCorreo();
                         $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg,$_POST["idRevCurso"],0);
                     }

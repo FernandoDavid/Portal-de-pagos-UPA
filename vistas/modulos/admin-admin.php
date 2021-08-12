@@ -85,13 +85,30 @@
                     </tbody>
                 </table>
             </div>
-            <form method="POST">
-                <input type="submit" class="btn btn-primary bg-upa-secondary" name="ingresos" value="Ingresos">
-                <?php
-                    $File = new ControladorReportes();
-                    $File->ctrIngresos();
-                    ?>
-            </form>
+            <div class="d-flex align-items-start">
+                <div>
+                    <!-- <form method="POST">
+                        <button type="submit" class="btn btn-primary bg-upa-secondary">Ingresos</button>
+                        <input type="hidden" name="ingresos" value=0>
+                        <?php
+                            // $File = new ControladorReportes();
+                            // $File->ctrIngresos();
+                        ?>
+                    </form> -->
+                </div>
+                <div>
+                    <form method="POST">
+                        <button type="submit" class="btn btn-danger">Ingresos</button>
+                        <!-- <input type="hidden" name="pdf" value=1> -->
+                        <input type="hidden" name="ingresosPdf" value=0>
+                        <?php
+                            $File2 = new ControladorReportes();
+                            $File2->ctrIngresosPdf();
+                        ?>
+                    </form>
+                </div>
+            </div>
+            
         </div>
 
 

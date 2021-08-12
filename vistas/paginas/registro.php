@@ -254,9 +254,11 @@ if (isset($rutas[1])) {
                             </div>
                         </div>
                     </div>
-
-
-                    <button type="submit" class="btn btn-primary">Enviar</button>
+                    <div class="row justify-content-between">
+                        <div class="col-3" style="margin: 0 auto !important;">
+                            <button type="submit" class="btn btn-primary w-100">Enviar formulario</button>
+                        </div>
+                    </div>
                     <?php
                     /*=====================================
                     INSTANCIA Y LLAMADO DE CLASE DE INGRESO
@@ -267,12 +269,13 @@ if (isset($rutas[1])) {
                 </form>
             </div>
         </div>
-        <div class="row m-2">
-            <div class="col-1">
+        <div class="row mt-2">
+            <div class="col-1 ms-auto">
                 <button type="button" id="btnRegresar" class="btn btn-danger ">Regresar</button>
             </div>
         </div>
     </div>
+    
     <script>
         function mostrarFactura(){
             var facturacion=document.getElementById("facturacion-form");
