@@ -86,24 +86,24 @@
                 </table>
             </div>
             <div class="d-flex align-items-start">
-                <div>
-                    <!-- <form method="POST">
-                        <button type="submit" class="btn btn-primary bg-upa-secondary">Ingresos</button>
+                <div class="me-3">
+                    <form method="POST">
+                        <button type="submit" class="btn btn-primary bg-upa-secondary"><i class="fas fa-file-pdf me-1"></i> Ingresos</button>
                         <input type="hidden" name="ingresos" value=0>
                         <?php
-                            // $File = new ControladorReportes();
-                            // $File->ctrIngresos();
+                            $File = new ControladorReportes();
+                            $File->ctrIngresos();
                         ?>
-                    </form> -->
+                    </form>
                 </div>
                 <div>
                     <form method="POST">
-                        <button type="submit" class="btn btn-danger">Ingresos</button>
+                        <button type="submit" class="btn btn-danger"><i class="fas fa-file-excel me-1"></i> Ingresos</button>
                         <!-- <input type="hidden" name="pdf" value=1> -->
                         <input type="hidden" name="ingresosPdf" value=0>
                         <?php
-                            $File2 = new ControladorReportes();
-                            $File2->ctrIngresosPdf();
+                            // $File2 = new ControladorReportes();
+                            $File->ctrIngresosPdf();
                         ?>
                     </form>
                 </div>
