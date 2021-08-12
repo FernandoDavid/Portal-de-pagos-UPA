@@ -136,7 +136,7 @@ class ControladorReportes
     }
 
     public static function ctrIngresos(){
-        if(isset($_POST["ingresos"])){
+        if(isset($_POST["reportType"]) && isset($_POST["fec_inicio"]) && isset($_POST["fec_fin"])){
             $spreadsheet = IOFactory::load('controladores/plantillas/plantilla_ingresos.xls');
             $spreadsheet->getProperties()->setCreator("Cursos UPA")->setTitle("Ingresos");
             $spreadsheet->setActiveSheetIndex(0);
@@ -161,12 +161,15 @@ class ControladorReportes
 
             $activeSheet->getStyle('A1:J1')->applyFromArray($styles_v1); 
             $rfcSheet->getStyle('A1:E1')->applyFromArray($styles_v1);
-            $participantes = ModeloFormularios::mdlSelecReg("Participantes");
+            $pagos = ModeloFormularios::mdlSelecRango("Pagos", "fec_r2",$_POST["fec_inicio"],$_POST["fec_fin"]);
+            // $participantes = ModeloFormularios::mdlSelecReg("Participantes");
             $lastRow = [1,2];
 
-            foreach($participantes as $key=>$participante){
+            foreach($pagos as $key=>$pago){
+                
+                $idParticipante = ["idParticipante"=>$pago["idParticipante"]];
+                $participante = ModeloFormularios::mdlSelecReg("Participantes", array_keys($idParticipante), $idParticipante)[0];
                 $idCurso = ["idCurso"=>$participante["idCurso"]];
-                $idParticipante = ["idParticipante"=>$participante["idParticipante"]];
                 $pago = ModeloFormularios::mdlSelecReg("Pagos", array_keys($idParticipante), $idParticipante);
                 $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($idCurso), $idCurso);
                 $factura = ModeloFormularios::mdlSelecReg("Facturas", array_keys($idParticipante), $idParticipante);
@@ -215,138 +218,38 @@ class ControladorReportes
             $activeSheet->getStyle('A1:J'.$lastRow[0])->getAlignment()->setWrapText(true);
             $rfcSheet->getStyle('A1:E'.$lastRow[1])->getAlignment()->setWrapText(true);            
 
-            ob_end_clean();
-            header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="Ingresos.xls"');
-            header('Cache-Control: max-age=0');
+            if($_POST["reportType"]=="PDF"){
+                // $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooterDrawing();
+                // $drawing->setName('Encabezado Ingresos');
+                // // $drawing->setImageResource('');
+                // $drawing->setPath('vistas/img/rsc/header.png');
+                // $drawing->setHeight(50);
 
-            $writer = IOFactory::createWriter($spreadsheet, 'Xls');
-            $writer->save('php://output');
-        }
-    }
+                // $activeSheet->getHeaderFooter()->addImage($drawing, \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooter::IMAGE_HEADER_CENTER);
+                // $rfcSheet->getHeaderFooter()->addImage($drawing, \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooter::IMAGE_HEADER_CENTER);                
 
-    public static function ctrIngresosPdf(){
-        if(isset($_POST["ingresosPdf"])){
-            $spreadsheet = IOFactory::load('controladores/plantillas/plantilla_ingresos.xls');
-            // $spreadsheet->getProperties()->setCreator("Cursos UPA")->setTitle("Ingresos");
-            // $spreadsheet->setActiveSheetIndex(0);
-            // $activeSheet = $spreadsheet->getSheet(0);
-            // $rfcSheet = $spreadsheet->getSheet(1);
+                $activeSheet->getHeaderFooter()->setOddHeader('&C&HPlease treat this document as confidential!');
+                $rfcSheet->getHeaderFooter()
+                         ->setOddFooter('&L&B REPORTE DE EDUCACIÓN CONTÍNUA &"-,Regular"('.$_POST["fec_inicio"].' - '.$_POST["fec_fin"].'). Creado el &D  &RPágina &P de &N');
 
-            // Set document properties
-            // $spreadsheet->getProperties()->setCreator('Maarten Balliauw')
-            // ->setLastModifiedBy('Maarten Balliauw')
-            // ->setTitle('PDF Test Document')
-            // ->setSubject('PDF Test Document')
-            // ->setDescription('Test document for PDF, generated using PHP classes.')
-            // ->setKeywords('pdf php')
-            // ->setCategory('Test result file');
+                $pdfWriter = new \PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf($spreadsheet);
+                $pdfWriter->writeAllSheets();
 
-            /*
-            $styles_v1 = [
-                'borders' => [
-                    'inside' => [
-                        'borderStyle' => Border::BORDER_THIN,
-                        'color' => [ 'argb' => 'FFFFFFFF']
-                    ]
-                ],
-                'fill' => [
-                    'fillType' => Fill::FILL_SOLID,
-                    'startColor' => [ 'argb' => 'FF4472C4' ]
-                ],
-                'font' => [
-                    'color' => [ 'argb' => 'FFFFFFFF' ]
-                ]
-            ];
+                ob_end_clean();
+                header('Content-Type: application/pdf');
+                header('Content-Disposition: attachment;filename="Ingresos.pdf"');
+                header('Cache-Control: max-age=0');
 
-            $activeSheet->getStyle('A1:J1')->applyFromArray($styles_v1); 
-            $rfcSheet->getStyle('A1:E1')->applyFromArray($styles_v1);
-            $participantes = ModeloFormularios::mdlSelecReg("Participantes");
-            $lastRow = [1,2];
+                $pdfWriter->save('php://output');
+            }else{
+                ob_end_clean();
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename="Ingresos.xls"');
+                header('Cache-Control: max-age=0');
 
-            foreach($participantes as $key=>$participante){
-                $idCurso = ["idCurso"=>$participante["idCurso"]];
-                $idParticipante = ["idParticipante"=>$participante["idParticipante"]];
-                $pago = ModeloFormularios::mdlSelecReg("Pagos", array_keys($idParticipante), $idParticipante);
-                $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($idCurso), $idCurso);
-                $factura = ModeloFormularios::mdlSelecReg("Facturas", array_keys($idParticipante), $idParticipante);
-                $row = [
-                    "participante"=>$participante["nombre"],
-                    "curso"=>$curso[0]["curso"],
-                    "factura"=>(isset($factura[0]["rfc"]))? "Si" : "No",
-                    "genero"=>($participante["sexo"]=="H")? "Masculino" : "Femenino",
-                    "validado"=>($pago[0]["r2"]==1)? "Si" : "No",
-                    "tipo"=>($curso[0]["tipo"]==1)? "Curso" : "Diplomado",
-                    "curp"=>$participante["curp"],
-                    "rfc"=>(isset($factura[0]["rfc"]))? $factura[0]["rfc"] : null,
-                    "subtot"=>floatval($pago[0]["pago"]*(1-intval($pago[0]["desc"])/100)),
-                    "fec_rev"=>(isset($pago[0]["fec_r2"]))? $pago[0]["fec_r2"] : null
-                ];
-
-                if(isset($factura[0]["rfc"])){
-                    $record = [
-                        "participante"=>$participante["nombre"],
-                        "curp"=>$participante["curp"],
-                        "rfc"=>$factura[0]["rfc"],
-                        "cfdi"=>$factura[0]["cfdi"],
-                        "obs"=>$factura[0]["obs"]
-                    ];
-                    if($lastRow[1]%2==0){
-                        $rfcSheet->getStyle('A'.($lastRow[1]).':E'.($lastRow[1]))->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFD9E1F2');
-                    }else{
-                        $rfcSheet->getStyle('A'.($lastRow[1]).':E'.($lastRow[1]))->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFB4C6E7');
-                    }
-                    $rfcSheet->getStyle('A'.$lastRow[1].':E'.$lastRow[1])->getBorders()->getInside()->setBorderStyle(Border::BORDER_THIN)->getColor()->setARGB('FFFFFFFF');
-                    $rfcSheet->fromArray($record,null,'A'.$lastRow[1]);
-                    $lastRow[1]++;
-                }
-
-                // $activeSheet->getStyle('C'.$key+2)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-                if($key%2==0){
-                    $activeSheet->getStyle('A'.($key+2).':J'.($key+2))->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFD9E1F2');
-                }else{
-                    $activeSheet->getStyle('A'.($key+2).':J'.($key+2))->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFB4C6E7');
-                }
-                $activeSheet->getStyle('A'.($key+2).':J'.($key+2))->getBorders()->getInside()->setBorderStyle(Border::BORDER_THIN)->getColor()->setARGB('FFFFFFFF');
-
-                $lastRow[0] = $key+2;
-                $activeSheet->fromArray($row,null,'A'.$lastRow[0]);
+                $writer = IOFactory::createWriter($spreadsheet, 'Xls');
+                $writer->save('php://output');
             }
-            $activeSheet->getStyle('A1:J'.$lastRow[0])->getAlignment()->setWrapText(true);
-            $rfcSheet->getStyle('A1:E'.$lastRow[1])->getAlignment()->setWrapText(true); 
-            
-            */
-
-            // $className = \PhpOffice\PhpSpreadsheet\Writer\Pdf\Tcpdf::class;
-                
-            // echo '<script>alert("PDF")</script>';
-
-            // $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooterDrawing();
-            // $drawing->setName('Encabezado Ingresos');
-            // $drawing->setPath(dirname(__DIR__).'/vistas/img/rsc/header.png');
-            // $drawing->setHeight(50);
-
-            // $activeSheet->getHeaderFooter()->addImage($drawing, \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooter::IMAGE_HEADER_CENTER);
-            // $rfcSheet->getHeaderFooter()->addImage($drawing, \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooter::IMAGE_HEADER_CENTER);                
-
-            // IOFactory::registerWriter('Pdf', \PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf::class);
-
-            // $pdfWriter = IOFactory::createWriter($spreadsheet,'Pdf');
-
-            $class = \PhpOffice\PhpSpreadsheet\Writer\Pdf\Tcpdf::class;
-            \PhpOffice\PhpSpreadsheet\IOFactory::registerWriter('Pdf', $class);
-            $pdfWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Pdf');
-
-            // $pdfWriter = new \PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf($spreadsheet);
-            $pdfWriter->writeAllSheets();
-
-            ob_end_clean();
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: attachment;filename="Ingresos.pdf"');
-            header('Cache-Control: max-age=0');
-
-            $pdfWriter->save('php://output');
         }
     }
-
 }

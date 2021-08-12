@@ -85,33 +85,81 @@
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex align-items-start">
+            <button type="submit" class="btn btn-primary bg-upa-secondary btn-Report" data-bs-toggle="modal" data-bs-target="#modalIngresos">Reporte de ingresos</button>
+            <!-- <div class="d-flex align-items-start">
                 <div class="me-3">
                     <form method="POST">
                         <button type="submit" class="btn btn-primary bg-upa-secondary"><i class="fas fa-file-pdf me-1"></i> Ingresos</button>
                         <input type="hidden" name="ingresos" value=0>
                         <?php
-                            $File = new ControladorReportes();
-                            $File->ctrIngresos();
+                            // $File = new ControladorReportes();
+                            // $File->ctrIngresos();
                         ?>
                     </form>
                 </div>
                 <div>
                     <form method="POST">
                         <button type="submit" class="btn btn-danger"><i class="fas fa-file-excel me-1"></i> Ingresos</button>
-                        <!-- <input type="hidden" name="pdf" value=1> -->
                         <input type="hidden" name="ingresosPdf" value=0>
                         <?php
-                            // $File2 = new ControladorReportes();
-                            $File->ctrIngresosPdf();
+                            // $File->ctrIngresosPdf();
                         ?>
                     </form>
                 </div>
-            </div>
+            </div> -->
             
         </div>
 
-
+        <!-- Modal generar reporte de ingresos -->
+        <div class="modal fade" id="modalIngresos" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Reporte de ingresos</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST">
+                        <div class="modal-body row">
+                            <div class="col-2">
+                                <div class="input-group-text input-group-text2">
+                                    <i class="fas fa-file fa-lg icons"></i>
+                                </div>
+                            </div>
+                            <div class="col-4 pt-2">
+                                <input class="form-check-input ms-1" type="radio" value="Excel" id="excelReport"
+                                    name="reportType"
+                                    required
+                                    checked>
+                                <label class="ms-2" for="">Excel</label>
+                            </div>
+                            <div class="col-4 pt-2">
+                                <input class="form-check-input ms-1" type="radio" value="PDF" id="pdfReport"
+                                    name="reportType">
+                                <label class="ms-2" for="">PDF</label>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <div class="input-group">
+                                    <span class="input-group-text input-group-text2" id="addon-wrapping">Del</span>
+                                    <input type="date" class="form-control" name="fec_inicio" id="fec_inicio"
+                                        required>
+                                    <span class="input-group-text input-group-text2"
+                                        id="addon-wrapping">al</i></span>
+                                    <input type="date" class="form-control" name="fec_fin" id="fec_fin" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <input type="submit" class="btn text-white bg-upa-secondary" name="btnIngresos" value="Generar" data-bs-dismiss="modal">
+                            <?php
+                                $File = new ControladorReportes();
+                                $File->ctrIngresos();
+                            ?>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal revisar comprobante -->
         <div class="modal fade" id="modalRevisar" tabindex="-1" aria-hidden="true">

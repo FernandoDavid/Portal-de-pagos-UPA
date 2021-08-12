@@ -89,4 +89,13 @@ class ModeloFormularios
         return $stmt->fetch();
     }
 
+    static public function mdlSelecRango($tabla,$campo,$inicio,$fin){
+        $query = "SELECT * FROM $tabla WHERE $campo BETWEEN :fec_inicio AND :fec_fin";
+        $stmt=Conexion::conectar()->prepare($query);
+        $stmt -> bindParam(":fec_inicio",$inicio,PDO::PARAM_STR);
+        $stmt -> bindParam(":fec_fin",$fin,PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
 }

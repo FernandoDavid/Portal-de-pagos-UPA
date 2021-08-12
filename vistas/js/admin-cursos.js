@@ -222,6 +222,10 @@ $(document).ready(function() {
         });
     });
 
+    $('.btn-Report').on('click',function(){
+        $('#modalIngresos form')[0].reset();
+    });
+
     // LATERAL NAVBAR
     const showNavbar = (toggleId, navId, bodyId, headerId) => {
         const toggle = document.getElementById(toggleId),
