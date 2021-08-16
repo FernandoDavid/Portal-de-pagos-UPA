@@ -66,8 +66,8 @@ if (isset($rutas[1])) {
     </div>
 
     <!-- Paso 1 (Carrousel con los cursos) -->
-    <div class="visually-hidden-focusable container" id="card0">
-        <div class="d-flex justify-content-evenly">
+    <div class="visually-hidden-focusable container px-0" id="card0">
+        <div class="d-flex justify-content-evenly flex-wrap align-content-around">
             <?php foreach ($res as $valor) : 
                 $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($valor["idCurso"]);
                 $fechainicio = strtotime($valor['reg_inicio']);

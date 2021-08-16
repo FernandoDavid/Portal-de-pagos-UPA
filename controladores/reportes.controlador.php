@@ -252,4 +252,10 @@ class ControladorReportes
             }
         }
     }
+
+    public static function ctrParticipantes(){
+        if(isset($_POST["idCurso"])){
+
+        }
+    }
 }

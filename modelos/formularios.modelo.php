@@ -98,4 +98,14 @@ class ModeloFormularios
         return $stmt->fetchAll();
     }
 
+    static public function mdlSelecCoincidencias($coincidencia,$campo,$if){
+        $query = "SELECT * FROM Participantes p INNER JOIN Cursos c ON p.idCurso=c.idCurso INNER JOIN Pagos pg ON p.idParticipante=pg.idParticipante WHERE (p.nombre LIKE '%$coincidencia%' OR p.correo LIKE '%$coincidencia%' OR p.curp LIKE '%$coincidencia%' OR c.curso LIKE '%$coincidencia%') AND pg.$campo=:rev";
+        $stmt=Conexion::conectar()->prepare($query);
+        // $stmt -> bindParam(":coincidencia",$coincidencia,PDO::PARAM_STR);
+        // $stmt -> bindParam(":campo_rev",$campo,PDO::PARAM_STR);
+        $stmt -> bindParam(":rev",$if,PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
 }

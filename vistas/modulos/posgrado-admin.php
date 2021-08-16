@@ -63,6 +63,16 @@ foreach ($res as $key => $dato) {
     <!-- ALUMNOS PENDIENTES-->
     <div id="pendientesTable" class="visually-hidden-focusable">
         <h1 class="text-center">Aspirantes pendientes</h1>
+
+        <div class="row mb-4">
+            <div class="col-sm-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-white bounded-0 border-1 border-dark" id="basic-addon1"><i class="fas fa-search"></i></span>
+                    <input type="text" class="form-control search-input" onkeyup="search(this)" name="searchPendientesPos" id="liveSearch" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+                </div>
+            </div>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-striped table-primary table-hover mb-4">
                 <thead>
@@ -75,7 +85,7 @@ foreach ($res as $key => $dato) {
                     <th scope="col">Modificar</th>
                     <th scope="col">Eliminar</th>
                 </thead>
-                <tbody>
+                <tbody class="searchContainer" name="posPendientes">
                     <?php
                     foreach ($pendientes as $key => $datos) {
                         $pagoDato = ["idParticipante"=>$datos["idParticipante"]];
@@ -101,7 +111,7 @@ foreach ($res as $key => $dato) {
                         </td>
                         <td>
                             <button type="submit" class="btn btn-<?php if (!$pagoPart[0]["comprobante"]) {echo 'secondary' ;} else
-                                {echo 'primary' ;}?> btnComprobante position-relative">
+                                {echo 'primary' ;}?> btnComprobante position-relative" onclick="comprobante(this)">
                                 <i class="fas fa-file-invoice-dollar"></i>
                                 <?php if ($pagoPart[0]["r2"]) : ?>
                                 <span
@@ -111,10 +121,10 @@ foreach ($res as $key => $dato) {
                                 <?php endif ?>
                             </button>
                         </td>
-                        <td><button type="submit" class="btn btn-warning btnEditarAlumno"
+                        <td><button type="submit" class="btn btn-warning btnEditarAlumno" onclick="editarParticipante(this)"
                                 style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button>
                         </td>
-                        <td><button type="button" class="btn btn-danger btnEliminarAlumno"
+                        <td><button type="button" class="btn btn-danger btnEliminarAlumno" onclick="eliminarParticipante(this)"
                                 style="border-color: black"><i class="fas fa-trash-alt"></i></button></td>
                     </tr>
                     <?php } ?>
@@ -127,6 +137,16 @@ foreach ($res as $key => $dato) {
     <!-- ALUMNOS INSCRITOS -->
     <div id="inscritosTable" class="visually-hidden-focusable">
         <h1 class="text-center">Tabla inscritos</h1>
+
+        <div class="row mb-4">
+            <div class="col-sm-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-white bounded-0 border-1 border-dark" id="basic-addon1"><i class="fas fa-search"></i></span>
+                    <input type="text" class="form-control search-input" onkeyup="search(this)" name="searchInscritosPos" id="liveSearch" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+                </div>
+            </div>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-striped table-primary table-hover mb-4">
                 <thead>
@@ -139,7 +159,7 @@ foreach ($res as $key => $dato) {
                     <th scope="col">Modificar</th>
                     <th scope="col">Eliminar</th>
                 </thead>
-                <tbody>
+                <tbody class="searchContainer" name="posInscritos">
                     <?php
                         foreach ($inscritos as $key => $datos) {
                             $datCurso = array("idCurso" => $datos["idCurso"]);
@@ -161,12 +181,12 @@ foreach ($res as $key => $dato) {
                         <td class="c-<?php echo $datos["idCurso"] ?>">
                             <?php echo $curso[0]["curso"] ?>
                         </td>
-                        <td><button type="button" class="btn btn-primary btnComprobante"><i
+                        <td><button type="button" class="btn btn-primary btnComprobante" onclick="comprobante(this)"><i
                                     class="fas fa-file-invoice-dollar"></i></button></td>
-                        <td><button type="button" class="btn btn-warning btnEditarAlumno"
+                        <td><button type="button" class="btn btn-warning btnEditarAlumno" onclick="editarParticipante(this)"
                                 style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button>
                         </td>
-                        <td><button type="button" class="btn btn-danger btnEliminarAlumno"
+                        <td><button type="button" class="btn btn-danger btnEliminarAlumno" onclick="eliminarParticipante(this)"
                                 style="border-color: black"><i class="fas fa-trash-alt"></i></button></td>
                     </tr>
                     <?php } ?>

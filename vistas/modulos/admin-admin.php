@@ -41,6 +41,16 @@
         <!-- Tabla mostrar alumnos pendientes -->
         <div id="pendientesTable" class="visually-hidden-focusable mb-4">
             <h1 class="text-center">Pendientes por revisar</h1>
+            
+            <div class="row mb-4">
+                <div class="col-sm-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-dark text-white bounded-0 border-1 border-dark" id="basic-addon1"><i class="fas fa-search"></i></span>
+                        <input type="text" class="form-control search-input" onkeyup="search(this)" name="searchPendientesAdm" id="liveSearch" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-striped table-success mb-4">
                     <thead>
@@ -51,7 +61,7 @@
                         <th scope="col">Curso</th>
                         <th scope="col">Pago</th>
                     </thead>
-                    <tbody>
+                    <tbody class="searchContainer" name="adminPendientes">
                         <?php
                         foreach ($pendientes as $key => $datos) {
                             $pagoDato = ["idParticipante"=>$datos["idParticipante"]];
@@ -76,7 +86,7 @@
                                     <?php echo $curso[0]["curso"] ?>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-<?php if (!$pagoPart[0]["comprobante"]) {echo 'secondary';} else {echo 'primary';}?> btnComprobante position-relative">
+                                    <button type="submit" class="btn btn-<?php if (!$pagoPart[0]["comprobante"]) {echo 'secondary';} else {echo 'primary';}?>  btnComprobante position-relative" onclick="comprobante(this)">
                                         <i class="fas fa-file-invoice-dollar"></i>
                                     </button>
                                 </td>

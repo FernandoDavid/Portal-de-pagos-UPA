@@ -13,6 +13,10 @@ class AjaxFormularios
 
     public $id;
 
+    public $coincidencia;
+    public $campo;
+    public $if;
+
     public function ajaxSelectData(){
         $campos = $this->campos;
         $tabla = $this->tabla;
@@ -29,6 +33,14 @@ class AjaxFormularios
         $res = ModeloFormularios::mdlSelecReg($tabla,$campos,$datos);
         echo json_encode($res[0]);
         unlink('../vistas/img/flyers/'.$res[0]["flyer"]);
+    }
+
+    public function ajaxLiveSearch(){
+        $coincidencia = $this->coincidencia;
+        $campo = $this->campo;
+        $if = $this->if;
+        $res = ModeloFormularios::mdlSelecCoincidencias($coincidencia,$campo,$if);
+        echo json_encode($res);
     }
 
 }
@@ -49,4 +61,14 @@ if(isset($_POST["key"])){
     $data -> datos = $dat;
     $data -> campos = array_keys($dat);
     $data -> ajaxDeleteFlyer();
+}
+
+if(isset($_POST["coincidencia"])){
+    $data = new AjaxFormularios();
+
+    $data -> coincidencia = $_POST["coincidencia"];
+    $data -> campo = $_POST["campo"];
+    $data -> if = intval($_POST["if"]);
+
+    $data -> ajaxLiveSearch();
 }
