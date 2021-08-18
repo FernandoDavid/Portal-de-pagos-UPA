@@ -10,6 +10,7 @@ class AjaxFormularios
     public $datos;
     public $tabla;
     public $campos;
+    public $tipo;
 
     public $id;
 
@@ -25,14 +26,18 @@ class AjaxFormularios
         echo json_encode($res[0]);
     }
 
-    public function ajaxDeleteFlyer(){
-        // $dominio = fgets(fopen("dominio.txt", "r")); 
+    public function ajaxDeleteSrc(){
         $tabla = $this->tabla;
         $campos = $this->campos;
         $datos = $this->datos;
+        $tipo = $this->tipo;
         $res = ModeloFormularios::mdlSelecReg($tabla,$campos,$datos);
         echo json_encode($res[0]);
-        unlink('../vistas/img/flyers/'.$res[0]["flyer"]);
+        if($tipo=="flyer"){
+            unlink('../vistas/img/flyers/'.$res[0]["flyer"]);
+        }else{
+            unlink('../vistas/img/banners/'.$res[0]["banner"]);
+        }
     }
 
     public function ajaxLiveSearch(){
@@ -54,13 +59,15 @@ if(isset($_POST["dato"]) && isset($_POST["tabla"]) && isset($_POST["campo"])){
     $data -> ajaxSelectData();
 }
 
-if(isset($_POST["key"])){
+if(isset($_POST["key"]) && isset($_POST["tipo"])){
     $data = new AjaxFormularios();
+    // $tipo = explode('-',$_POST["key"]);
     $dat = array("idCurso"=>$_POST["key"]);
     $data -> tabla = "Cursos";
+    $data -> tipo = $_POST["tipo"];
     $data -> datos = $dat;
     $data -> campos = array_keys($dat);
-    $data -> ajaxDeleteFlyer();
+    $data -> ajaxDeleteSrc();
 }
 
 if(isset($_POST["coincidencia"])){

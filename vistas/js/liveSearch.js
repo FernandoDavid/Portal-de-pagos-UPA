@@ -66,7 +66,7 @@ function search(e){
                                 ${element.curso}
                             </td>
                             <td>
-                                <button type="submit" class="btn btn-${comp} btnComprobante position-relative" onclick="comprobante(this)">
+                                <button type="submit" class="btn p-1 btn-${comp} btnComprobante position-relative" onclick="comprobante(this)">
                                     <i class="fas fa-file-invoice-dollar"></i>
                                 </button>
                             </td>
@@ -75,17 +75,17 @@ function search(e){
                     }else{
                         var btn = `
                         <td>
-                            <button type="button" class="btn btn-primary btnComprobante" onclick="comprobante(this)"><i
+                            <button type="button" class="btn p-1 btn-primary btnComprobante" onclick="comprobante(this)"><i
                                 class="fas fa-file-invoice-dollar"></i></button>
                         </td>
                         `;
                         if(datos.if==0){
-                            let comp = (element.comprobante)?'primary':'secondary'; 
+                            let comp = (element.comprobante)?'btn-primary':''; 
                             btn = `
                             <td>
-                                <button type="button" class="btn btn-${comp} btnComprobante position-relative" onclick="comprobante(this)">
+                                <button type="button" class="btn p-1 ${comp} btnComprobante position-relative" onclick="comprobante(this)">
                                     <i class="fas fa-file-invoice-dollar"></i>
-                                    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
+                                    <span class="position-absolute mt-1 top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
                                         <span class="visually-hidden"></span>
                                     </span>
                                 </button>
@@ -111,12 +111,14 @@ function search(e){
                             </td>
                             ${btn}
                             <td>
-                                <button type="button" class="btn btn-warning btnEditarAlumno" onclick="editarParticipante(this)"
-                                style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger btnEliminarAlumno" onclick="eliminarParticipante(this)"
-                                style="border-color: black"><i class="fas fa-trash-alt"></i></button>
+                                <button type="button" class="btn p-1 btnEditarAlumno" onclick="editarParticipante(this)"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Editar aspirante">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                                <button type="button" class="btn p-1 btnEliminarAlumno" onclick="eliminarParticipante(this)"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Eliminar aspirante">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
                             </td>
                         </tr>
                         `);

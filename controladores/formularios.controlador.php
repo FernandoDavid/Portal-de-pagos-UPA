@@ -416,13 +416,15 @@ class ControladorFormularios
                 if ($insertar == "ok") {
                     // $datCurso = ["curso"=>$_POST["curso"]];
                     $id = ModeloFormularios::mdlSelecReg("Cursos", array_keys($datos), $datos);
-                    $extFile = explode("/", $_FILES["flyer"]["type"]);
+                    $extFileFlyer = explode("/", $_FILES["flyer"]["type"]);
+                    $extFileBanner = explode("/", $_FILES["banner"]["type"]);
                     // echo '<script>console.log("'.$id[0]["idCurso"].'.'.$extFile[1].'")</script>';
                     $datos = [
-                        "flyer" => basename($id[0]["idCurso"].'.'.$extFile[1])
+                        "flyer" => basename($id[0]["idCurso"].'.'.$extFileFlyer[1]),
+                        "banner" => basename($id[0]["idCurso"].'.'.$extFileBanner[1])
                     ];
                     $flyer = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos,array("idCurso" => $id[0]["idCurso"]));
-                    if($flyer == 'ok' && move_uploaded_file($_FILES["flyer"]["tmp_name"], 'vistas/img/flyers/' . $datos["flyer"])){
+                    if($flyer == 'ok' && move_uploaded_file($_FILES["flyer"]["tmp_name"], 'vistas/img/flyers/' . $datos["flyer"]) && move_uploaded_file($_FILES["banner"]["tmp_name"], 'vistas/img/banners/' . $datos["banner"])){
                         $_SESSION["vista"] = 3;
                         $_SESSION["toast"] = "success/Curso creado exitosamente";
                         echo '<script>
@@ -485,14 +487,28 @@ class ControladorFormularios
                 // $old = ModeloFormularios::mdlSelecReg("Cursos",array_keys($data),$data);
                 $actualizar = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos, $data);
                 if ($actualizar == "ok") {
-                    if(isset($_FILES["flyer"]) && $_FILES["flyer"]["type"]!=""){
+                    if((isset($_FILES["flyer"]) && $_FILES["flyer"]["type"]!="") || (isset($_FILES["banner"]) && $_FILES["banner"]["type"]!="")){
+                        $cursoEdit = ModeloFormularios::mdlSelecReg("Cursos", array_keys($data), $data); 
                         // unlink('vistas/img/flyers/'.$old[0]['flyer']);
-                        $extFile = explode("/", $_FILES["flyer"]["type"]);
+                        $extFileFlyer = explode("/", $_FILES["flyer"]["type"]);
+                        $extFileBanner = explode("/", $_FILES["banner"]["type"]);
                         $datos = [
-                            "flyer" => basename($data["idCurso"].'.'.$extFile[1])
+                            "flyer" => (isset($_FILES["flyer"]) && $_FILES["flyer"]["type"]!="") ? basename($data["idCurso"].'.'.$extFileFlyer[1]) : $cursoEdit[0]["flyer"],
+                            "banner" => (isset($_FILES["banner"]) && $_FILES["banner"]["type"]!="") ? basename($data["idCurso"].'.'.$extFileBanner[1]) : $cursoEdit[0]["banner"] 
                         ];
                         $flyer = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos,$data);
-                        if(move_uploaded_file($_FILES["flyer"]["tmp_name"], 'vistas/img/flyers/' . $datos["flyer"])){
+
+                        $st = false;
+                        try{
+                            move_uploaded_file($_FILES["flyer"]["tmp_name"], 'vistas/img/flyers/' . $datos["flyer"]);
+                            $st = true;
+                        }catch(Exception $e){}
+                        try{
+                            move_uploaded_file($_FILES["banner"]["tmp_name"], 'vistas/img/banners/' . $datos["banner"]);
+                            $st = true;
+                        }catch(Exception $er){}
+
+                        if($st){
                             $_SESSION["vista"] = 3;
                             $_SESSION["toast"] = "success/Curso modificado exitosamente";
                             echo '<script>

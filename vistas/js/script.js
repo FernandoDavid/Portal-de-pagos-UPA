@@ -36,8 +36,10 @@ $(document).ready(() => {
         if(window.history.replaceState){
             window.history.replaceState(null,null,window.location.href);
         }
-        $('#card0').toggleClass("visually-hidden-focusable");
-        $('#card1').toggleClass("visually-hidden-focusable");
+        $('#card1').attr("hidden","");
+        $('#card0').removeAttr("hidden");
+        // $('#card0').toggleClass("visually-hidden-focusable");
+        // $('#card1').toggleClass("visually-hidden-focusable");
         st = 0;
         $('#step2').removeClass('btn-primary');
         $('#step2').addClass('btn-secondary');

@@ -43,9 +43,9 @@ if (isset($rutas[1])) {
 <div class="cointer-fluid text-center bg-upa-main-dark text-white py-3">
     <h1>Cursos UPA</h1>
 </div>
-<div class="container my-4">
+<div class="container-fluid py-4 bg-light">
     <!-- Barra de progreso -->
-    <div class="position-relative my-5 progress-step">
+    <div class="position-relative m-5 progress-step">
         <div class="progress" style="height: 1px;">
             <div class="progress-bar" role="progressbar" style="width: <?php echo intval($progress) ?>%;"
                 aria-valuenow="<?php echo intval($progress) ?>" aria-valuemin="0" aria-valuemax="100"></div>
@@ -73,31 +73,35 @@ if (isset($rutas[1])) {
                 $fechainicio = strtotime($valor['reg_inicio']);
                 $fechafin = strtotime($valor['reg_fin']);
                 if(($alumnosInscritos[0]<$valor['cupo']) && ($fechaActual>=$fechainicio && $fechaActual<=$fechafin)){
+                    $razonCupo = floatval($alumnosInscritos[0])*floatval($valor['cupo'])/100;
             ?>
-            <div id="<?php echo $valor["idCurso"] ?>" onclick="reg(this)" style="border-radius: 0.5rem" class="cursos
-                overflow-hidden mb-3 shadow text light">
-                <div class="curso-title text-white text-center bg-primary px-3 py-2">
-                    <h4>
+            <div id="<?php echo $valor["idCurso"] ?>" style="border-radius: 0.5rem" class="cursos overflow-hidden shadow mb-4">
+                <div class="curso-banner position-relative text-white text-center bg-primary">
+                    <img src="<?php echo $dominio?>vistas/img/banners/<?php echo $valor["banner"]?>" alt="" class="img-fluid">
+                    <span class="position-absolute bottom-0 m-2 end-0 fs-5 badge rounded-pill">
+                        <?php echo "$ ".number_format($valor["precio"],2) ?>
+                    </span>
+                </div>
+                <div class="curso-body p-3">
+                    <h4 class="fw-bolder curso-title">
                         <?php echo $valor["curso"]?>
                     </h4>
-                </div>
-                <div class="curso-body px-3 py-2">
-                    <h6>
-                        <?php echo "Instructor: ".$valor["instructor"] ?>
+                    <p class="text-dark float-end ps-2 fw-normal fst-italic" style="font-size: 0.8rem;line-height:0.9rem;">
+                        <?php echo $valor["reg_inicio"] ?> - <?php echo $valor["reg_fin"] ?>
+                    </p>
+                    <hr>
+                    <h6 class="text-dark d-inline-flex">
+                        <i class="fas fa-graduation-cap pe-2 my-auto"></i> <?php echo $valor["instructor"] ?>
                     </h6>
-                    <p>
+                    <p class="text-upa-gray">
                         <?php echo $valor["objetivo"] ?>
                     </p>
-                    <div class="row">
-                        <div class="col-6">
-                            <p><b>
-                                <?php echo "Precio: $".number_format($valor["precio"],2) ?>
-                            </b></p>
-                        </div>
-                        <div class="col-6 text-end">
-                            <p><b>
-                                <?php echo "Cupo: ".$alumnosInscritos[0]."/".$valor['cupo']?>
-                            </b></p>
+                    <div class="d-flex">
+                        <button class="btn bg-upa-secondary text-white fw-bold" onclick="reg(this)">Tomar el curso</button>
+                        <div class="ms-auto d-flex">
+                            <span class="badge my-auto rounded-pill fs-6 <?php if($razonCupo>=80): ?>bg-danger text-white<?php else: ?>bg-upa-gray-light text-upa-gray-dark<?php endif;?>">
+                                <i class="fas fa-users"></i> <b> <?php echo $alumnosInscritos[0]."/".$valor['cupo']?></b>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -109,7 +113,7 @@ if (isset($rutas[1])) {
     </div>
 
     <!-- Paso 2 (Formulario de registro de los aspirantes)-->
-    <div class="visually-hidden-focusable" id="card1">
+    <div class="container" id="card1" hidden="">
         <div class="card">
             <div class="card-body">
                 <form method="POST" id="formRegistro1">
@@ -127,7 +131,7 @@ if (isset($rutas[1])) {
                                     <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                             class="fas fa-user fa-lg icons"></i></span>
                                     <input type="text" class="form-control" placeholder="Nombre completo" name="nombre"
-                                        required pattern='[^0-9\.\,\"\?\!\;\:\#\$\%\&\(\)\*\+\-\/\<\>\=\@\[\]\\\^\_\{\}\|\~]+'>
+                                        required >
                                 </div>
                             </div>
                             <div class="col mb-2">
@@ -256,7 +260,7 @@ if (isset($rutas[1])) {
                     </div>
                     <div class="row justify-content-between">
                         <div class="col-3" style="margin: 0 auto !important;">
-                            <button type="submit" class="btn btn-primary w-100">Enviar formulario</button>
+                            <button type="submit" class="btn btn-primary w-100">Registrar</button>
                         </div>
                     </div>
                     <?php
@@ -269,10 +273,8 @@ if (isset($rutas[1])) {
                 </form>
             </div>
         </div>
-        <div class="row mt-2">
-            <div class="col-1 ms-auto">
-                <button type="button" id="btnRegresar" class="btn btn-danger ">Regresar</button>
-            </div>
+        <div class="float-end">
+            <button type="button" id="btnRegresar" class="btn btn-danger my-3">Regresar</button>
         </div>
     </div>
     

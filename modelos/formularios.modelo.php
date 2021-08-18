@@ -84,7 +84,7 @@ class ModeloFormularios
 
     //////////////////////////////CURSOS//////////////////////////////
     static public function mdlVerificarCupo($idCurso){
-        $stmt = Conexion::conectar()->prepare("Select count(*) from pagos pag inner join participantes par on pag.idParticipante=par.idParticipante inner join cursos c on par.idCurso=c.idCurso where pag.comprobante<>'' and c.idCurso=$idCurso");
+        $stmt = Conexion::conectar()->prepare("SELECT COUNT(*) FROM pagos pag INNER JOIN participantes par ON pag.idParticipante=par.idParticipante INNER JOIN cursos c ON par.idCurso=c.idCurso WHERE pag.comprobante<>'' AND c.idCurso=$idCurso");
         $stmt -> execute();
         return $stmt->fetch();
     }
@@ -101,8 +101,6 @@ class ModeloFormularios
     static public function mdlSelecCoincidencias($coincidencia,$campo,$if){
         $query = "SELECT * FROM Participantes p INNER JOIN Cursos c ON p.idCurso=c.idCurso INNER JOIN Pagos pg ON p.idParticipante=pg.idParticipante WHERE (p.nombre LIKE '%$coincidencia%' OR p.correo LIKE '%$coincidencia%' OR p.curp LIKE '%$coincidencia%' OR c.curso LIKE '%$coincidencia%') AND pg.$campo=:rev";
         $stmt=Conexion::conectar()->prepare($query);
-        // $stmt -> bindParam(":coincidencia",$coincidencia,PDO::PARAM_STR);
-        // $stmt -> bindParam(":campo_rev",$campo,PDO::PARAM_STR);
         $stmt -> bindParam(":rev",$if,PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();

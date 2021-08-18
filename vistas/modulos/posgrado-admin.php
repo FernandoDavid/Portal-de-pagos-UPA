@@ -10,22 +10,17 @@ foreach ($res as $key => $dato) {
         array_push($pendientes, $participante[0]);
     }
 }
-// echo $campo;
-// echo '<pre>';
-// var_dump($inscritos);
-// var_dump($pendientes);
-// echo '</pre>';
-// die;
 ?>
 <!-- Barra de navegación -->
 <header class="header" id="header">
     <div class="header_toggle">
         <i class='fas fa-bars' id="header-toggle"></i>
     </div>
-    <div>
-        <h5 class="me-auto my-auto">
+    <div class="w-100 d-flex">
+        <h5 class="ms-auto my-auto">
             <?php echo $_SESSION["admin"]; ?>
         </h5>
+        <div class="rounded-circle ms-1 p-2"><i class="fas fa-user"></i></div>
     </div>
 </header>
 <div class="l-navbar" id="nav-bar">
@@ -62,28 +57,30 @@ foreach ($res as $key => $dato) {
 <div class="container-fluid mt-5 pt-4">
     <!-- ALUMNOS PENDIENTES-->
     <div id="pendientesTable" class="visually-hidden-focusable">
-        <h1 class="text-center">Aspirantes pendientes</h1>
-
-        <div class="row mb-4">
-            <div class="col-sm-5">
-                <div class="input-group">
-                    <span class="input-group-text bg-dark text-white bounded-0 border-1 border-dark" id="basic-addon1"><i class="fas fa-search"></i></span>
-                    <input type="text" class="form-control search-input" onkeyup="search(this)" name="searchPendientesPos" id="liveSearch" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+        <div class="row mb-4 d-flex">
+            <div class="col-sm-6 align-self-center">
+                <h1 class="text-left fs-2 fw-bolder ms-3 my-auto"><i class="fas fa-angle-double-right text-upa-primary me-2"></i>Aspirantes pendientes</h1>
+            </div>
+            <div class="col-sm-5 me-3 ms-auto">
+                <div class="input-group rounded-pill shadow-sm-2 bg-white p-1">
+                    <input type="text" class="form-control rounded-pill border-0 me-1 search-input" onkeyup="search(this)" name="searchPendientesPos" id="liveSearch" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+                    <span class="input-group-text bg-dark rounded-circle p-1 text-white bounded-0 border-1 border-dark" style="width:36px">
+                        <i class="fas fa-search mx-auto"></i>
+                    </span>
                 </div>
             </div>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-striped table-primary table-hover mb-4">
-                <thead>
+        <div class="table-responsive px-3">
+            <table class="table own-table-hover mb-4 align-middle">
+                <thead class="table-dark">
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Correo</th>
                     <th scope="col">CURP</th>
                     <th scope="col">Curso</th>
                     <th scope="col">Pago</th>
-                    <th scope="col">Modificar</th>
-                    <th scope="col">Eliminar</th>
+                    <th scope="col">Opciones</th>
                 </thead>
                 <tbody class="searchContainer" name="posPendientes">
                     <?php
@@ -98,34 +95,37 @@ foreach ($res as $key => $dato) {
                             <?php echo $key + 1 ?>
                         </td>
                         <td>
-                            <?php echo $datos['nombre']    ?>
+                            <?php echo $datos['nombre'] ?>
                         </td>
                         <td>
-                            <?php echo $datos['correo']    ?>
+                            <?php echo $datos['correo'] ?>
                         </td>
                         <td>
-                            <?php echo $datos['curp']  ?>
+                            <?php echo $datos['curp'] ?>
                         </td>
                         <td class="c-<?php echo $datos["idCurso"] ?>">
                             <?php echo $curso[0]["curso"] ?>
                         </td>
                         <td>
-                            <button type="submit" class="btn btn-<?php if (!$pagoPart[0]["comprobante"]) {echo 'secondary' ;} else
-                                {echo 'primary' ;}?> btnComprobante position-relative" onclick="comprobante(this)">
+                            <button type="submit" class="btn p-1 <?php if ($pagoPart[0]["comprobante"]) {echo 'btn-primary' ;}?> btnComprobante position-relative" onclick="comprobante(this)">
                                 <i class="fas fa-file-invoice-dollar"></i>
                                 <?php if ($pagoPart[0]["r2"]) : ?>
                                 <span
-                                    class="position-absolute top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
-                                    <span class="visually-hidden"></span>
+                                    class="position-absolute mt-1 top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
                                 </span>
                                 <?php endif ?>
                             </button>
                         </td>
-                        <td><button type="submit" class="btn btn-warning btnEditarAlumno" onclick="editarParticipante(this)"
-                                style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button>
+                        <td>
+                            <button type="submit" class="btn p-1 btnEditarAlumno" onclick="editarParticipante(this)"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Editar aspirante">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <button type="button" class="btn p-1 btnEliminarAlumno" onclick="eliminarParticipante(this)"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Eliminar aspirante">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         </td>
-                        <td><button type="button" class="btn btn-danger btnEliminarAlumno" onclick="eliminarParticipante(this)"
-                                style="border-color: black"><i class="fas fa-trash-alt"></i></button></td>
                     </tr>
                     <?php } ?>
                 </tbody>
@@ -136,28 +136,30 @@ foreach ($res as $key => $dato) {
 
     <!-- ALUMNOS INSCRITOS -->
     <div id="inscritosTable" class="visually-hidden-focusable">
-        <h1 class="text-center">Tabla inscritos</h1>
-
-        <div class="row mb-4">
-            <div class="col-sm-5">
-                <div class="input-group">
-                    <span class="input-group-text bg-dark text-white bounded-0 border-1 border-dark" id="basic-addon1"><i class="fas fa-search"></i></span>
-                    <input type="text" class="form-control search-input" onkeyup="search(this)" name="searchInscritosPos" id="liveSearch" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+        <div class="row mb-4 d-flex">
+            <div class="col-sm-6 align-self-center">
+                <h1 class="text-left fs-2 fw-bolder ms-3 my-auto"><i class="fas fa-angle-double-right text-upa-primary me-2"></i>Inscritos</h1>
+            </div>
+            <div class="col-sm-5 me-3 ms-auto">
+                <div class="input-group rounded-pill shadow-sm-2 bg-white p-1">
+                    <input type="text" class="form-control rounded-pill border-0 me-1 search-input" onkeyup="search(this)" name="searchInscritosPos" id="liveSearch" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+                    <span class="input-group-text bg-dark rounded-circle p-1 text-white bounded-0 border-1 border-dark" style="width:36px">
+                        <i class="fas fa-search mx-auto"></i>
+                    </span>
                 </div>
             </div>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-striped table-primary table-hover mb-4">
-                <thead>
+        <div class="table-responsive px-3">
+            <table class="table own-table-hover mb-4">
+                <thead class="table-dark">
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Correo</th>
                     <th scope="col">CURP</th>
                     <th scope="col">Curso</th>
                     <th scope="col">Pago</th>
-                    <th scope="col">Modificar</th>
-                    <th scope="col">Eliminar</th>
+                    <th scope="col">Opciones</th>
                 </thead>
                 <tbody class="searchContainer" name="posInscritos">
                     <?php
@@ -181,13 +183,21 @@ foreach ($res as $key => $dato) {
                         <td class="c-<?php echo $datos["idCurso"] ?>">
                             <?php echo $curso[0]["curso"] ?>
                         </td>
-                        <td><button type="button" class="btn btn-primary btnComprobante" onclick="comprobante(this)"><i
-                                    class="fas fa-file-invoice-dollar"></i></button></td>
-                        <td><button type="button" class="btn btn-warning btnEditarAlumno" onclick="editarParticipante(this)"
-                                style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button>
+                        <td>
+                            <button type="button" class="btn p-1 btn-primary btnComprobante" onclick="comprobante(this)">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                            </button>
                         </td>
-                        <td><button type="button" class="btn btn-danger btnEliminarAlumno" onclick="eliminarParticipante(this)"
-                                style="border-color: black"><i class="fas fa-trash-alt"></i></button></td>
+                        <td>
+                            <button type="button" class="btn p-1 btnEditarAlumno" onclick="editarParticipante(this)"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Editar aspirante">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <button type="button" class="btn p-1 btnEliminarAlumno" onclick="eliminarParticipante(this)"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Eliminar aspirante">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
                     </tr>
                     <?php } ?>
                 </tbody>
@@ -206,8 +216,10 @@ foreach ($res as $key => $dato) {
 
     <!-- CURSOS-->
     <div id="cursosTable" class="visually-hidden-focusable">
-        <h1 class="text-center">Tabla Cursos</h1>
-        <div class="table-responsive">
+        <div class="col-sm-6 align-self-center mb-4">
+            <h1 class="text-left fs-2 fw-bolder ms-3 my-auto"><i class="fas fa-angle-double-right text-upa-primary me-2"></i>Cursos</h1>
+        </div>
+        <!-- <div class="table-responsive">
             <table class="table table-striped table-primary table-hover mb-4">
                 <thead>
                     <th scope="col">#</th>
@@ -223,34 +235,34 @@ foreach ($res as $key => $dato) {
                 </thead>
                 <tbody>
                     <?php
-                        $res = ModeloFormularios::mdlSelecReg("cursos");
-                        foreach ($res as $key => $datos) {
-                        $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($datos["idCurso"]);
+                        // $res = ModeloFormularios::mdlSelecReg("cursos");
+                        // foreach ($res as $key => $datos) {
+                        // $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($datos["idCurso"]);
                     ?>
                     <tr>
-                        <td class="c-<?php echo $datos["idCurso"] ?>">
-                            <?php echo  $key + 1    ?>
+                        <td class="c-<?php // echo $datos["idCurso"] ?>">
+                            <?php // echo  $key + 1    ?>
                         </td>
                         <td>
-                            <?php echo $datos['curso'] ?>
+                            <?php // echo $datos['curso'] ?>
                         </td>
                         <td>
-                            <?php echo $datos['instructor'] ?>
+                            <?php // echo $datos['instructor'] ?>
                         </td>
                         <td>
-                            <?php echo "Del ".$datos['reg_inicio']." a ".$datos['reg_fin'] ?>
+                            <?php // echo "Del ".$datos['reg_inicio']." a ".$datos['reg_fin'] ?>
                         </td>
                         <td>
-                            <?php echo "Del ".$datos['fec_inicio']." a ".$datos['fec_fin']  ?>
+                            <?php // echo "Del ".$datos['fec_inicio']." a ".$datos['fec_fin']  ?>
                         </td>
                         <td>
-                            <?php echo "De ".$datos['hora_inicio']." a ".$datos['hora_fin']  ?>
+                            <?php // echo "De ".$datos['hora_inicio']." a ".$datos['hora_fin']  ?>
                         </td>
                         <td class="text-center">
-                            <?php echo $datos['precio']  ?>
+                            <?php // echo $datos['precio']  ?>
                         </td>
                         <td class="text-center">
-                            <?php echo $alumnosInscritos[0]."/".$datos['cupo']  ?>
+                            <?php // echo $alumnosInscritos[0]."/".$datos['cupo']  ?>
                         </td>
                         <td class="text-center"><button type="button" class="btn btn-warning btnModificarCurso"
                                 style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button>
@@ -258,12 +270,61 @@ foreach ($res as $key => $dato) {
                         <td class="text-center"><button type="button" class="btn btn-danger btnEliminarCurso" style="border-color: black"><i
                                     class="fas fa-trash-alt"></i></button></td>
                     </tr>
-                    <?php } ?>
+                    <?php //} ?>
                 </tbody>
             </table>
+        </div> -->
+        <div class="d-flex justify-content-evenly flex-wrap align-content-around">
+            <?php 
+                $res = ModeloFormularios::mdlSelecReg("Cursos");
+                foreach ($res as $key => $datos):
+                    $alumnosInscritos = ModeloFormularios::mdlVerificarCupo($datos["idCurso"]);
+                    $razonCupo = floatval($alumnosInscritos[0])*floatval($datos['cupo'])/100;
+            ?>
+            <div id="c-<?php echo $datos["idCurso"] ?>" style="border-radius: 0.5rem" class="cursos overflow-hidden shadow mb-4">
+                <div class="curso-banner position-relative text-white text-center bg-primary">
+                    <img src="<?php echo $dominio?>vistas/img/banners/<?php echo $datos["banner"]?>" alt="" class="img-fluid">
+                    <span class="position-absolute bottom-0 m-2 end-0 fs-5 badge rounded-pill">
+                        <?php echo "$ ".number_format($datos["precio"],2) ?>
+                    </span>
+                </div>
+                <div class="curso-body p-3">
+                    <h4 class="fw-bolder curso-title">
+                        <?php echo $datos["curso"]?>
+                    </h4>
+                    <p class="text-dark float-end ps-2 fw-normal fst-italic" style="font-size: 0.8rem;line-height:0.9rem;">
+                        <?php echo $datos["reg_inicio"] ?> - <?php echo $datos["reg_fin"] ?>
+                    </p>
+                    <hr>
+                    <h6 class="text-dark d-inline-flex">
+                        <i class="fas fa-graduation-cap pe-2 my-auto"></i> <?php echo $datos["instructor"] ?>
+                    </h6>
+                    <p class="text-upa-gray">
+                        <?php echo $datos["objetivo"] ?>
+                    </p>
+                    <div class="d-flex">
+                        <button class="btn bg-upa-secondary text-white fw-bold"  data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-cog"></i></button>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item btnModificarCurso" data-bs-toggle="modal">Editar curso</a></li>
+                            <li><a class="dropdown-item btnEliminarCurso" data-bs-toggle="modal">Eliminar curso</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" data-bs-toggle="modal">Lista de certificados</a></li>
+                        </ul>
+                        <div class="ms-auto d-flex">
+                            <span class="badge my-auto rounded-pill fs-6 <?php if($razonCupo>=80): ?>bg-danger text-white<?php else: ?>bg-upa-gray-light text-upa-gray-dark<?php endif;?>">
+                                <i class="fas fa-users"></i> <b> <?php echo $alumnosInscritos[0]."/".$datos['cupo']?></b>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php 
+                endforeach;
+            ?>
         </div>
-        <button type="button" class="btn btn-primary bg-upa-secondary" data-bs-toggle="modal"
-            data-bs-target="#modalAddCurso">Agregar curso</button>
+        <button type="button" class="btn btn-primary bg-upa-secondary" data-bs-toggle="modal" data-bs-target="#modalAddCurso">
+            Agregar curso
+        </button>
     </div>
 
     <?php
@@ -307,134 +368,134 @@ foreach ($res as $key => $dato) {
     <!----------------------------------------------------MODALS------------------------------------------------------------------>
 
     <!--MODIFICAR ALUMNO -->
-        <div class="modal fade" id="modalModificarAlumno" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content">
-                    <form method="POST">
-                        <div class="modal-header">
-                            <h2 class="modal-title" id="exampleModalLabel">Modificar datos del aspirante</h2>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                <div class="input-group mb-3">
-                                    <input type="text" id="idAlumno" name="idAlumno" hidden>
-                                    <label class="input-group-text" for="inputGroupSelect01">Nombre del curso</label>
-                                    <select class="form-select" id="idCurso" name="idCurso" required>
-                                        <option selected value="">Elegir...</option>
-                                        <?php
-                                            $opcionescursos = ModeloFormularios::mdlSelecReg("Cursos");
-                                            foreach ($opcionescursos as $key => $opcurso) {
-                                            ?>
-                                        <option value="<?php echo $opcurso["idCurso"] ?>">
-                                            <?php echo $opcurso["curso"] ?>
-                                        </option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                                </div>
-                                <!--Col izquierda-->
-                                <div class="col-xl-8 col-lg-6 col-md-12">
-                                    <div class="col mb-2">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-user fa-lg icons"></i></span>
-                                            <input type="text" class="form-control" placeholder="Nombre completo"
-                                                name="nombre" required>
-                                        </div>
-                                    </div>
-                                    <div class="col mb-2">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-hashtag fa-lg icons"></i></span>
-                                            <input type="text" class="form-control" placeholder="CURP" name="curp"
-                                                required>
-                                        </div>
-                                    </div>
-                                    <div class="col mb-2">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-home fa-lg icons"></i></span>
-                                            <input type="text" class="form-control" placeholder="Domicilio"
-                                                name="direc" required>
-                                        </div>
-                                    </div>
-                                    <div class="col mb-2">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-phone-alt fa-lg icons"></i></span>
-                                            <input type="text" class="form-control" placeholder="Número de teléfono"
-                                                name="telefono" required>
-                                        </div>
+    <div class="modal fade" id="modalModificarAlumno" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <form method="POST">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="exampleModalLabel">Modificar datos del aspirante</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-2">
+                            <div class="col-12">
+                            <div class="input-group mb-3">
+                                <input type="text" id="idAlumno" name="idAlumno" hidden>
+                                <label class="input-group-text" for="inputGroupSelect01">Nombre del curso</label>
+                                <select class="form-select" id="idCurso" name="idCurso" required>
+                                    <option selected value="">Elegir...</option>
+                                    <?php
+                                        $opcionescursos = ModeloFormularios::mdlSelecReg("Cursos");
+                                        foreach ($opcionescursos as $key => $opcurso) {
+                                        ?>
+                                    <option value="<?php echo $opcurso["idCurso"] ?>">
+                                        <?php echo $opcurso["curso"] ?>
+                                    </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            </div>
+                            <!--Col izquierda-->
+                            <div class="col-xl-8 col-lg-6 col-md-12">
+                                <div class="col mb-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-user fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="Nombre completo"
+                                            name="nombre" required>
                                     </div>
                                 </div>
-                                <!--Col derecha-->
-                                <div class="col-xl-4 col-lg-6 col-md-12">
-                                    <div class="col-12 mb-2">
-                                        <div class="input-group">
-                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                                    class="fas fa-envelope fa-lg icons"></i></i></span>
-                                            <input type="text" class="form-control" placeholder="Correo" name="correo"
-                                                required>
+                                <div class="col mb-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-hashtag fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="CURP" name="curp"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="col mb-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-home fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="Domicilio"
+                                            name="direc" required>
+                                    </div>
+                                </div>
+                                <div class="col mb-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-phone-alt fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="Número de teléfono"
+                                            name="telefono" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Col derecha-->
+                            <div class="col-xl-4 col-lg-6 col-md-12">
+                                <div class="col-12 mb-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-envelope fa-lg icons"></i></i></span>
+                                        <input type="text" class="form-control" placeholder="Correo" name="correo"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="row mb-2 gx-0">
+                                    <div class="col-2">
+                                        <div class="input-group-text input-group-text2">
+                                            <i class="fas fa-venus-mars fa-lg icons"></i>
                                         </div>
                                     </div>
-                                    <div class="row mb-2 gx-0">
-                                        <div class="col-2">
-                                            <div class="input-group-text input-group-text2">
-                                                <i class="fas fa-venus-mars fa-lg icons"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-4 pt-1">
-                                            <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio"
-                                                name="sexoRadio"
-                                                onclick="document.getElementById('mujerRadio').checked = false"
-                                                required>
-                                            <label class="ms-2" for="">Hombre</label>
-                                        </div>
-                                        <div class="col-4  pt-1">
-                                            <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio"
-                                                name="sexoRadio"
-                                                onclick="document.getElementById('hombreRadio').checked = false">
-                                            <label class="ms-2" for="">Mujer</label>
+                                    <div class="col-4 pt-1">
+                                        <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio"
+                                            name="sexoRadio"
+                                            onclick="document.getElementById('mujerRadio').checked = false"
+                                            required>
+                                        <label class="ms-2" for="">Hombre</label>
+                                    </div>
+                                    <div class="col-4  pt-1">
+                                        <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio"
+                                            name="sexoRadio"
+                                            onclick="document.getElementById('hombreRadio').checked = false">
+                                        <label class="ms-2" for="">Mujer</label>
+                                    </div>
+                                </div>
+                                <div class="row gx-0 mb-2">
+                                    <div class="col-2 ">
+                                        <div class="input-group-text input-group-text2">
+                                            <i class="fas fa-hand-holding-heart fa-lg icons"></i>
                                         </div>
                                     </div>
-                                    <div class="row gx-0 mb-2">
-                                        <div class="col-2 ">
-                                            <div class="input-group-text input-group-text2">
-                                                <i class="fas fa-hand-holding-heart fa-lg icons"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-4 pt-1">
-                                            <input class="form-check-input ms-1" type="radio" value="soltero"
-                                                id="solteroRadio" name="estadoRadio"
-                                                onclick="document.getElementById('solteroRadio').checked = false"
-                                                required>
-                                            <label class="ms-2" for="">Soltero/a</label>
-                                        </div>
-                                        <div class="col-4 pt-1">
-                                            <input class="form-check-input ms-1" type="radio" value="casado"
-                                                id="casadoRadio" name="estadoRadio"
-                                                onclick="document.getElementById('casadoRadio').checked = false">
-                                            <label class="ms-2" for="">Casado/a</label>
-                                        </div>
+                                    <div class="col-4 pt-1">
+                                        <input class="form-check-input ms-1" type="radio" value="soltero"
+                                            id="solteroRadio" name="estadoRadio"
+                                            onclick="document.getElementById('solteroRadio').checked = false"
+                                            required>
+                                        <label class="ms-2" for="">Soltero/a</label>
+                                    </div>
+                                    <div class="col-4 pt-1">
+                                        <input class="form-check-input ms-1" type="radio" value="casado"
+                                            id="casadoRadio" name="estadoRadio"
+                                            onclick="document.getElementById('casadoRadio').checked = false">
+                                        <label class="ms-2" for="">Casado/a</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn bg-upa-secondary text-white ">Modificar</button>
-                            <?php
-                                //añadir la modificación del alumno PHP
-                                $Form = new ControladorFormularios();
-                                $Form -> ctrModificarRegistroAlumno($campo);
-                            ?>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn bg-upa-secondary text-white ">Modificar</button>
+                        <?php
+                            //añadir la modificación del alumno PHP
+                            $Form = new ControladorFormularios();
+                            $Form -> ctrModificarRegistroAlumno($campo);
+                        ?>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
 
     <!-- ELIMINAR ALUMNO -->
     <div class="modal fade" id="modalEliminarAlumno" tabindex="-1" aria-hidden="true">
@@ -656,9 +717,15 @@ foreach ($res as $key => $dato) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 mb-4">
-                                <h5 class="text-center"><b>Flyer del curso</b></h5>
-                                <input type="file" class=" file" name="flyer" id="flyer" required>
+                            <div class="row mb-4">
+                                <div class="col-lg-6">
+                                    <h5 class="text-center"><b>Flyer del curso</b></h5>
+                                    <input type="file" class="file" name="flyer" id="flyer" required>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5 class="text-center"><b>Banner del curso</b></h5>
+                                    <input type="file" class="file" name="banner" id="banner" required>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -867,9 +934,15 @@ foreach ($res as $key => $dato) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 mb-4">
-                                <h5 class="text-center"><b>Flyer del curso</b></h5>
-                                <input type="file" name="flyer" id="editFlyer">
+                            <div class="row mb-4">
+                                <div class="col-lg-6">
+                                    <h5 class="text-center"><b>Flyer del curso</b></h5>
+                                    <input type="file" name="flyer" id="editFlyer">
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5 class="text-center"><b>Banner del curso</b></h5>
+                                    <input type="file" name="banner" id="editBanner">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -883,9 +956,7 @@ foreach ($res as $key => $dato) {
                 </div>
             </div>
         </div>
-    </form>
-
-    
+    </form>    
 
     <!-- ELIMINAR CURSO -->
     <div class="modal fade" id="modalEliminarCurso" tabindex="-1" aria-hidden="true">
@@ -905,7 +976,7 @@ foreach ($res as $key => $dato) {
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-danger">Borrar curso</button>
                         <?php
-                            $Form->ctrEliminarRegistro("Cursos", "idCurso", $campo,$ominio);
+                            $Form->ctrEliminarRegistro("Cursos", "idCurso", $campo,$dominio);
                         ?>
                     </div>
                 </form>

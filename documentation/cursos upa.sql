@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Cursos` (
   `modalidad` TINYINT NOT NULL,
   `temario` TEXT(512) NULL,
   `flyer` VARCHAR(45) NOT NULL,
+  `banner` VARCHAR(45) NOT NULL,
   `reg_inicio` DATE NOT NULL,
   `reg_fin` DATE NOT NULL,
   `fec_inicio` DATE NOT NULL,
