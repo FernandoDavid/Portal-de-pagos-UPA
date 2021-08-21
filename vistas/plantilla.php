@@ -30,13 +30,15 @@ $dominio = fgets(fopen("dominio.txt", "r"));
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/fileinput.min.js"></script>
     <!-- optionally if you need translation for your language then include the locale file as mentioned below (replace LANG.js with your language locale) -->
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/locales/es.js"></script>
+    <!-- ANIMATE JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <title>Portal de pagos</title>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?php echo $dominio ?>vistas/js/main.js"></script>
     <!--Styles CSS-->
     <link rel="stylesheet" href="<?php echo $dominio ?>vistas/css/styles.css">
 </head>
-<body>
+<body class="bg-light-gray">
 <?php
 session_start();
 

@@ -5,7 +5,7 @@ $(document).ready(function() {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 
-    $('body').addClass('admin-body bg-light').attr("id", "body-pd");
+    $('body').addClass('admin-body bg-light').attr("id", "body-pd").removeClass('bg-light-gray');
 
     $(".btnModificarCurso").on('click', function() {
         $('#modalModificarCurso').modal('show');

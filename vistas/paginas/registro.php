@@ -40,12 +40,14 @@ if (isset($rutas[1])) {
 }
 ?>
 
-<div class="cointer-fluid text-center bg-upa-main-dark text-white py-3">
-    <h1>Cursos UPA</h1>
+<div class="text-center bg-upa-main-dark text-white overflow-hidden position-relative" id="header-cursos">
+    <div class="cover"></div>
+    <h1 class="w-100 display-5 text-uppercase position-absolute top-50 start-50 translate-middle">Cursos UPA</h1>
+    <!-- <img src="<?php echo $dominio?>vistas/img/rsc/cover.jpg" alt="Educación continua" class=""> -->
 </div>
-<div class="container-fluid py-4 bg-light">
-    <!-- Barra de progreso -->
-    <div class="position-relative m-5 progress-step">
+<!-- Barra de progreso -->
+<div id="steps" class="px-5 shadow" style="padding-top: 2.3rem; padding-bottom: 2.3rem">
+    <div class="position-relative progress-step">
         <div class="progress" style="height: 1px;">
             <div class="progress-bar" role="progressbar" style="width: <?php echo intval($progress) ?>%;"
                 aria-valuenow="<?php echo intval($progress) ?>" aria-valuemin="0" aria-valuemax="100"></div>
@@ -59,6 +61,9 @@ if (isset($rutas[1])) {
         <button id="step4" type="button"
             class="position-absolute top-0 start-100 translate-middle btn btn-sm <?php if ($progress == 100) : ?>btn-primary<?php else : ?>btn-secondary<?php endif ?> rounded-circle">4</button>
     </div>
+</div>
+<div class="container-fluid py-5">
+    <!-- <hr> -->
     <div class="text-center" id="loader">
         <div class="spinner-border" role="status">
             <span class="visually-hidden">Cargando...</span>
@@ -66,7 +71,7 @@ if (isset($rutas[1])) {
     </div>
 
     <!-- Paso 1 (Carrousel con los cursos) -->
-    <div class="visually-hidden-focusable container px-0" id="card0">
+    <div class="container animate__animated px-0" id="card0">
         <div class="d-flex justify-content-evenly flex-wrap align-content-around">
             <?php foreach ($res as $valor) : 
                 $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($valor["idCurso"]);
@@ -75,9 +80,9 @@ if (isset($rutas[1])) {
                 if(($alumnosInscritos[0]<$valor['cupo']) && ($fechaActual>=$fechainicio && $fechaActual<=$fechafin)){
                     $razonCupo = floatval($alumnosInscritos[0])*floatval($valor['cupo'])/100;
             ?>
-            <div id="<?php echo $valor["idCurso"] ?>" style="border-radius: 0.5rem" class="cursos overflow-hidden shadow mb-4">
-                <div class="curso-banner position-relative text-white text-center bg-primary">
-                    <img src="<?php echo $dominio?>vistas/img/banners/<?php echo $valor["banner"]?>" alt="" class="img-fluid">
+            <div id="<?php echo $valor["idCurso"] ?>" style="border-radius: 0.5rem" class="cursos bg-white overflow-hidden shadow mb-5">
+                <div class="curso-banner position-relative text-white text-center bg-primary" style="background-image: url('<?php echo $dominio?>vistas/img/banners/<?php echo $valor["banner"]?>')">
+                    <!-- <img src="" alt="" class="img-fluid"> -->
                     <span class="position-absolute bottom-0 m-2 end-0 fs-5 badge rounded-pill">
                         <?php echo "$ ".number_format($valor["precio"],2) ?>
                     </span>
@@ -93,11 +98,11 @@ if (isset($rutas[1])) {
                     <h6 class="text-dark d-inline-flex">
                         <i class="fas fa-graduation-cap pe-2 my-auto"></i> <?php echo $valor["instructor"] ?>
                     </h6>
-                    <p class="text-upa-gray">
+                    <p class="text-upa-gray text-truncate">
                         <?php echo $valor["objetivo"] ?>
                     </p>
                     <div class="d-flex">
-                        <button class="btn bg-upa-secondary text-white fw-bold" onclick="reg(this)">Tomar el curso</button>
+                        <button class="btn bg-upa-secondary text-white fw-bold" onclick='reg(this,"<?php echo $valor[9]?>")'>Ver más</button>
                         <div class="ms-auto d-flex">
                             <span class="badge my-auto rounded-pill fs-6 <?php if($razonCupo>=80): ?>bg-danger text-white<?php else: ?>bg-upa-gray-light text-upa-gray-dark<?php endif;?>">
                                 <i class="fas fa-users"></i> <b> <?php echo $alumnosInscritos[0]."/".$valor['cupo']?></b>
@@ -113,194 +118,300 @@ if (isset($rutas[1])) {
     </div>
 
     <!-- Paso 2 (Formulario de registro de los aspirantes)-->
-    <div class="container" id="card1" hidden="">
-        <div class="card">
-            <div class="card-body">
-                <form method="POST" id="formRegistro1">
-                    <div class="row">
-                        <div class="col-12">
-                            <h4 class="titulo-curso fw-bolder text-center pb-2"></h4>
-                            <input name="curso" id="curso" type="text" class="visually-hidden-focusable">
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <!--Col izquierda-->
-                        <div class="col-xl-8 col-lg-6 col-md-12">
-                            <div class="col mb-2">
-                                <div class="input-group">
-                                    <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                            class="fas fa-user fa-lg icons"></i></span>
-                                    <input type="text" class="form-control" placeholder="Nombre completo" name="nombre"
-                                        required >
-                                </div>
-                            </div>
-                            <div class="col mb-2">
-                                <div class="input-group">
-                                    <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                            class="fas fa-hashtag fa-lg icons"></i></span>
-                                    <input type="text" class="form-control" placeholder="CURP" name="curp" required
-                                    pattern="[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}">
-                                </div>
-                            </div>
-                            <div class="col mb-2">
-                                <div class="input-group">
-                                    <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                            class="fas fa-home fa-lg icons"></i></span>
-                                    <input type="text" class="form-control" placeholder="Domicilio" name="domicilio"
-                                        required>
-                                </div>
-                            </div>
-                            <div class="col mb-2">
-                                <div class="input-group">
-                                    <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                            class="fas fa-phone-alt fa-lg icons"></i></span>
-                                    <input type="text" class="form-control" placeholder="Número de teléfono"
-                                        name="telefono" required pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})">
-                                </div>
-                            </div>
-                        </div>
-                        <!--Col derecha-->
-                        <div class="col-xl-4 col-lg-6 col-md-12">
-                            <div class="col-12 mb-2">
-                                <div class="input-group">
-                                    <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                            class="fas fa-envelope fa-lg icons"></i></i></span>
-                                    <input type="text" class="form-control" placeholder="Correo" name="correo" required
-                                    pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])">
-                                </div>
-                            </div>
-                            <div class="row mb-2 gx-0">
-                                <div class="col-2">
-                                    <div class="input-group-text input-group-text2">
-                                        <i class="fas fa-venus-mars fa-lg icons"></i>
+    <div class="container animate__animated" id="card1">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card border-0 rounded-3 shadow overflow-hidden">
+                    <div class="card-body p-0 row gx-0" id="data-curso">
+                        <div class="col-xl-7 col-lg-6 col-md-12 p-4 h-auto">
+                            <h3 class="text-center text-uppercase fw-bold text-dark">¡Inscríbete al curso!</h3>
+                            <h5 class="text-center text-secondary text-upa-primary text-capitalize fw-bold">Curso title</h5>
+                            <hr>
+                            <p class="fw-lighter">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium perferendis sed corporis officia non deserunt porro ex incidunt fugit repellat voluptatum, ea dolore, quod, a eveniet magni ipsa saepe nobis.</p>
+                            <div class="row mb-3">
+                                <div class="col-sm-6 d-flex align-self-center curso-feature mb-3">
+                                    <span class="bg-upa-secondary-lighter p-2 d-flex"><i class="fas fa-users m-auto fs-4"></i></span>
+                                    <div class="my-auto ms-3">
+                                        <h6 class="fw-bold mb-0">Modalidad</h6>
+                                        <h6 class="fw-lighter text-secondary mb-0">Presencial</h6>
                                     </div>
                                 </div>
-                                <div class="col-4 pt-1">
-                                    <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio"
-                                        name="sexoRadio" onclick="document.getElementById('mujerRadio').checked = false"
-                                        required>
-                                    <label class="ms-2" for="">Hombre</label>
-                                </div>
-                                <div class="col-4  pt-1">
-                                    <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio"
-                                        name="sexoRadio"
-                                        onclick="document.getElementById('hombreRadio').checked = false">
-                                    <label class="ms-2" for="">Mujer</label>
-                                </div>
-                            </div>
-                            <div class="row gx-0 mb-2">
-                                <div class="col-2 ">
-                                    <div class="input-group-text input-group-text2">
-                                        <i class="fas fa-hand-holding-heart fa-lg icons"></i>
+                                <div class="col-sm-6 d-flex align-self-center curso-feature mb-3">
+                                    <span class="bg-upa-secondary-lighter p-2 d-flex"><i class="far fa-building m-auto fs-4"></i></span>
+                                    <div class="my-auto ms-3">
+                                        <h6 class="fw-bold mb-0">Ubicación</h6>
+                                        <h6 class="fw-lighter text-secondary mb-0">Edificio 4, aula 404</h6>
                                     </div>
                                 </div>
-                                <div class="col-4 pt-1">
-                                    <input class="form-check-input ms-1" type="radio" value="soltero" id="casadoRadio"
-                                        name="estadoRadio"
-                                        onclick="document.getElementById('solteroRadio').checked = false" required>
-                                    <label class="ms-2" for="">Soltero/a</label>
+                                <div class="col-sm-6 d-flex align-self-center curso-feature mb-3">
+                                    <span class="bg-upa-secondary-lighter p-2 d-flex"><i class="far fa-calendar-alt m-auto fs-4"></i></span>
+                                    <div class="my-auto ms-3">
+                                        <h6 class="fw-bold mb-0">Sábados</h6>
+                                        <h6 class="fw-lighter text-secondary mb-0">16-08-2021 - 24-09-2021</h6>
+                                    </div>
                                 </div>
-                                <div class="col-4 pt-1">
-                                    <input class="form-check-input ms-1" type="radio" value="casado" id="solteroRadio"
-                                        name="estadoRadio"
-                                        onclick="document.getElementById('casadoRadio').checked = false">
-                                    <label class="ms-2" for="">Casado/a</label>
-                                </div>
-                            </div>
-                            <div class="row gx-0 mb-2 ">
-                                <div class="col-12 ms-2 mt-2 ">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="checkfactura" onclick="mostrarFactura()">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Quiero generar mi factura de registro</label>
+                                <div class="col-sm-6 d-flex align-self-center curso-feature mb-3">
+                                    <span class="bg-upa-secondary-lighter p-2 d-flex"><i class="far fa-clock m-auto fs-4"></i></span>
+                                    <div class="my-auto ms-3">
+                                        <h6 class="fw-bold mb-0">Horario</h6>
+                                        <h6 class="fw-lighter text-secondary mb-0">08:00 - 12:00</h6>
                                     </div>
                                 </div>
                             </div>
+                            <div class="row d-flex flex-wrap justify-content-evenly text-center precios">
+                                <div class="col-lg-4 col-6">
+                                    <span class="p-3 mx-auto d-flex position-relative"><i class="fas fa-user fs-1 position-absolute top-50 start-50 translate-middle text-upa-main"></i></span>
+                                    <div class="d-flex text-center justify-content-center align-items-center">
+                                        <p class="mb-0 fs-6 text-secondary fw-bold me-1">$</p>
+                                        <h5 class="fw-bold mb-0 fs-3 text-upa-primary">12,000</h5>
+                                    </div>
+                                    <p class="text-secondary">Público general</p>
+                                </div>
+                                <div class="col-lg-4 col-6">
+                                <span class="p-3 mx-auto d-flex position-relative"><i class="fas fa-user-graduate fs-1 position-absolute top-50 start-50 translate-middle text-upa-main"></i></span>
+                                    <div class="d-flex text-center justify-content-center align-items-center">
+                                        <p class="mb-0 fs-6 text-secondary fw-bold me-1">$</p>
+                                        <h5 class="fw-bold mb-0 fs-3 text-upa-primary">10,000</h5>
+                                    </div>
+                                    <p class="text-secondary">Estudiantes y egresados</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="1" name="subs"
-                                    id="checkBox-publicidad" checked>
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    Deseo recibir notificaciones a mi correo sobre las noticias más recientes
-                                    relacionadas al área de Cursos y diplomados de la UPA
-                                </label>
+                        <div class="col-xl-5 col-lg-6 col-md-12 p-5 bg-upa-secondary-gradient" style="display: grid" id="temario-curso">
+                            <div class="align-self-center">
+                                <h3 class="text-center text-white text-uppercase fw-bold mb-4">Temario</h3>
+                                <!-- <hr> -->
+                                <ul class="list-group">
+                                    <li>
+                                        <div class="col-12 d-flex">
+                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">I</h1></span>
+                                            <div class="my-auto ms-3">
+                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad I</h6>
+                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="col-12 d-flex">
+                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">II</h1></span>
+                                            <div class="my-auto ms-3">
+                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad II</h6>
+                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="col-12 d-flex">
+                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">III</h1></span>
+                                            <div class="my-auto ms-3">
+                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad III</h6>
+                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="col-12 d-flex">
+                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">IV</h1></span>
+                                            <div class="my-auto ms-3">
+                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad IV</h6>
+                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="col-12 d-flex">
+                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">V</h1></span>
+                                            <div class="my-auto ms-3">
+                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad V</h6>
+                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="col-12 d-flex">
+                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">VI</h1></span>
+                                            <div class="my-auto ms-3">
+                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad VI</h6>
+                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row" id="facturacion-form" hidden>
-                        <div class="col-12 mb-3">
-                            <h4>Facturación</h4>
-                        </div>
-                        <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                        class="fas fa-address-card fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="RFC" name="rfc" id="rfc"
-                                pattern="^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card border-0 rounded-3 shadow">
+                    <div class="card-body p-4">
+                        <form method="POST" id="formRegistro1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 class="titulo-curso fw-bolder text-center pb-2 text-uppercase display-6" style="font-size: 2rem">Registro</h4>
+                                    <input name="curso" id="curso" type="text" class="visually-hidden-focusable">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text2" id="addon-wrapping"><i
-                                        class="fas fa-file-alt fa-lg icons"></i></span>
-                                <input type="text" class="form-control" placeholder="CFDI" name="cfdi" id="cfdi">
+                            <div class="row mb-2">
+                                <!--Col izquierda-->
+                                <div class="col-xl-8 col-lg-6 col-md-12">
+                                    <div class="col mb-2">
+                                        <div class="input-group">
+                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                    class="fas fa-user fa-lg icons"></i></span>
+                                            <input type="text" class="form-control" placeholder="Nombre completo" name="nombre"
+                                                required >
+                                        </div>
+                                    </div>
+                                    <div class="col mb-2">
+                                        <div class="input-group">
+                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                    class="fas fa-hashtag fa-lg icons"></i></span>
+                                            <input type="text" class="form-control" placeholder="CURP" name="curp" required
+                                            pattern="[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}">
+                                        </div>
+                                    </div>
+                                    <div class="col mb-2">
+                                        <div class="input-group">
+                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                    class="fas fa-home fa-lg icons"></i></span>
+                                            <input type="text" class="form-control" placeholder="Domicilio" name="domicilio"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="col mb-2">
+                                        <div class="input-group">
+                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                    class="fas fa-phone-alt fa-lg icons"></i></span>
+                                            <input type="text" class="form-control" placeholder="Número de teléfono"
+                                                name="telefono" required pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Col derecha-->
+                                <div class="col-xl-4 col-lg-6 col-md-12">
+                                    <div class="col-12 mb-2">
+                                        <div class="input-group">
+                                            <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                    class="fas fa-envelope fa-lg icons"></i></i></span>
+                                            <input type="text" class="form-control" placeholder="Correo" name="correo" required
+                                            pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2 gx-0">
+                                        <div class="col-2">
+                                            <div class="input-group-text input-group-text2">
+                                                <i class="fas fa-venus-mars fa-lg icons"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 align-self-center">
+                                            <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio"
+                                                name="sexoRadio" onclick="document.getElementById('mujerRadio').checked = false"
+                                                required>
+                                            <label class="ms-2" for="">Hombre</label>
+                                        </div>
+                                        <div class="col-4  align-self-center">
+                                            <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio"
+                                                name="sexoRadio"
+                                                onclick="document.getElementById('hombreRadio').checked = false">
+                                            <label class="ms-2" for="">Mujer</label>
+                                        </div>
+                                    </div>
+                                    <div class="row gx-0 mb-2">
+                                        <div class="col-2 ">
+                                            <div class="input-group-text input-group-text2">
+                                                <i class="fas fa-hand-holding-heart fa-lg icons"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 align-self-center">
+                                            <input class="form-check-input ms-1" type="radio" value="soltero" id="casadoRadio"
+                                                name="estadoRadio"
+                                                onclick="document.getElementById('solteroRadio').checked = false" required>
+                                            <label class="ms-2" for="">Soltero/a</label>
+                                        </div>
+                                        <div class="col-4 align-self-center">
+                                            <input class="form-check-input ms-1" type="radio" value="casado" id="solteroRadio"
+                                                name="estadoRadio"
+                                                onclick="document.getElementById('casadoRadio').checked = false">
+                                            <label class="ms-2" for="">Casado/a</label>
+                                        </div>
+                                    </div>
+                                    <div class="row gx-0 mb-2 ">
+                                        <div class="col-12 ms-2 mt-2 ">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="checkfactura" onclick="mostrarFactura()">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Quiero generar mi factura de registro</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="obs" class="form-label">Observaciones</label>
-                            <div class="input-group">
-                                <!-- <span class="input-group-text"><i class="fas fa-sticky-note fa-lg icons"></i> </span> -->
-                                <textarea class="form-control" aria-label="Observaciones" id="obs" name="obs"
-                                    rows="3"></textarea>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="1" name="subs"
+                                            id="checkBox-publicidad" checked>
+                                        <label class="form-check-label" for="flexCheckChecked">
+                                            Deseo recibir notificaciones a mi correo sobre las noticias más recientes
+                                            relacionadas al área de Cursos y diplomados de la UPA
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <hr>
+                            <div class="row" id="facturacion-form">
+                                <div class="col-12 mb-3">
+                                    <h4 class="text-uppercase fw-bold">Facturación</h4>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-address-card fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="RFC" name="rfc" id="rfc"
+                                        pattern="^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i
+                                                class="fas fa-file-alt fa-lg icons"></i></span>
+                                        <input type="text" class="form-control" placeholder="CFDI" name="cfdi" id="cfdi">
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="obs" class="form-label">Observaciones</label>
+                                    <div class="input-group">
+                                        <!-- <span class="input-group-text"><i class="fas fa-sticky-note fa-lg icons"></i> </span> -->
+                                        <textarea class="form-control" aria-label="Observaciones" id="obs" name="obs"
+                                            rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-3" style="margin: 0 auto !important;">
+                                    <button type="submit" class="btn btn-primary w-100">Registrar</button>
+                                </div>
+                            </div>
+                            <?php
+                            /*=====================================
+                            INSTANCIA Y LLAMADO DE CLASE DE INGRESO
+                            ======================================*/
+                            $Form = new ControladorFormularios();
+                            $Form->ctrRegistro($dominio);
+                            ?>
+                        </form>
                     </div>
-                    <div class="row justify-content-between">
-                        <div class="col-3" style="margin: 0 auto !important;">
-                            <button type="submit" class="btn btn-primary w-100">Registrar</button>
-                        </div>
-                    </div>
-                    <?php
-                    /*=====================================
-                    INSTANCIA Y LLAMADO DE CLASE DE INGRESO
-                    ======================================*/
-                    $Form = new ControladorFormularios();
-                    $Form->ctrRegistro($dominio);
-                    ?>
-                </form>
+                </div>
             </div>
         </div>
-        <div class="float-end">
-            <button type="button" id="btnRegresar" class="btn btn-danger my-3">Regresar</button>
+        <div class="">
+            <button type="button" id="btnRegresar" class="btn btn-danger mt-3">Regresar</button>
         </div>
     </div>
-    
-    <script>
-        function mostrarFactura(){
-            var facturacion=document.getElementById("facturacion-form");
-            var checkfactura=document.getElementById("checkfactura");
-            var i1=document.getElementById("rfc");
-            var i2=document.getElementById("cfdi");
-            if(checkfactura.checked==true){
-                facturacion.hidden=false;
-                i1.required=true;
-                i2.required=true;
-            }
-            else{
-                facturacion.hidden=true;
-                i1.required=false;
-                i2.required=false;
-            }
-        }
-        
-    </script>
 
     <?php if(isset($rutas[1])): ?>
     <!-- Paso 3 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
-    <div class="visually-hidden-focusable" id="card2">
+    <div class="" id="card2">
         <div class="row">
             <div class="col-12">
                 <div class="card p-4 mb-3 bg-dark text-light position-relative">
@@ -385,7 +496,7 @@ if (isset($rutas[1])) {
     </div>
 
     <!-- Paso 4 (Confirmación de información) -->
-    <div class="visually-hidden-focusable text-center" id="card3">
+    <div class=" text-center" id="card3">
         <h1 class="display-2">¡Enhorabuena!</h1>
         <hr>
         <?php
@@ -405,3 +516,7 @@ if (isset($rutas[1])) {
     </div>
     <?php endif; ?>
 </div>
+
+<footer class="bg-dark sticky-bottom py-3 text-center" style="color: rgba(248,249,250,0.5)">
+    Made with <i class="fas fa-heart"></i> by Ferando Arévalo & Carlos Martínez
+</footer>
