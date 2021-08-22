@@ -8,18 +8,14 @@ $res = ModeloFormularios::mdlSelecReg("Cursos");
 $progress = 0;
 if (isset($rutas[1])) {
 
-    // $ciphering = "AES-128-CTR";
-    // $iv_length = openssl_cipher_iv_length($ciphering);
-    // $options = 0;
-    // $decryption_iv = '1234567891011121';
-    // $decryption_key = "Burritos21";
-    // $decryption = openssl_decrypt($rutas[1], $ciphering,$decryption_key, $options, $decryption_iv);
-
-    // $decryption = crypt(strval($id["idParticipante"]), '$6$rounds=5000$burritos21salsa43pepino13$');
-
-    $decryption = base64_decode(str_pad(strtr(strval($id["idParticipante"]), '-_', '+/'), strlen(strval($id["idParticipante"])) % 4, '=', STR_PAD_RIGHT)); 
+    $desencrypt_method = "AES-256-CBC";
+    $secret_key = 'AA74CDCC2BBRT935136HH7B63C27';
+    $secret_iv = '5fgf5HJ5g27';
+    $key = hash('sha256', $secret_key);
+    $iv = substr(hash('sha256', $secret_iv), 0, 16);
+    $decryption = openssl_decrypt(base64_decode($rutas[1]), $desencrypt_method, $key, 0, $iv);
+    
     $datos = array("idParticipante"=>intval($decryption));
-    // $datos = array("idParticipante"=>intval($rutas[1]));
     $inscrito = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datos), $datos);
     $pagoParticipante = ModeloFormularios::mdlSelecReg("Pagos", array_keys($datos), $datos);
     if (isset($inscrito[0]["idParticipante"])) {
@@ -371,7 +367,7 @@ if (isset($rutas[1])) {
                                 </div>
                             </div>
                             <hr>
-                            <div class="row" id="facturacion-form" hidden="true">
+                            <div class="row" id="facturacion-form">
                                 <div class="col-12 mb-3">
                                     <h4 class="text-uppercase fw-bold">Facturación</h4>
                                 </div>
