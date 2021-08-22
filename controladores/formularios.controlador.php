@@ -206,7 +206,7 @@ class ControladorFormularios
                 $val = $_POST["cursoEliminar"];
                 rmdir($dominio."vistas/img/comprobantes/" . $curso['idCurso']);
                 unlink($dominio."vistas/img/flyers/".$curso["flyer"]);
-                $_SESSION["vista"] = 3;
+                $_SESSION["vista"] = 1;
             }
             $eliminar = ModeloFormularios::mdlBorrarRegistro($tabla, $item, $val);
             if ($eliminar == "ok") {

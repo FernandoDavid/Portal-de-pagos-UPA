@@ -377,14 +377,14 @@ if (isset($rutas[1])) {
                                         <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                                 class="fas fa-address-card fa-lg icons"></i></span>
                                         <input type="text" class="form-control" placeholder="RFC" name="rfc" id="rfc"
-                                        pattern="^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$" required>
+                                        pattern="^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$" >
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                                 class="fas fa-file-alt fa-lg icons"></i></span>
-                                        <select name="cfdi" id="cfdi" required>
+                                        <select name="cfdi" id="cfdi" >
                                             <option value="" selected>CFDI</option>
                                             <option value="1">Gastos en general</option>
                                         </select>
