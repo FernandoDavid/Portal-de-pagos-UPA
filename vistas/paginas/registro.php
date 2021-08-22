@@ -7,6 +7,15 @@ $fechaActual = strtotime(date('y-m-d'));
 $res = ModeloFormularios::mdlSelecReg("Cursos");
 $progress = 0;
 if (isset($rutas[1])) {
+
+    // $ciphering = "AES-128-CTR";
+    // $iv_length = openssl_cipher_iv_length($ciphering);
+    // $options = 0;
+    // $decryption_iv = '1234567891011121';
+    // $decryption_key = "Burritos21";
+    // $decryption = openssl_decrypt($rutas[1], $ciphering,$decryption_key, $options, $decryption_iv);
+
+    // $datos = array("idParticipante"=>intval($decryption));
     $datos = array("idParticipante"=>intval($rutas[1]));
     $inscrito = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datos), $datos);
     $pagoParticipante = ModeloFormularios::mdlSelecReg("Pagos", array_keys($datos), $datos);
@@ -368,14 +377,17 @@ if (isset($rutas[1])) {
                                         <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                                 class="fas fa-address-card fa-lg icons"></i></span>
                                         <input type="text" class="form-control" placeholder="RFC" name="rfc" id="rfc"
-                                        pattern="^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$">
+                                        pattern="^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$" required>
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                                 class="fas fa-file-alt fa-lg icons"></i></span>
-                                        <input type="text" class="form-control" placeholder="CFDI" name="cfdi" id="cfdi">
+                                        <select name="cfdi" id="cfdi" required>
+                                            <option value="" selected>CFDI</option>
+                                            <option value="1">Gastos en general</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-12 mb-3">
@@ -468,6 +480,8 @@ if (isset($rutas[1])) {
                             <!-- <label for="comprobante" class="form-label">Comprobante de pago</label> -->
                             <div class="mb-3">
                                 <label for="comprobante" class="form-label">Comprobante de pago</label>
+                                <input type="file" name="comprobante" id="editFlyer" id="comprobante"
+                                    data-max-file-size="3MB" data-max-files="1">
                                 <input class="form-control" name="comprobante" type="file" id="comprobante"
                                     data-max-file-size="3MB" data-max-files="1">
                             </div>

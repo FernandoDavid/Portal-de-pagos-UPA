@@ -469,14 +469,14 @@ foreach ($res as $key => $dato) {
                                     <div class="col-4 pt-1">
                                         <input class="form-check-input ms-1" type="radio" value="soltero"
                                             id="solteroRadio" name="estadoRadio"
-                                            onclick="document.getElementById('solteroRadio').checked = false"
+                                            onclick="document.getElementById('casadoRadio').checked = false"
                                             required>
                                         <label class="ms-2" for="">Soltero/a</label>
                                     </div>
                                     <div class="col-4 pt-1">
                                         <input class="form-check-input ms-1" type="radio" value="casado"
                                             id="casadoRadio" name="estadoRadio"
-                                            onclick="document.getElementById('casadoRadio').checked = false">
+                                            onclick="document.getElementById('solteroRadio').checked = false">
                                         <label class="ms-2" for="">Casado/a</label>
                                     </div>
                                 </div>
