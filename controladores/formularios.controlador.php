@@ -58,6 +58,13 @@ class ControladorFormularios
                             // $doc = new ControladorReportes();
                             // $doc -> ctrRegistro($curso[0]['idCurso']);
 
+                            // ENCRIPTACIÓN DE ID
+                            $ciphering = "BF-CBC";
+                            $iv_length = openssl_cipher_iv_length($ciphering);
+                            $encryption_iv = random_bytes($iv_length);
+                            $encryption_iv = '1234567891011121';
+
+
                             $msg = '<div>
                                 <p>Gracias por registrarte a través de nuestra plataforma.   </p>
                                 <br>

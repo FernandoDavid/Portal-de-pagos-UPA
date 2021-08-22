@@ -60,13 +60,13 @@ function reg(element,foto) {
         });
 
         $('#card1').show('slow');
-        var h = $($('#data-curso > div')[0]).innerHeight();
-        if($(window).width()>992){
-            $('#data-curso').innerHeight(h);
-        }else{
-            $('#data-curso').innerHeight(h*2);
-        }
-        console.log('h',h);
+        // var h = $($('#data-curso > div')[0]).innerHeight();
+        // if($(window).width()>992){
+        //     $('#data-curso').innerHeight(h);
+        // }else{
+        //     $('#data-curso').innerHeight(h*2);
+        // }
+        // console.log('h',h);
     }
     else{
         $('#card0').slideUp('slow');

@@ -56,11 +56,12 @@ img {
 	border-radius: 1rem !important;
 }
 #data-curso ul{
+	max-height: 21rem;
 	list-style-type: none;
 }
 #temario-curso span{
 	height: 40px;
-	width: 40px;
+	width: 58px;
 	background-color: var(--upa-primary-light);
 	border-radius: 50rem !important;
 }

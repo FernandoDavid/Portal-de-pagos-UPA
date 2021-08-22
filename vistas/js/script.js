@@ -42,17 +42,17 @@ $(document).ready(() => {
 
     console.log('$("#data-curso > div"): ', $('#data-curso > div'));
 
-    $(window).on('resize',()=>{
-        $('#data-curso').height("auto");
-        var h = $($('#data-curso > div')[0]).innerHeight();
-        console.log('w: ',$(window).width());
-        if($(window).width()>992){
-            $('#data-curso').innerHeight(h);
-        }else{
-            $('#data-curso').innerHeight(h*2);
-        }
-        console.log('h: ', h);
-    })
+    // $(window).on('resize',()=>{
+    //     $('#data-curso').height("auto");
+    //     var h = $($('#data-curso > div')[0]).innerHeight();
+    //     console.log('w: ',$(window).width());
+    //     if($(window).width()>992){
+    //         $('#data-curso').innerHeight(h);
+    //     }else{
+    //         $('#data-curso').innerHeight(h*2);
+    //     }
+    //     console.log('h: ', h);
+    // })
 
     // $('.filepond--drop-label label').empty().text("Adjunta tu comprobante de pago aquí");
 

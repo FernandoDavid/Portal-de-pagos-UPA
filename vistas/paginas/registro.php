@@ -181,7 +181,7 @@ if (isset($rutas[1])) {
                             <div class="align-self-center">
                                 <h3 class="text-center text-white text-uppercase fw-bold mb-4">Temario</h3>
                                 <!-- <hr> -->
-                                <ul class="list-group">
+                                <ul class="list-group overflow-auto">
                                     <li>
                                         <div class="col-12 d-flex">
                                             <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">I</h1></span>
