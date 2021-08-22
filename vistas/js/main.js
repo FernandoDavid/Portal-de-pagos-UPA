@@ -91,8 +91,8 @@ function reg(element,foto) {
 function mostrarFactura(){
     // var facturacion=document.getElementById("facturacion-form");
     var checkfactura=document.getElementById("checkfactura");
-    var i1=$("#rfc");
-    var i2=$("#cfdi");
+    var i1=document.getElementById("rfc");
+    var i2=document.getElementById("cfdi");
     if(checkfactura.checked==true){
         // $('#facturacion-form').attr("hidden","false");
         $('#facturacion-form').show();
@@ -102,7 +102,7 @@ function mostrarFactura(){
         i1.required=true;
         i2.required=true;
     }
-    else{
+    else if (checkfactura.checked==false){
         $('#facturacion-form .mb-3').map((e)=>{
             $($('#facturacion-form .mb-3')[e]).hide('fast');
         });
