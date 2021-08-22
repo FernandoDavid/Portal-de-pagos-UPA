@@ -58,18 +58,19 @@ class ControladorFormularios
                             // $doc = new ControladorReportes();
                             // $doc -> ctrRegistro($curso[0]['idCurso']);
 
-                            // ENCRIPTACIÓN DE ID
-                            $ciphering = "BF-CBC";
+                            //------ ENCRYPTACIÓN ------//
+                            $ciphering = "AES-128-CTR";
                             $iv_length = openssl_cipher_iv_length($ciphering);
-                            $encryption_iv = random_bytes($iv_length);
+                            $options = 0;
                             $encryption_iv = '1234567891011121';
-
+                            $encryption_key = "Burritos21";
+                            $encryption = openssl_encrypt(strval($id["idParticipante"]), $ciphering,$encryption_key, $options, $encryption_iv);
 
                             $msg = '<div>
                                 <p>Gracias por registrarte a través de nuestra plataforma.   </p>
                                 <br>
                                 <p>Para continuar con tu proceso de registro debes de hacer el depósito por la cantidad que se te indica en el siguiente link:</p>
-                                <a href="' . $dominio . 'registro/' . $id["idParticipante"] . '">' . $dominio . 'registro/' . $id["idParticipante"] . '</a>
+                                <a href="' . $dominio . 'registro/' . $encryption . '">' . $dominio . 'registro/' . $encryption . '</a>
                                 <br>
                                 <p>
                                     Dentro de este mismo link deberás subir una captura o foto de tu comprobante de pago para pasar a la validación de tu lugar dentro del curso.

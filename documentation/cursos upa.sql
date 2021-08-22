@@ -83,7 +83,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `cursos_upa`.`Facturas` (
   `idParticipante` INT NOT NULL,
   `rfc` VARCHAR(15) NOT NULL,
-  `cfdi` VARCHAR(45) NULL,
+  `cfdi` TINYINT(1) NOT NULL,
   `obs` TEXT(255) NULL,
   PRIMARY KEY (`idParticipante`),
   CONSTRAINT `fk_Facturas_Participantes1`
