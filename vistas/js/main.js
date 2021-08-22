@@ -94,6 +94,7 @@ function mostrarFactura(){
     var i1=$("#rfc");
     var i2=$("#cfdi");
     if(checkfactura.checked==true){
+        // $('#facturacion-form').attr("hidden","false");
         $('#facturacion-form').show();
         $('#facturacion-form .mb-3').map((e)=>{
             $($('#facturacion-form .mb-3')[e]).show('fast');
@@ -107,6 +108,7 @@ function mostrarFactura(){
         });
         i1.required=false;
         i2.required=false;
+        // $('#facturacion-form').attr("hidden","true");
     }
 }
 

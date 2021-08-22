@@ -59,12 +59,14 @@ class ControladorFormularios
                             // $doc -> ctrRegistro($curso[0]['idCurso']);
 
                             //------ ENCRYPTACIÓN ------//
-                            $ciphering = "AES-128-CTR";
-                            $iv_length = openssl_cipher_iv_length($ciphering);
-                            $options = 0;
-                            $encryption_iv = '1234567891011121';
-                            $encryption_key = "Burritos21";
-                            $encryption = openssl_encrypt(strval($id["idParticipante"]), $ciphering,$encryption_key, $options, $encryption_iv);
+                            // $ciphering = "blowfish";
+                            // $iv_length = openssl_cipher_iv_length($ciphering);
+                            // $options = 0;
+                            // $encryption_iv = '1234567891011121';
+                            // $encryption_key = "Burritos21";
+                            // $encryption = crypt(strval($id["idParticipante"]), '$6$rounds=5000$burritos21salsa43pepino13$');
+                            // $encryption = openssl_encrypt($id["idParticipante"], $ciphering,$encryption_key, $options, $encryption_iv);
+                            $encryption = rtrim(strtr(base64_encode(strval($id["idParticipante"])), '+/', '-_'), '='); 
 
                             $msg = '<div>
                                 <p>Gracias por registrarte a través de nuestra plataforma.   </p>

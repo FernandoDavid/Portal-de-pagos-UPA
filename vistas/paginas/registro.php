@@ -15,8 +15,11 @@ if (isset($rutas[1])) {
     // $decryption_key = "Burritos21";
     // $decryption = openssl_decrypt($rutas[1], $ciphering,$decryption_key, $options, $decryption_iv);
 
-    // $datos = array("idParticipante"=>intval($decryption));
-    $datos = array("idParticipante"=>intval($rutas[1]));
+    // $decryption = crypt(strval($id["idParticipante"]), '$6$rounds=5000$burritos21salsa43pepino13$');
+
+    $decryption = base64_decode(str_pad(strtr(strval($id["idParticipante"]), '-_', '+/'), strlen(strval($id["idParticipante"])) % 4, '=', STR_PAD_RIGHT)); 
+    $datos = array("idParticipante"=>intval($decryption));
+    // $datos = array("idParticipante"=>intval($rutas[1]));
     $inscrito = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datos), $datos);
     $pagoParticipante = ModeloFormularios::mdlSelecReg("Pagos", array_keys($datos), $datos);
     if (isset($inscrito[0]["idParticipante"])) {
@@ -368,7 +371,7 @@ if (isset($rutas[1])) {
                                 </div>
                             </div>
                             <hr>
-                            <div class="row" id="facturacion-form">
+                            <div class="row" id="facturacion-form" hidden="true">
                                 <div class="col-12 mb-3">
                                     <h4 class="text-uppercase fw-bold">Facturación</h4>
                                 </div>
