@@ -8,6 +8,7 @@ class ControladorFormularios
     {
         if (isset($_POST["curso"])) {
             if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombre"])) {
+                $_POST["telefono"] = str_replace(" ","",$_POST["telefono"]); 
                 $datos = array(
                     "nombre" => $_POST["nombre"],
                     "telefono" => $_POST["telefono"],

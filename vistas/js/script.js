@@ -1,9 +1,42 @@
 $(document).ready(() => {
 
+    var url = window.location.href;
+    if(url.includes("admin")){
+        console.log("admin");
+        $('body').addClass("bg-light");
+    }else{
+        if(url.includes("login")){
+            $('body').addClass("bg-light-gray");
+            // $('body').addClass("bg-upa-primary-gradient");
+
+            $('#form-login input').focusin((e)=>{
+                // console.log(e);
+                $(e['target']).parent().find('span').css({"color": "var(--upa-primary)"});
+            });
+            $('#form-login input').focusout((e)=>{
+                // console.log(e);
+                $(e['target']).parent().find('span').css({"color": "var(--bs-dark)"});
+            });
+
+        }else{
+            console.log("registro");
+            $('body').addClass("bg-light-gray");
+        }
+    }
+
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
     $('#card0').hide();
     $('#card1').hide();
     $('#card2').hide();
     $('#card3').hide();
+
+    $("#temario-curso ul").mCustomScrollbar({
+        theme: 'minimal'
+    });
 
     $('#step1').click(() => {
         stepAlert("Paso 1: Elección", "Selecciona tu curso..");
@@ -40,7 +73,7 @@ $(document).ready(() => {
         }
     }
 
-    console.log('$("#data-curso > div"): ', $('#data-curso > div'));
+    // console.log('$("#data-curso > div"): ', $('#data-curso > div'));
 
     // $(window).on('resize',()=>{
     //     $('#data-curso').height("auto");
@@ -55,6 +88,12 @@ $(document).ready(() => {
     // })
 
     // $('.filepond--drop-label label').empty().text("Adjunta tu comprobante de pago aquí");
+
+    // var Cleave = require('cleave.js');
+    var tel = new Cleave('.telefono-input',{
+        phone: true,
+        phoneRegionCode: 'MX'
+    });
 
     $('#btnRegresar').on('click',function(){
         if(window.history.replaceState){
@@ -95,6 +134,8 @@ $(document).ready(() => {
         $(e['target']).parent().find('span').css({"color": "var(--bs-dark)"});
     });
 
+
     $('#facturacion-form').hide();
     $('#facturacion-form .mb-3').hide();
+
 });

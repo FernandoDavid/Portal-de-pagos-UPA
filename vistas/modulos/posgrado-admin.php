@@ -109,7 +109,7 @@ foreach ($res as $key => $dato) {
                         <td>
                             <button type="submit" class="btn p-1 <?php if ($pagoPart[0]["comprobante"]) {echo 'btn-primary' ;}?> btnComprobante position-relative" onclick="comprobante(this)">
                                 <i class="fas fa-file-invoice-dollar"></i>
-                                <?php if ($pagoPart[0]["r2"]) : ?>
+                                <?php if ($pagoPart[0]["r2"]=="1") : ?>
                                 <span
                                     class="position-absolute mt-1 top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
                                 </span>
@@ -219,61 +219,6 @@ foreach ($res as $key => $dato) {
         <div class="col-sm-6 align-self-center mb-4">
             <h1 class="text-left fs-2 fw-bolder ms-3 my-auto"><i class="fas fa-angle-double-right text-upa-primary me-2"></i>Cursos</h1>
         </div>
-        <!-- <div class="table-responsive">
-            <table class="table table-striped table-primary table-hover mb-4">
-                <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">Curso</th>
-                    <th scope="col">Instructor</th>
-                    <th scope="col">Registro del curso</th>
-                    <th scope="col">Inicio del curso</th>
-                    <th scope="col">Horario de clases</th>
-                    <th scope="col">Costo</th>
-                    <th scope="col">Cupo</th>
-                    <th scope="col">Modificar</th>
-                    <th scope="col">Eliminar</th>
-                </thead>
-                <tbody>
-                    <?php
-                        // $res = ModeloFormularios::mdlSelecReg("cursos");
-                        // foreach ($res as $key => $datos) {
-                        // $alumnosInscritos=ModeloFormularios::mdlVerificarCupo($datos["idCurso"]);
-                    ?>
-                    <tr>
-                        <td class="c-<?php // echo $datos["idCurso"] ?>">
-                            <?php // echo  $key + 1    ?>
-                        </td>
-                        <td>
-                            <?php // echo $datos['curso'] ?>
-                        </td>
-                        <td>
-                            <?php // echo $datos['instructor'] ?>
-                        </td>
-                        <td>
-                            <?php // echo "Del ".$datos['reg_inicio']." a ".$datos['reg_fin'] ?>
-                        </td>
-                        <td>
-                            <?php // echo "Del ".$datos['fec_inicio']." a ".$datos['fec_fin']  ?>
-                        </td>
-                        <td>
-                            <?php // echo "De ".$datos['hora_inicio']." a ".$datos['hora_fin']  ?>
-                        </td>
-                        <td class="text-center">
-                            <?php // echo $datos['precio']  ?>
-                        </td>
-                        <td class="text-center">
-                            <?php // echo $alumnosInscritos[0]."/".$datos['cupo']  ?>
-                        </td>
-                        <td class="text-center"><button type="button" class="btn btn-warning btnModificarCurso"
-                                style="color: black; border-color: black;"><i class="fas fa-pencil-alt"></i></button>
-                        </td>
-                        <td class="text-center"><button type="button" class="btn btn-danger btnEliminarCurso" style="border-color: black"><i
-                                    class="fas fa-trash-alt"></i></button></td>
-                    </tr>
-                    <?php //} ?>
-                </tbody>
-            </table>
-        </div> -->
         <div class="d-flex justify-content-evenly flex-wrap align-content-around">
             <?php 
                 $res = ModeloFormularios::mdlSelecReg("Cursos");
@@ -282,8 +227,8 @@ foreach ($res as $key => $dato) {
                     $razonCupo = floatval($alumnosInscritos[0])*floatval($datos['cupo'])/100;
             ?>
             <div id="c-<?php echo $datos["idCurso"] ?>" style="border-radius: 0.5rem" class="cursos overflow-hidden shadow mb-4">
-                <div class="curso-banner position-relative text-white text-center bg-primary">
-                    <img src="<?php echo $dominio?>vistas/img/banners/<?php echo $datos["banner"]?>" alt="" class="img-fluid">
+            <div class="curso-banner position-relative text-white text-center bg-primary" style="background-image: url('<?php echo $dominio?>vistas/img/banners/<?php echo $datos["banner"]?>')">
+                    <!-- <img src="<?php echo $dominio?>vistas/img/banners/<?php echo $datos["banner"]?>" alt="" class="img-fluid"> -->
                     <span class="position-absolute bottom-0 m-2 end-0 fs-5 badge rounded-pill">
                         <?php echo "$ ".number_format($datos["precio"],2) ?>
                     </span>

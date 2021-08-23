@@ -32,13 +32,19 @@ $dominio = fgets(fopen("dominio.txt", "r"));
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/locales/es.js"></script>
     <!-- ANIMATE JS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- CUSTOM SCROLLBAR -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- Cleave.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js" integrity="sha512-KaIyHb30iXTXfGyI9cyKFUIRSSuekJt6/vqXtyQKhQP6ozZEGY8nOtRS6fExqE4+RbYHus2yGyYg1BrqxzV6YA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/addons/cleave-phone.mx.js" integrity="sha512-zjJld7xbEJOaT4Ajm8nCdT3hZ6RAf3coBiYgpBTUyqYY3NNclzBH8o9vAtK421VcrwIQQpk9Go8tUDmRYya7EQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>Portal de pagos</title>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?php echo $dominio ?>vistas/js/main.js"></script>
     <!--Styles CSS-->
     <link rel="stylesheet" href="<?php echo $dominio ?>vistas/css/styles.css">
 </head>
-<body class="bg-light-gray">
+<body>
 <?php
 session_start();
 

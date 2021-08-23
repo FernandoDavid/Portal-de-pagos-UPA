@@ -1,10 +1,5 @@
 $(document).ready(function() {
 
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-
     $('body').addClass('admin-body bg-light').attr("id", "body-pd").removeClass('bg-light-gray');
 
     $(".btnModificarCurso").on('click', function() {

@@ -6,6 +6,7 @@ date_default_timezone_set('America/Mexico_City');
 $fechaActual = strtotime(date('y-m-d'));
 $res = ModeloFormularios::mdlSelecReg("Cursos");
 $progress = 0;
+$pagoParticipante = [];
 if (isset($rutas[1])) {
 
     $desencrypt_method = "AES-256-CBC";
@@ -19,6 +20,11 @@ if (isset($rutas[1])) {
     $inscrito = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datos), $datos);
     $pagoParticipante = ModeloFormularios::mdlSelecReg("Pagos", array_keys($datos), $datos);
     if (isset($inscrito[0]["idParticipante"])) {
+        $datos2 = array("idCurso"=>intval($inscrito[0]["idCurso"]));
+        $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($datos2), $datos2);
+        $datos3 = array("curp"=>$inscrito[0]["curp"]);
+        $alumno = ModeloFormularios::mdlSelecReg("alumnos",array_keys($datos3), $datos3);
+
         if($pagoParticipante[0]["r1"] && $pagoParticipante[0]["r2"]){
             echo '
             <script>
@@ -50,8 +56,9 @@ if (isset($rutas[1])) {
 
 <div class="text-center bg-upa-main-dark text-white overflow-hidden position-relative" id="header-cursos">
     <div class="cover"></div>
-    <h1 class="w-100 display-5 text-uppercase position-absolute top-50 start-50 translate-middle">Cursos UPA</h1>
-    <!-- <img src="<?php echo $dominio?>vistas/img/rsc/cover.jpg" alt="Educación continua" class=""> -->
+    <h1 class="w-100 display-5 text-uppercase position-absolute top-50 start-50 translate-middle">
+        Cursos UPA
+    </h1>
 </div>
 <!-- Barra de progreso -->
 <div id="steps" class="px-5 shadow" style="padding-top: 2.3rem; padding-bottom: 2.3rem">
@@ -71,6 +78,8 @@ if (isset($rutas[1])) {
     </div>
 </div>
 <div class="container-fluid py-5">
+
+    <?php if(!isset($rutas[1])): ?>
     <!-- <hr> -->
     <div class="text-center" id="loader">
         <div class="spinner-border" role="status">
@@ -176,20 +185,25 @@ if (isset($rutas[1])) {
                                     <p class="text-secondary">Público general</p>
                                 </div>
                                 <div class="col-lg-4 col-6">
-                                <span class="p-3 mx-auto d-flex position-relative"><i class="fas fa-user-graduate fs-1 position-absolute top-50 start-50 translate-middle text-upa-main"></i></span>
+                                    <span class="p-3 mx-auto d-flex position-relative"><i class="fas fa-user-graduate fs-1 position-absolute top-50 start-50 translate-middle text-upa-main"></i></span>
                                     <div class="d-flex text-center justify-content-center align-items-center">
                                         <p class="mb-0 fs-6 text-secondary fw-bold me-1">$</p>
                                         <h5 class="fw-bold mb-0 fs-3 text-upa-primary">10,000</h5>
                                     </div>
                                     <p class="text-secondary">Estudiantes y egresados</p>
                                 </div>
+                                <i class="position-absolute bottom-0 end-0 bg-upa-light">IVA incluido</i>
                             </div>
+                            <button type="button" id="btnRegresar" class="btn position-absolute bottom-0 start-0 btn-danger rounded-circle p-2 m-3 d-flex"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Regresar">
+                                <i class="fas fa-angle-left m-auto"></i>
+                            </button>
                         </div>
                         <div class="col-xl-5 col-lg-6 col-md-12 p-5 bg-upa-secondary-gradient" style="display: grid" id="temario-curso">
                             <div class="align-self-center">
                                 <h3 class="text-center text-white text-uppercase fw-bold mb-4">Temario</h3>
                                 <!-- <hr> -->
-                                <ul class="list-group overflow-auto">
+                                <ul class="list-group">
                                     <li>
                                         <div class="col-12 d-flex">
                                             <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">I</h1></span>
@@ -291,7 +305,7 @@ if (isset($rutas[1])) {
                                         <div class="input-group">
                                             <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                                     class="fas fa-phone-alt fa-lg icons"></i></span>
-                                            <input type="text" class="form-control" placeholder="Número de teléfono"
+                                            <input type="text" class="form-control telefono-input" placeholder="Número de teléfono"
                                                 name="telefono" required pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})">
                                         </div>
                                     </div>
@@ -383,7 +397,7 @@ if (isset($rutas[1])) {
                                     <div class="input-group">
                                         <span class="input-group-text input-group-text2" id="addon-wrapping"><i
                                                 class="fas fa-file-alt fa-lg icons"></i></span>
-                                        <select name="cfdi" id="cfdi" >
+                                        <select name="cfdi" class="form-select" id="cfdi" >
                                             <option value="" selected>CFDI</option>
                                             <option value="1">Gastos en general</option>
                                         </select>
@@ -415,99 +429,131 @@ if (isset($rutas[1])) {
                 </div>
             </div>
         </div>
-        <div class="">
-            <button type="button" id="btnRegresar" class="btn btn-danger mt-3">Regresar</button>
-        </div>
     </div>
+    <?php endif; ?>
 
-    <?php if(isset($rutas[1])): ?>
+    <?php 
+    if(isset($rutas[1]) && (!$pagoParticipante[0]["r1"] || !$pagoParticipante[0]["r2"])): 
+        $dat = ["idParticipante"=>$inscrito[0]["idParticipante"]];
+        $factura = ModeloFormularios::mdlSelecReg("Facturas", array_keys($dat),$dat);
+        echo '
+        <script>
+            $("#header-cursos h1").text("'.$curso[0]["curso"].'");
+            $($("#header-cursos .cover")[0]).css({"background-image": "url("+dominio+"vistas/img/banners/'.$curso[0]["banner"].')","height": "15rem"});
+        </script>';
+    ?>
     <!-- Paso 3 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
-    <div class="" id="card2">
-        <div class="row">
-            <div class="col-12">
-                <div class="card p-4 mb-3 bg-dark text-light position-relative">
-                    <?php 
-                    $datos2 = array("idCurso"=>intval($inscrito[0]["idCurso"]));
-                    $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($datos2), $datos2);
-                    $datos3 = array("curp"=>$inscrito[0]["curp"]);
-                    $alumno = ModeloFormularios::mdlSelecReg("alumnos",array_keys($datos3), $datos3);
-                    ?>
-                    <h4 class="text-uppercase fw-bolder text-center">
-                        <?php echo $curso[0]["curso"] ?>
-                    </h4>
-                    <span
-                        class="position-absolute badge rounded-pill bg-success <?php if($alumno[0]):?>text-decoration-line-through<?php endif ?>"
-                        style="width: inherit !important; bottom: 1rem !important; right: 1rem !important; font-size: 1.25rem !important">
-                        $
-                        <?php echo number_format($curso[0]["precio"],2) ?>
-                        <?php if(isset($alumno[0])):?>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            $
-                            <?php echo number_format($curso[0]["precio"]*(1-$curso[0]["desc"]/100),2) ?>
-                        </span>
-                        <?php endif ?>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row align-items-stretch">
-            <div class="col-sm-6 mb-3">
-                <div class="card p-4 h-100">
-                    <h4>
-                        <?php echo $inscrito[0]["nombre"] ?>
-                    </h4>
-                    <hr>
-                    <p><b>Correo: </b>
-                        <?php echo $inscrito[0]["correo"] ?>
-                    </p>
-                    <p><b>Teléfono: </b>
-                        <?php echo $inscrito[0]["telefono"] ?>
-                    </p>
-                    <p><b>Sexo: </b>
-                        <?php echo ($inscrito[0]["sexo"] == "H") ? "Masculino" : "Femenino"; ?>
-                    </p>
-                    <p class="text-capitalize"><b>Estado Civil: </b>
-                        <?php echo $inscrito[0]["est_civil"] ?>
-                    </p>
-                </div>
-            </div>
-            <div class="col-sm-6 mb-3">
-                <div class="card p-4 h-100">
-                    <?php if ($pagoParticipante[0]["comprobante"] == null) : ?>
-                    <form method="POST" enctype="multipart/form-data">
-                        <div class="">
-                            <!-- <label for="comprobante" class="form-label">Comprobante de pago</label> -->
-                            <div class="mb-3">
-                                <label for="comprobante" class="form-label">Comprobante de pago</label>
-                                <input type="file" name="comprobante" id="editFlyer" id="comprobante"
-                                    data-max-file-size="3MB" data-max-files="1">
-                                <input class="form-control" name="comprobante" type="file" id="comprobante"
-                                    data-max-file-size="3MB" data-max-files="1">
-                            </div>
-                            <!-- <div class="file-img mb-3">
-                                    <input name="comprobante" id="comprobante" type="file" class="" data-max-file-size="3MB" data-max-files="1">
-                                </div> -->
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <?php
-                                /*=====================================
-                                INSTANCIA Y LLAMADO DE CLASE DE INGRESO
-                                ======================================*/
-                                // $ctrComp = new ControladorFormularios();
-                                $Form->ctrComprobante($inscrito[0]["idParticipante"], $inscrito[0]["idCurso"], $dominio);
-                                ?>
+    <div class="container" id="card2">
+        <div class="row d-flex align-items-stretch">
+            <div class="col-sm-7 mb-3">
+                <div class="card h-100 border-0 rounded-3 shadow overflow-hidden p-4 bg-upa-primary-gradient">
+                    <div class="card-body my-auto">
+                        <h5 class="text-center text-upa-main-dark text-uppercase fw-bold mb-3">Monto a pagar</h5>
+                        <div class="d-flex text-center justify-content-center align-items-center">
+                            <p class="mb-0 fs-6 text-upa-main-lighter fw-bold me-1">$</p>
+                            <h5 class="fw-bold mb-0 fs-3 text-white">
+                            <?php echo number_format($pagoParticipante[0]["pago"],2); ?>
+                            </h5>
                         </div>
-                    </form>
-                    <?php else : ?>
-                    <h4 class="fw-bolder text-center">Comprobante</h4>
-                    <img src="<?php echo $dominio . 'vistas/img/comprobantes/' . $inscrito[0]["idCurso"] . '/' .
-                        $pagoParticipante[0]["comprobante"] ?>" alt="
-                    <?php echo $pagoParticipante[0]["comprobante"] ?>" class="img-fluid">
-                    <?php endif ?>
+                        <hr>
+                        <?php if ($pagoParticipante[0]["comprobante"] == null) : ?>
+                        <p class="text-white fw-light">Para apartar tu lugar dentro del curso, sube una foto de tu comprobante de pago por la cantidad correspondiente en el siguiente apartado:</p>
+                        <form method="POST" enctype="multipart/form-data" class="form-comprobante">
+                            <div class="">
+                                <!-- <label for="comprobante" class="form-label">Comprobante de pago</label> -->
+                                <div class="mb-4">
+                                    <!-- <label for="comprobante" class="form-label">Comprobante de pago</label> -->
+                                    <!-- <input type="file" name="comprobante" id="editFlyer" id="comprobante"
+                                        data-max-file-size="3MB" data-max-files="1"> -->
+                                    <input class="form-control" name="comprobante" type="file" id="comprobante"
+                                        data-max-file-size="3MB" data-max-files="1">
+                                </div>
+                                <!-- <div class="file-img mb-3">
+                                        <input name="comprobante" id="comprobante" type="file" class="" data-max-file-size="3MB" data-max-files="1">
+                                    </div> -->
+                                <div class="d-flex">
+                                    <button type="submit" class="btn btn-primary mx-auto">Guardar</button>
+                                </div>
+                                <?php
+                                    /*=====================================
+                                    INSTANCIA Y LLAMADO DE CLASE DE INGRESO
+                                    ======================================*/
+                                    $Comprobante = new ControladorFormularios();
+                                    $Comprobante->ctrComprobante($inscrito[0]["idParticipante"], $inscrito[0]["idCurso"], $dominio);
+                                ?>
+                            </div>
+                        </form>
+                        <?php else:?>
+                        <div class="w-100 marco-comprobante p-3">
+                            <img src="<?php echo $dominio . 'vistas/img/comprobantes/' . $inscrito[0]["idCurso"] . '/' .
+                                $pagoParticipante[0]["comprobante"] ?>" alt="" class="img-fluid">
+                        </div>
+                        <?php endif;?>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5 mb-3">
+                <div class="card h-100 border-0 rounded-3 shadow overflow-hidden user-card">
+                    <div class="card-body my-auto py-4">
+                        <span class="mx-auto rounded-circle overflow-hidden d-flex p-0 pt-2">
+                            <i class="fas fa-user m-auto"></i>
+                        </span>
+                        <div class="text-center mt-3">
+                            <h5 class="fw-bold"><?php echo $inscrito[0]["nombre"] ?></h5>
+                            <p class="fs-6 text-secondary fw-light mb-0"><?php echo $inscrito[0]["correo"] ?></p>
+                        </div>
+                        <hr>
+                        <?php 
+                        if(isset($factura[0])):
+                            switch ($factura[0]["cfdi"]) {
+                                case '1': $factura[0]["cfdi"]="Gastos en general"; break;
+                            }        
+                        ?>
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item w-50" role="presentation">
+                                <button class="nav-link active text-secondary mx-auto w-100" id="user-details-tab" type="button" data-bs-toggle="pill" type="button" aria-selected="true" data-bs-target="#user-details" role="tab" aria-controls="user-details">
+                                    <i class="fst-normal fw-bold">Datos personales</i>   
+                                <!-- <i class="fas fa-user fs-4"></i> -->
+                                </button>
+                            </li>
+                            <li class="nav-item w-50" role="presentation">
+                                <button class="nav-link text-secondary mx-auto w-100" id="user-factura-tab" type="button" data-bs-toggle="pill" type="button" aria-selected="false" data-bs-target="#user-factura" role="tab" aria-controls="user-factura">
+                                    <i class="fst-normal fw-bold">Facturación</i>  
+                                <!-- <i class="fas fa-file-invoice fs-4"></i> -->
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="user-details text-secondary w-75 mx-auto mt-4 tab-pane fade show active" role="tabpanel" aria-labelledby="user-details-tab" id="user-details">
+                                <p><i class="fas fa-phone-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["telefono"] ?></p>
+                                <p><i class="fas fa-hashtag rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["curp"] ?></p>
+                                <p class="mb-0"><i class="fas fa-home rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["direc"] ?></p>
+                            </div>
+                            <div class="user-details text-secondary w-75 mx-auto mt-4 tab-pane fade show" role="tabpanel" aria-labelledby="user-factura-tab" id="user-factura">
+                                <p><i class="fas fa-address-card rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["rfc"] ?></p>
+                                <?php if($factura[0]["obs"]!=""):?>
+                                <p><i class="fas fa-file-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["cfdi"] ?></p>
+                                <p class="mb-0"><i class="far fa-sticky-note rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["obs"] ?></p>
+                                <?php else:?>
+                                <p class="mb-0"><i class="fas fa-file-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["cfdi"] ?></p>
+                                <?php endif;?>
+                            </div>
+                        </div>
+                        <?php else:?>
+                        <div class="user-details text-secondary w-75 mx-auto mt-4 tab-pane fade show active" role="tabpanel" aria-labelledby="user-details-tab" id="user-details">
+                            <p><i class="fas fa-phone-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["telefono"] ?></p>
+                            <p><i class="fas fa-hashtag rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["curp"] ?></p>
+                            <p class="mb-0"><i class="fas fa-home rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["direc"] ?></p>
+                        </div>
+                        <?php endif;?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <?php endif;?>
 
+    <?php if(isset($rutas[1]) && $pagoParticipante[0]["r1"] && $pagoParticipante[0]["r2"]): ?>
     <!-- Paso 4 (Confirmación de información) -->
     <div class=" text-center" id="card3">
         <h1 class="display-2">¡Enhorabuena!</h1>
