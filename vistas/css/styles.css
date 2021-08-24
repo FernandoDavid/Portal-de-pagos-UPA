@@ -61,7 +61,7 @@ img {
 }
 #temario-curso span{
 	height: 40px;
-	width: 58px;
+	width: 40px;
 	background-color: var(--upa-primary-light);
 	border-radius: 50rem !important;
 }

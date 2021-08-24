@@ -2,7 +2,7 @@ $(document).ready(() => {
 
     var url = window.location.href;
     if(url.includes("admin")){
-        console.log("admin");
+        // console.log("admin");
         $('body').addClass("bg-light");
     }else{
         if(url.includes("login")){
@@ -16,7 +16,7 @@ $(document).ready(() => {
             });
 
         }else{
-            console.log("registro");
+            // console.log("registro");
             $('body').addClass("bg-light-gray");
         }
     }
@@ -31,9 +31,9 @@ $(document).ready(() => {
     $('#card2').hide();
     $('#card3').hide();
 
-    $("#temario-curso ul").mCustomScrollbar({
-        theme: 'minimal'
-    });
+    // $("#temario-curso ul").mCustomScrollbar({
+    //     theme: 'minimal'
+    // });
 
     $('#step1').click(() => {
         stepAlert("Paso 1: Elección", "Selecciona tu curso..");

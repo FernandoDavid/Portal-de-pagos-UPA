@@ -141,10 +141,10 @@ if (isset($rutas[1])) {
                 <div class="card border-0 rounded-3 shadow overflow-hidden">
                     <div class="card-body p-0 row gx-0" id="data-curso">
                         <div class="col-xl-7 col-lg-6 col-md-12 p-4 h-auto position-relative">
-                            <h3 class="text-center text-uppercase fw-bold text-dark">¡Inscríbete al curso!</h3>
-                            <h5 class="text-center text-secondary text-upa-primary text-capitalize fw-bold">Curso title</h5>
+                            <h3 class="text-center text-uppercase fw-bold text-dark invitacion">¡Inscríbete al curso!</h3>
+                            <h5 class="text-center text-secondary text-upa-primary text-capitalize fw-bold curso-title">Curso title</h5>
                             <hr>
-                            <p class="fw-lighter">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium perferendis sed corporis officia non deserunt porro ex incidunt fugit repellat voluptatum, ea dolore, quod, a eveniet magni ipsa saepe nobis.</p>
+                            <p class="fw-lighter curso-obj mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium perferendis sed corporis officia non deserunt porro ex incidunt fugit repellat voluptatum, ea dolore, quod, a eveniet magni ipsa saepe nobis.</p>
                             <div class="row mb-3">
                                 <div class="col-sm-6 d-flex align-self-center curso-feature mb-3">
                                     <span class="bg-upa-secondary-lighter p-2 d-flex"><i class="fas fa-users m-auto fs-4"></i></span>
@@ -163,7 +163,7 @@ if (isset($rutas[1])) {
                                 <div class="col-sm-6 d-flex align-self-center curso-feature mb-3">
                                     <span class="bg-upa-secondary-lighter p-2 d-flex"><i class="far fa-calendar-alt m-auto fs-4"></i></span>
                                     <div class="my-auto ms-3">
-                                        <h6 class="fw-bold mb-0">Sábados</h6>
+                                        <h6 class="fw-bold mb-0 text-capitalize">Sábados</h6>
                                         <h6 class="fw-lighter text-secondary mb-0">16-08-2021 - 24-09-2021</h6>
                                     </div>
                                 </div>
@@ -204,7 +204,7 @@ if (isset($rutas[1])) {
                                 <h3 class="text-center text-white text-uppercase fw-bold mb-4">Temario</h3>
                                 <!-- <hr> -->
                                 <ul class="list-group">
-                                    <li>
+                                    <!-- <li>
                                         <div class="col-12 d-flex">
                                             <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">I</h1></span>
                                             <div class="my-auto ms-3">
@@ -257,7 +257,7 @@ if (isset($rutas[1])) {
                                                 <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
                                             </div>
                                         </div>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </div>
                         </div>
@@ -406,7 +406,6 @@ if (isset($rutas[1])) {
                                 <div class="col-12 mb-3">
                                     <label for="obs" class="form-label">Observaciones</label>
                                     <div class="input-group">
-                                        <!-- <span class="input-group-text"><i class="fas fa-sticky-note fa-lg icons"></i> </span> -->
                                         <textarea class="form-control" aria-label="Observaciones" id="obs" name="obs"
                                             rows="3"></textarea>
                                     </div>
@@ -512,14 +511,12 @@ if (isset($rutas[1])) {
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                             <li class="nav-item w-50" role="presentation">
                                 <button class="nav-link active text-secondary mx-auto w-100 py-1" id="user-details-tab" type="button" data-bs-toggle="pill" type="button" aria-selected="true" data-bs-target="#user-details" role="tab" aria-controls="user-details">
-                                    <i class="fst-normal fw-bold">Datos personales</i>   
-                                <!-- <i class="fas fa-user fs-4"></i> -->
+                                    <i class="fst-normal fw-bold">Datos personales</i>
                                 </button>
                             </li>
                             <li class="nav-item w-50" role="presentation">
                                 <button class="nav-link text-secondary mx-auto w-100 py-1" id="user-factura-tab" type="button" data-bs-toggle="pill" type="button" aria-selected="false" data-bs-target="#user-factura" role="tab" aria-controls="user-factura">
-                                    <i class="fst-normal fw-bold">Facturación</i>  
-                                <!-- <i class="fas fa-file-invoice fs-4"></i> -->
+                                    <i class="fst-normal fw-bold">Facturación</i>
                                 </button>
                             </li>
                         </ul>
@@ -547,17 +544,11 @@ if (isset($rutas[1])) {
                                     <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-file-alt text-upa-main fs-6 m-auto"></i></span>
                                     <p class="my-auto"><?php echo $factura[0]["cfdi"] ?></p>
                                 </div>
-
-                                <!-- <p><i class="fas fa-address-card rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["rfc"] ?></p> -->
                                 <?php if($factura[0]["obs"]!=""):?>
                                 <div class="d-flex mt-3">
                                     <span class="icon mt-0 rounded-circle d-flex me-3"><i class="far fa-sticky-note text-upa-main fs-6 m-auto"></i></span>
                                     <p class="my-auto"><?php echo $factura[0]["obs"] ?></p>
                                 </div>
-                                <!-- <p><i class="fas fa-file-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["cfdi"] ?></p>
-                                <p class="mb-0"><i class="far fa-sticky-note rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["obs"] ?></p> -->
-                                <?php else:?>
-                                <!-- <p class="mb-0"><i class="fas fa-file-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["cfdi"] ?></p> -->
                                 <?php endif;?>
                             </div>
                         </div>
@@ -574,10 +565,7 @@ if (isset($rutas[1])) {
                             <div class="d-flex mt-3">
                                 <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-home text-upa-main fs-6 m-auto"></i></span>
                                 <p class="my-auto"><?php echo $inscrito[0]["direc"] ?></p>
-                            </div>    
-                        <!-- <p><i class="fas fa-phone-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["telefono"] ?></p>
-                            <p><i class="fas fa-hashtag rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["curp"] ?></p>
-                            <p class="mb-0"><i class="fas fa-home rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["direc"] ?></p> -->
+                            </div>
                         </div>
                         <?php endif;?>
                     </div>
