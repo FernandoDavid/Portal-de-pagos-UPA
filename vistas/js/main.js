@@ -46,8 +46,7 @@ function reg(element,foto) {
     });
 
     if($(element).text()=="Ver más"){
-        // $('#card0').addClass("animate__zoomOutDown").delay(1000).hide();
-        // $('#card0').hide('slow');
+        $('#btnRegresar').attr("data-bs-toggle","tooltip");
         $($('#header-cursos .cover')[0]).animate({opacity:0},'slow',()=>{
             $($('#header-cursos .cover')[0]).css({"background-image": "url("+dominio+"vistas/img/banners/"+foto+")"})
                                             .animate({height: "15rem",opacity:1},'slow');
@@ -60,32 +59,14 @@ function reg(element,foto) {
         });
 
         $('#card1').show('slow');
-        // var h = $($('#data-curso > div')[0]).innerHeight();
-        // if($(window).width()>992){
-        //     $('#data-curso').innerHeight(h);
-        // }else{
-        //     $('#data-curso').innerHeight(h*2);
-        // }
-        // console.log('h',h);
     }
     else{
         $('#card0').slideUp('slow');
-        // $('#card0').hide('slow');
-        // $('#card0').removeAttr("hidden");
     }
-
-    // if($(element).text()=="Regresar"){
-    //     $('#card1').attr("hidden","");
-    // }else{ 
-        
-    // } 
 
     stepAlert("Paso 2: Registro", "Ingresa tus datos personales..");
     $(".progress-bar").width(parseInt(100 / 3) + "%");
     $("#step2").toggleClass("btn-secondary btn-primary");
-    // $(".progress-bar").animate({width:parseInt(100 / 3)+"%"},'fast',()=>{
-    //     $("#step2").toggleClass("btn-secondary btn-primary");
-    // });
 }
 
 function mostrarFactura(){

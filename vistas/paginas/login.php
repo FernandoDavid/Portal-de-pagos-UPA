@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <button class="btn btn-primary fw-bold mt-3" type="submit">Ingresar</button>
+                        <button class="btn btn-primary mt-3" type="submit">Ingresar</button>
                         <?php
                         /*=====================================
                         INSTANCIA Y LLAMADO DE CLASE DE INGRESO

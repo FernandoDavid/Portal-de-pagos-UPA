@@ -119,7 +119,7 @@ if (isset($rutas[1])) {
                         <?php echo $valor["objetivo"] ?>
                     </p>
                     <div class="d-flex">
-                        <button class="btn bg-upa-secondary text-white fw-bold" onclick='reg(this,"<?php echo $valor[9]?>")'>Ver más</button>
+                        <button class="btn text-white" onclick='reg(this,"<?php echo $valor[9]?>")'>Ver más</button>
                         <div class="ms-auto d-flex">
                             <span class="badge my-auto rounded-pill fs-6 <?php if($razonCupo>=80): ?>bg-danger text-white<?php else: ?>bg-upa-gray-light text-upa-gray-dark<?php endif;?>">
                                 <i class="fas fa-users"></i> <b> <?php echo $alumnosInscritos[0]."/".$valor['cupo']?></b>
@@ -140,7 +140,7 @@ if (isset($rutas[1])) {
             <div class="col-12 mb-4">
                 <div class="card border-0 rounded-3 shadow overflow-hidden">
                     <div class="card-body p-0 row gx-0" id="data-curso">
-                        <div class="col-xl-7 col-lg-6 col-md-12 p-4 h-auto">
+                        <div class="col-xl-7 col-lg-6 col-md-12 p-4 h-auto position-relative">
                             <h3 class="text-center text-uppercase fw-bold text-dark">¡Inscríbete al curso!</h3>
                             <h5 class="text-center text-secondary text-upa-primary text-capitalize fw-bold">Curso title</h5>
                             <hr>
@@ -192,7 +192,7 @@ if (isset($rutas[1])) {
                                     </div>
                                     <p class="text-secondary">Estudiantes y egresados</p>
                                 </div>
-                                <i class="position-absolute bottom-0 end-0 bg-upa-light">IVA incluido</i>
+                                <i class="position-absolute w-auto text-upa-main-light m-3 bottom-0 end-0">* IVA incluido</i>
                             </div>
                             <button type="button" id="btnRegresar" class="btn position-absolute bottom-0 start-0 btn-danger rounded-circle p-2 m-3 d-flex"
                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="Regresar">
@@ -511,13 +511,13 @@ if (isset($rutas[1])) {
                         ?>
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                             <li class="nav-item w-50" role="presentation">
-                                <button class="nav-link active text-secondary mx-auto w-100" id="user-details-tab" type="button" data-bs-toggle="pill" type="button" aria-selected="true" data-bs-target="#user-details" role="tab" aria-controls="user-details">
+                                <button class="nav-link active text-secondary mx-auto w-100 py-1" id="user-details-tab" type="button" data-bs-toggle="pill" type="button" aria-selected="true" data-bs-target="#user-details" role="tab" aria-controls="user-details">
                                     <i class="fst-normal fw-bold">Datos personales</i>   
                                 <!-- <i class="fas fa-user fs-4"></i> -->
                                 </button>
                             </li>
                             <li class="nav-item w-50" role="presentation">
-                                <button class="nav-link text-secondary mx-auto w-100" id="user-factura-tab" type="button" data-bs-toggle="pill" type="button" aria-selected="false" data-bs-target="#user-factura" role="tab" aria-controls="user-factura">
+                                <button class="nav-link text-secondary mx-auto w-100 py-1" id="user-factura-tab" type="button" data-bs-toggle="pill" type="button" aria-selected="false" data-bs-target="#user-factura" role="tab" aria-controls="user-factura">
                                     <i class="fst-normal fw-bold">Facturación</i>  
                                 <!-- <i class="fas fa-file-invoice fs-4"></i> -->
                                 </button>
@@ -525,25 +525,59 @@ if (isset($rutas[1])) {
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
                             <div class="user-details text-secondary w-75 mx-auto mt-4 tab-pane fade show active" role="tabpanel" aria-labelledby="user-details-tab" id="user-details">
-                                <p><i class="fas fa-phone-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["telefono"] ?></p>
-                                <p><i class="fas fa-hashtag rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["curp"] ?></p>
-                                <p class="mb-0"><i class="fas fa-home rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["direc"] ?></p>
+                                <div class="d-flex">
+                                    <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-phone-alt text-upa-main fs-6 m-auto"></i></span>
+                                    <p class="my-auto"><?php echo $inscrito[0]["telefono"] ?></p>
+                                </div>
+                                <div class="d-flex mt-3">
+                                    <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-hashtag text-upa-main fs-6 m-auto"></i></span>
+                                    <p class="my-auto"><?php echo $inscrito[0]["curp"] ?></p>
+                                </div>
+                                <div class="d-flex mt-3">
+                                    <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-home text-upa-main fs-6 m-auto"></i></span>
+                                    <p class="my-auto"><?php echo $inscrito[0]["direc"] ?></p>
+                                </div>
                             </div>
                             <div class="user-details text-secondary w-75 mx-auto mt-4 tab-pane fade show" role="tabpanel" aria-labelledby="user-factura-tab" id="user-factura">
-                                <p><i class="fas fa-address-card rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["rfc"] ?></p>
+                                <div class="d-flex mt-3">
+                                    <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-address-card text-upa-main fs-6 m-auto"></i></span>
+                                    <p class="my-auto"><?php echo $factura[0]["rfc"] ?></p>
+                                </div>
+                                <div class="d-flex mt-3">
+                                    <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-file-alt text-upa-main fs-6 m-auto"></i></span>
+                                    <p class="my-auto"><?php echo $factura[0]["cfdi"] ?></p>
+                                </div>
+
+                                <!-- <p><i class="fas fa-address-card rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["rfc"] ?></p> -->
                                 <?php if($factura[0]["obs"]!=""):?>
-                                <p><i class="fas fa-file-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["cfdi"] ?></p>
-                                <p class="mb-0"><i class="far fa-sticky-note rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["obs"] ?></p>
+                                <div class="d-flex mt-3">
+                                    <span class="icon mt-0 rounded-circle d-flex me-3"><i class="far fa-sticky-note text-upa-main fs-6 m-auto"></i></span>
+                                    <p class="my-auto"><?php echo $factura[0]["obs"] ?></p>
+                                </div>
+                                <!-- <p><i class="fas fa-file-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["cfdi"] ?></p>
+                                <p class="mb-0"><i class="far fa-sticky-note rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["obs"] ?></p> -->
                                 <?php else:?>
-                                <p class="mb-0"><i class="fas fa-file-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["cfdi"] ?></p>
+                                <!-- <p class="mb-0"><i class="fas fa-file-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $factura[0]["cfdi"] ?></p> -->
                                 <?php endif;?>
                             </div>
                         </div>
                         <?php else:?>
                         <div class="user-details text-secondary w-75 mx-auto mt-4 tab-pane fade show active" role="tabpanel" aria-labelledby="user-details-tab" id="user-details">
-                            <p><i class="fas fa-phone-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["telefono"] ?></p>
+                            <div class="d-flex">
+                                <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-phone-alt text-upa-main fs-6 m-auto"></i></span>
+                                <p class="my-auto"><?php echo $inscrito[0]["telefono"] ?></p>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-hashtag text-upa-main fs-6 m-auto"></i></span>
+                                <p class="my-auto"><?php echo $inscrito[0]["curp"] ?></p>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-home text-upa-main fs-6 m-auto"></i></span>
+                                <p class="my-auto"><?php echo $inscrito[0]["direc"] ?></p>
+                            </div>    
+                        <!-- <p><i class="fas fa-phone-alt rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["telefono"] ?></p>
                             <p><i class="fas fa-hashtag rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["curp"] ?></p>
-                            <p class="mb-0"><i class="fas fa-home rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["direc"] ?></p>
+                            <p class="mb-0"><i class="fas fa-home rounded-circle text-center p-2 text-upa-main me-3"></i><?php echo $inscrito[0]["direc"] ?></p> -->
                         </div>
                         <?php endif;?>
                     </div>
