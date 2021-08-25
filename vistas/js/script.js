@@ -4,6 +4,22 @@ $(document).ready(() => {
     if(url.includes("admin")){
         // console.log("admin");
         $('body').addClass("bg-light");
+
+        $('.modal-body input').focusin((e)=>{
+            $(e['target']).parent().find('span').css({"color": "var(--upa-primary)"});
+        });
+        $('.modal-body input').focusout((e)=>{
+            $(e['target']).parent().find('span').css({"color": "var(--bs-dark)"});
+        });
+
+        $('.modal-body select').focusin((e)=>{
+                // console.log($(e['target']).parent().find('label'));
+                $(e['target']).parent().find('label').css({"color": "var(--upa-primary)"});
+        });
+        $('.modal-body select').focusout((e)=>{
+                // console.log($(e['target']).parent().find('label'));
+                $(e['target']).parent().find('label').css({"color": "var(--bs-dark)"});
+        });
     }else{
         if(url.includes("login")){
             $('body').addClass("bg-light-gray");

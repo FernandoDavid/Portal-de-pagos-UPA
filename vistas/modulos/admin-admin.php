@@ -40,18 +40,66 @@
     <div class="container-fluid mt-5 pt-3">
         <!-- Tabla mostrar alumnos pendientes -->
         <div id="pendientesTable" class="visually-hidden-focusable mb-4">
-            <h1 class="text-center">Pendientes por revisar</h1>
-            
-            <div class="row mb-4">
-                <div class="col-sm-5">
-                    <div class="input-group">
-                        <span class="input-group-text bg-dark text-white bounded-0 border-1 border-dark" id="basic-addon1"><i class="fas fa-search"></i></span>
-                        <input type="text" class="form-control search-input" onkeyup="search(this)" name="searchPendientesAdm" id="liveSearch" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+            <div class="row mb-4 d-flex">
+                <div class="col-sm-6 align-self-center">
+                    <h1 class="text-left fs-2 fw-bolder ms-3 my-auto"><i class="fas fa-angle-double-right text-upa-primary me-2"></i>Aspirantes pendientes</h1>
+                </div>
+                <div class="col-sm-5 me-3 ms-auto">
+                    <div class="input-group rounded-pill shadow-sm-2 bg-white p-1">
+                        <input type="text" class="form-control rounded-pill border-0 me-1 search-input" onkeyup="search(this)" name="searchPendientesAdm" id="liveSearch" placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon1">
+                        <span class="input-group-text bg-dark rounded-circle p-1 text-white bounded-0 border-1 border-dark" style="width:36px">
+                            <i class="fas fa-search mx-auto"></i>
+                        </span>
                     </div>
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive px-3">
+                <table class="table own-table-hover mb-4 align-middle">
+                    <thead class="table-dark">
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">CURP</th>
+                        <th scope="col">Curso</th>
+                        <th scope="col">Pago</th>
+                    </thead>
+                    <tbody class="searchContainer" name="adminPendientes">
+                        <?php
+                        foreach ($pendientes as $key => $datos) {
+                            $pagoDato = ["idParticipante"=>$datos["idParticipante"]];
+                            $pagoPart = ModeloFormularios::mdlSelecReg("Pagos", array_keys($pagoDato),$pagoDato);
+                            $datCurso = array("idCurso" => $datos["idCurso"]);
+                            $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($datCurso), $datCurso);
+                        ?>
+                        <tr>
+                            <td class="i-<?php echo $datos["idParticipante"] ?>">
+                                <?php echo $key + 1 ?>
+                            </td>
+                            <td>
+                                <?php echo $datos['nombre'] ?>
+                            </td>
+                            <td>
+                                <?php echo $datos['correo'] ?>
+                            </td>
+                            <td>
+                                <?php echo $datos['curp'] ?>
+                            </td>
+                            <td class="c-<?php echo $datos["idCurso"] ?>">
+                                <?php echo $curso[0]["curso"] ?>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn p-1 <?php if ($pagoPart[0]["comprobante"]) {echo 'btn-primary' ;}?> btnComprobante position-relative" onclick="comprobante(this)">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- <div class="table-responsive">
                 <table class="table table-striped table-success mb-4">
                     <thead>
                         <th scope="col">#</th>
@@ -89,35 +137,16 @@
                                     <button type="submit" class="btn btn-<?php if (!$pagoPart[0]["comprobante"]) {echo 'secondary';} else {echo 'primary';}?>  btnComprobante position-relative" onclick="comprobante(this)">
                                         <i class="fas fa-file-invoice-dollar"></i>
                                     </button>
+                                    <button type="submit" class="btn p-1 <?php if ($pagoPart[0]["comprobante"]) {echo 'btn-primary' ;}?> btnComprobante position-relative" onclick="comprobante(this)">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                    </button>
                                 </td>
                             </tr>
                         <?php } ?>
                     </tbody>
                 </table>
-            </div>
-            <button type="submit" class="btn btn-primary bg-upa-secondary btn-Report" data-bs-toggle="modal" data-bs-target="#modalIngresos">Reporte de ingresos</button>
-            <!-- <div class="d-flex align-items-start">
-                <div class="me-3">
-                    <form method="POST">
-                        <button type="submit" class="btn btn-primary bg-upa-secondary"><i class="fas fa-file-pdf me-1"></i> Ingresos</button>
-                        <input type="hidden" name="ingresos" value=0>
-                        <?php
-                            // $File = new ControladorReportes();
-                            // $File->ctrIngresos();
-                        ?>
-                    </form>
-                </div>
-                <div>
-                    <form method="POST">
-                        <button type="submit" class="btn btn-danger"><i class="fas fa-file-excel me-1"></i> Ingresos</button>
-                        <input type="hidden" name="ingresosPdf" value=0>
-                        <?php
-                            // $File->ctrIngresosPdf();
-                        ?>
-                    </form>
-                </div>
             </div> -->
-            
+            <button type="submit" class="btn btn-primary bg-upa-secondary btn-Report" data-bs-toggle="modal" data-bs-target="#modalIngresos">Reporte de ingresos</button>            
         </div>
 
         <!-- Modal generar reporte de ingresos -->

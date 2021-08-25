@@ -64,6 +64,8 @@ img {
 	width: 40px;
 	background-color: var(--upa-primary-light);
 	border-radius: 50rem !important;
+	min-height: 40px;
+	min-width: 40px;
 }
 #temario-curso span h1{
 	line-height: 0;
@@ -226,32 +228,48 @@ img {
 .input-group-text2 {
 	width: 50px !important;
 	min-height: 38px !important;
+}
+#formRegistro1 .input-group-text2,
+.modal-body .input-group-text2{
 	background-color: var(--upa-light) !important;
 	border-radius: 50rem !important;
 	border: none;
 }
 
 #formRegistro1 span,
-#form-login span.input-group-text2{
+#form-login span.input-group-text2,
+.modal-body span.input-group-text2,
+.modal-body label.input-group-text{
 	border: none;
 	background-color: rgba(0,0,0,0) !important;
 	transition: all 0.35s;
 }
-#formRegistro1 textarea{
+.modal-body label.input-group-text{
+	/* background-color: var(--upa-light) !important;
+	border-top-left-radius: 50rem !important;
+	border-bottom-left-radius: 50rem !important; */
+	/* border: none; */
+	border-right: 3px solid var(--upa-main-lighter) !important;
+	/* transition: all 0.35s; */
+}
+#formRegistro1 textarea,
+.modal-body textarea{
 	background-color: var(--upa-light) !important;
 	border: none;
 	border-radius: 1rem !important;
 }
 
 #formRegistro1 .input-group,
-#form-login .input-group{
+#form-login .input-group,
+.modal-body .input-group{
 	background-color: var(--upa-light) !important;
 	border-radius: 50rem !important;
 }
 
 #formRegistro1 input[type="text"],
 #form-login input[type="text"],
-#form-login input[type="password"]{
+#form-login input[type="password"],
+.modal-body input[type="text"]{
 	/* border: 1px solid var(--upa-gray-dark) !important; */
 	background-color: rgba(0,0,0,0) !important;
 	border-radius: 50rem !important;
@@ -261,14 +279,19 @@ img {
 #formRegistro1 input[type="text"]:focus,
 #form-login input[type="text"]:active,
 #form-login input[type="text"]:focus,
+.modal-body input[type="text"]:active,
+.modal-body input[type="text"]:focus,
 #form-login input[type="password"]:active,
 #form-login input[type="password"]:focus,
 #formRegistro1 textarea:active,
-#formRegistro1 textarea:focus{
+#formRegistro1 textarea:focus,
+.modal-body textarea:active,
+.modal-body textarea:focus{
 	box-shadow: none;
 }
 
-#formRegistro1 .form-check-input:checked[type="radio"]{
+#formRegistro1 .form-check-input:checked[type="radio"],
+.modal-body .form-check-input:checked[type="radio"]{
 	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffb52b'/%3e%3c/svg%3e") !important;
 	background-color: #fff;
 	border: 1px solid var(--upa-secondary-light);
@@ -662,7 +685,14 @@ input.bg-upa-secondary:focus {
 	border-bottom-right-radius: 50rem;
 	box-shadow: none;
 }
-#facturacion-form .form-select option:hover{
+.modal-body .form-select{
+	border: none;
+	background-color: var(--upa-light);
+	border-radius: 50rem;
+	box-shadow: none;
+}
+#facturacion-form .form-select option:hover,
+.modal-body .form-select option:hover{
 	background-color: #2a9dd6 !important;
 }
 
@@ -757,6 +787,31 @@ input.bg-upa-secondary:focus {
 	box-shadow:0 .25rem .25rem rgba(0,0,0,.1) !important;
 }
 
+/* MODALS */
+.modal-content{
+	box-shadow: 0 1rem 3rem rgba(0,0,0,.5) !important;
+	border: 0;
+	background-color: transparent;
+	border-radius: 0.7rem;
+	overflow: hidden;
+}
+.modal-header{
+	border: 0;
+}
+.modal-title{
+	letter-spacing: 0.2rem;
+}
+.btn-close{
+	background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat !important;
+	transition: all 0.35s;
+}
+.btn-close:hover,
+.btn-close:focus{
+	opacity: 1;
+}
+.modal-body,.modal-footer{
+	background-color: #fff;
+}
 
 @media screen and (min-width: 768px) {
 	.admin-body {
@@ -789,5 +844,11 @@ input.bg-upa-secondary:focus {
 
 	.body-pd {
 		padding-left: calc(var(--nav-width) + 188px);
+	}
+}
+
+@media screen and (max-width: 576px){
+	#page-404 > div{
+		padding: 0 0.25rem !important;
 	}
 }

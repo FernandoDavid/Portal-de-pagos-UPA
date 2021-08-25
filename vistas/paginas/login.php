@@ -1,6 +1,6 @@
 <div class="d-flex" style="height: 100vh">
     <div class="text-center m-auto w-100 row">
-        <form method="POST" id="form-login" class="col-md-3 col-sm-7 row mx-auto">
+        <form method="POST" id="form-login" class="col-lg-4 col-md-5 col-sm-7 row mx-auto">
             <div class="card border-0 shadow bg-upa-primary-gradient p-4">
                 <div class="card-body">
                     <div class="col-12 mb-4">

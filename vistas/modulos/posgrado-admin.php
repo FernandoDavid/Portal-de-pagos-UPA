@@ -317,8 +317,8 @@ foreach ($res as $key => $dato) {
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <form method="POST">
-                    <div class="modal-header">
-                        <h2 class="modal-title" id="exampleModalLabel">Modificar datos del aspirante</h2>
+                    <div class="modal-header bg-upa-primary-gradient">
+                        <h2 class="modal-title text-white text-uppercase display-6 fs-4" id="exampleModalLabel">Modificar aspirante</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -391,14 +391,14 @@ foreach ($res as $key => $dato) {
                                             <i class="fas fa-venus-mars fa-lg icons"></i>
                                         </div>
                                     </div>
-                                    <div class="col-4 pt-1">
+                                    <div class="col-4 align-self-center">
                                         <input class="form-check-input ms-1" type="radio" value="H" id="hombreRadio"
                                             name="sexoRadio"
                                             onclick="document.getElementById('mujerRadio').checked = false"
                                             required>
                                         <label class="ms-2" for="">Hombre</label>
                                     </div>
-                                    <div class="col-4  pt-1">
+                                    <div class="col-4 align-self-center">
                                         <input class="form-check-input ms-1" type="radio" value="M" id="mujerRadio"
                                             name="sexoRadio"
                                             onclick="document.getElementById('hombreRadio').checked = false">
@@ -411,14 +411,14 @@ foreach ($res as $key => $dato) {
                                             <i class="fas fa-hand-holding-heart fa-lg icons"></i>
                                         </div>
                                     </div>
-                                    <div class="col-4 pt-1">
+                                    <div class="col-4 align-self-center">
                                         <input class="form-check-input ms-1" type="radio" value="soltero"
                                             id="solteroRadio" name="estadoRadio"
                                             onclick="document.getElementById('casadoRadio').checked = false"
                                             required>
                                         <label class="ms-2" for="">Soltero/a</label>
                                     </div>
-                                    <div class="col-4 pt-1">
+                                    <div class="col-4 align-self-center">
                                         <input class="form-check-input ms-1" type="radio" value="casado"
                                             id="casadoRadio" name="estadoRadio"
                                             onclick="document.getElementById('solteroRadio').checked = false">
@@ -473,8 +473,8 @@ foreach ($res as $key => $dato) {
         <div class="modal fade" id="modalAddCurso" tabindex="-1">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 class="modal-title">Agregar un curso nuevo</h2>
+                    <div class="modal-header bg-upa-primary-gradient">
+                        <h2 class="modal-title text-white text-uppercase display-6 fs-4">Nuevo curso</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -691,8 +691,8 @@ foreach ($res as $key => $dato) {
         <div class="modal fade" id="modalModificarCurso" tabindex="-1">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 class="modal-title">Modificar información del curso</h2>
+                    <div class="modal-header bg-upa-primary-gradient">
+                        <h2 class="modal-title text-white text-uppercase display-6 fs-4">Modificar curso</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -933,8 +933,8 @@ foreach ($res as $key => $dato) {
     <div class="modal fade" id="modalRevisar" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">Revisión de comprobante de pago</h2>
+                <div class="modal-header bg-upa-primary-gradient">
+                    <h2 class="modal-title text-white text-uppercase display-6 fs-4">Revisión de comprobante de pago</h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body row">

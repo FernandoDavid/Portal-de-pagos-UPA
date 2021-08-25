@@ -47,7 +47,7 @@ function search(e){
                 res.forEach((element,index) => { 
                     // console.log(element);
                     if(name=="searchPendientesAdm"){
-                        let comp = (element.comprobante)?'primary':'secondary'; 
+                        let comp = (element.comprobante)?'btn-primary':''; 
                         container.append(`
                         <tr>
                             <td class="i-${element.idParticipante}">
@@ -66,7 +66,7 @@ function search(e){
                                 ${element.curso}
                             </td>
                             <td>
-                                <button type="submit" class="btn p-1 btn-${comp} btnComprobante position-relative" onclick="comprobante(this)">
+                                <button type="submit" class="btn p-1 ${comp} btnComprobante position-relative" onclick="comprobante(this)">
                                     <i class="fas fa-file-invoice-dollar"></i>
                                 </button>
                             </td>

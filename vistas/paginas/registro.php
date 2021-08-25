@@ -140,7 +140,7 @@ if (isset($rutas[1])) {
             <div class="col-12 mb-4">
                 <div class="card border-0 rounded-3 shadow overflow-hidden">
                     <div class="card-body p-0 row gx-0" id="data-curso">
-                        <div class="col-xl-7 col-lg-6 col-md-12 p-4 h-auto position-relative">
+                        <div class="col-lg-7 col-md-6 col-sm-12 p-4 h-auto position-relative">
                             <h3 class="text-center text-uppercase fw-bold text-dark invitacion">¡Inscríbete al curso!</h3>
                             <h5 class="text-center text-secondary text-upa-primary text-capitalize fw-bold curso-title">Curso title</h5>
                             <hr>
@@ -199,7 +199,7 @@ if (isset($rutas[1])) {
                                 <i class="fas fa-angle-left m-auto"></i>
                             </button>
                         </div>
-                        <div class="col-xl-5 col-lg-6 col-md-12 p-5 bg-upa-secondary-gradient" style="display: grid" id="temario-curso">
+                        <div class="col-lg-5 col-md-6 col-sm-12 p-5 bg-upa-secondary-gradient" style="display: grid" id="temario-curso">
                             <div class="align-self-center">
                                 <h3 class="text-center text-white text-uppercase fw-bold mb-4">Temario</h3>
                                 <!-- <hr> -->
@@ -444,7 +444,7 @@ if (isset($rutas[1])) {
     <!-- Paso 3 (Entrada del registro de pagos de los aspirantes) ARREGLAR CON RESPECTO AL FUNCIONAMIENTO PLATICADO CON EL CHARLY-->
     <div class="container" id="card2">
         <div class="row d-flex align-items-stretch">
-            <div class="col-sm-7 mb-3">
+            <div class="col-lg-7 col-md-6 col-sm-12 mb-3">
                 <div class="card h-100 border-0 rounded-3 shadow overflow-hidden p-4 bg-upa-primary-gradient">
                     <div class="card-body my-auto">
                         <h5 class="text-center text-upa-main-dark text-uppercase fw-bold mb-3">Monto a pagar</h5>
@@ -491,7 +491,7 @@ if (isset($rutas[1])) {
                     </div>
                 </div>
             </div>
-            <div class="col-sm-5 mb-3">
+            <div class="col-lg-5 col-md-6 col-sm-12 mb-3">
                 <div class="card h-100 border-0 rounded-3 shadow overflow-hidden user-card">
                     <div class="card-body my-auto py-4">
                         <span class="mx-auto rounded-circle overflow-hidden d-flex p-0 pt-2">

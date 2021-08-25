@@ -37,7 +37,7 @@ function reg(element, foto) {
         dataType: "json",
         async: true,
         success: res => {
-            console.log(res);
+            // console.log(res);
             (res.tipo == 0) ? res.tipo = "diplomado" : res.tipo = "curso";
             $('#data-curso .invitacion').text(`¡Inscríbete al ${res.tipo}!`);
             $('#data-curso .curso-title').text(res.curso);
@@ -67,11 +67,11 @@ function reg(element, foto) {
             $($('#data-curso .precios h5')[1]).text((parseFloat(res.precio) * (1 - parseFloat(res.desc) / 100)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 
             let arr = res.temario.split('|||')[0].split('\r\n');
-            console.log(arr);
+            // console.log(arr);
             $('#temario-curso .list-group').empty();
             arr.forEach((e,i) => {
                 let tema = e.split(':')[1].trim();
-                console.log({ tema: tema });
+                // console.log({ tema: tema });
                 // console.log(convertToRoman(i));
                 let html = `
                 <li>
