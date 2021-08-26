@@ -20,6 +20,23 @@ $(document).ready(() => {
                 // console.log($(e['target']).parent().find('label'));
                 $(e['target']).parent().find('label').css({"color": "var(--bs-dark)"});
         });
+
+        $('.modal-body input[type="file"]').focusin((e)=>{
+            $(e['target']).parent().find('span').css({"color": "#fff"});
+        });
+        $('.modal-body input[type="file"]').focusout((e)=>{
+            $(e['target']).parent().find('span').css({"color": "#fff"});
+        });
+
+        $('.modal-body input.file-caption-name').focusin((e)=>{
+            $(e['target']).parent().find('span').css({"color": "#fff"});
+            $(e['target']).parent().find('.btn-primary').css({"background-position": "right center"});
+        });
+        $('.modal-body input.file-caption-name').focusout((e)=>{
+            $(e['target']).parent().find('span').css({"color": "#fff"});
+            $(e['target']).parent().find('.btn-primary').css({"background-position": "left center"});
+        });
+
     }else{
         if(url.includes("login")){
             $('body').addClass("bg-light-gray");

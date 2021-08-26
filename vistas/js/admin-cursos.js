@@ -2,6 +2,16 @@ $(document).ready(function() {
 
     $('body').addClass('admin-body bg-light').attr("id", "body-pd").removeClass('bg-light-gray');
 
+    $('#flyer, #banner').fileinput({
+        language: 'es',
+        allowedFileExtensions: ["jpg", "png", "jpeg"],
+        showClose: false,
+        showUpload: false,
+        maxFileCount: 1,
+        uploadAsync: false,
+        required: true
+    });
+
     $(".btnModificarCurso").on('click', function() {
         $('#modalModificarCurso').modal('show');
         // $('#modalModificarCurso').parent()[0].reset();
@@ -47,6 +57,9 @@ $(document).ready(function() {
                                 required: true,
                                 overwriteInitial: false,
                                 // minFileCount: 1,
+                                language: 'es',
+                                allowedFileExtensions: ["jpg", "png", "jpeg"],
+                                showClose: false,
                                 maxFileCount: 1,
                                 validateInitialCount: true,
                                 initialPreviewAsData: true,                   
@@ -70,6 +83,9 @@ $(document).ready(function() {
                                     required: true,
                                     overwriteInitial: false,
                                     // minFileCount: 1,
+                                    language: 'es',
+                                    allowedFileExtensions: ["jpg", "png", "jpeg"],
+                                    showClose: false,
                                     maxFileCount: 1,
                                     validateInitialCount: true,
                                     initialPreviewAsData: true,                   

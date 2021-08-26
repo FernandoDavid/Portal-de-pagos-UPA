@@ -100,7 +100,9 @@ img {
 #formRegistro1 .btn-primary, 
 .form-comprobante .btn-primary,
 #form-login .btn-primary,
-#page-404 .btn-primary{
+#page-404 .btn-primary,
+.modal-body .btn-primary{
+	color: #fff !important;
 	transition: 0.5s;
 	background-size: 200% auto;
 	background-image: linear-gradient(
@@ -119,11 +121,14 @@ img {
 .form-comprobante .btn-primary:focus,
 #form-login .btn-primary:focus,
 #page-404 .btn-primary:focus,
+.modal-body .btn-primary:focus,
 .cursos button:active, 
 #formRegistro1 .btn-primary:active, 
 .form-comprobante .btn-primary:active,
 #form-login .btn-primary:active,
-#page-404 .btn-primary:active{
+#page-404 .btn-primary:active,
+.modal-body .btn-primary:active{
+	color: #fff !important;
 	box-shadow: 0 0 0 0.25rem #f2921d88;
 }
 
@@ -138,9 +143,10 @@ img {
 #formRegistro1 .btn-primary:hover , 
 .form-comprobante .btn-primary:hover,
 #form-login .btn-primary:hover,
-#page-404 .btn-primary:hover{
+#page-404 .btn-primary:hover,
+.modal-body .btn-primary:hover{
 	background-position: right center;
-	color: #fff;
+	color: #fff !important;
 	text-decoration: none;
 }
 
@@ -269,18 +275,129 @@ img {
 #formRegistro1 input[type="text"],
 #form-login input[type="text"],
 #form-login input[type="password"],
-.modal-body input[type="text"]{
+.modal-body input[type="text"],
+.modal-body input[type="number"],
+.modal-body input[type="time"],
+.modal-body input[type="date"]{
 	/* border: 1px solid var(--upa-gray-dark) !important; */
 	background-color: rgba(0,0,0,0) !important;
 	border-radius: 50rem !important;
 	border: none;
 }
+
+/* KRAJEE INPUT */
+.form-control{
+	border: none !important;
+	box-shadow: none !important;
+}
+.form-control:focus{
+	box-shadow: none;
+}
+
+.modal-body .file-preview{
+	border: none;
+	border-radius: 1rem;
+	background-color: var(--upa-light);
+}
+
+.modal-body .file-preview .file-drop-zone{
+	border-radius: 0.8rem;
+	border: 1px dashed var(--upa-main);
+	transition: all 0.35s;
+}
+
+.file-drop-zone-title{
+	color: var(--upa-main-light);
+	padding: 22% 0;
+}
+
+.file-highlighted{
+	border: 1px dashed var(--upa-main) !important;
+	background-color: var(--upa-main-lighter) !important;
+}
+
+.modal-body .file-preview .file-drop-zone .file-preview-frame{
+	border: none;
+	background-color: #fff;
+	border-radius: 0.5rem;
+	transition: all 0.35s;
+}
+.modal-body .file-preview .file-drop-zone .file-preview-frame:not(.file-preview-error):hover{
+	border: none;
+}
+
+#kvFileinputModal .modal-header{
+	background-image: linear-gradient(
+		to bottom right,
+		var(--upa-secondary) 5%,
+		var(--upa-secondary-lighter) 100%
+	);
+}
+#kvFileinputModal .modal-header h5{
+	color: #fff;
+}
+#kvFileinputModal .modal-header .btn-outline-secondary{
+	color: #fffb;
+	border: none;
+}
+#kvFileinputModal .modal-header .btn-outline-secondary:hover,
+#kvFileinputModal .modal-header .btn-outline-secondary:active,
+#kvFileinputModal .modal-header .btn-outline-secondary:focus{
+	color: #fff;
+	background-color: transparent;
+	border: none;
+	box-shadow: none;
+}
+#kvFileinputModal .modal-body .floating-buttons .btn-outline-secondary{
+	color: #fffb;
+	background-image: linear-gradient(
+		to bottom right,
+		var(--upa-secondary) 5%,
+		var(--upa-secondary-lighter) 100%
+	);
+	border: none;
+}
+#kvFileinputModal .modal-body .floating-buttons .btn-outline-secondary:hover,
+#kvFileinputModal .modal-body .floating-buttons .btn-outline-secondary:active,
+#kvFileinputModal .modal-body .floating-buttons .btn-outline-secondary:focus{
+	color: #fff;
+	border: none;
+	box-shadow: none;
+}
+#kvFileinputModal .modal-body .file-zoom-content{
+	display: flex;
+}
+#kvFileinputModal .modal-body .file-zoom-content .file-preview-image{
+	margin: auto;
+}
+
+#kvFileinputModal .file-zoom-dialog .kv-zoom-title{
+	color: #fff !important;
+}
+#kvFileinputModal .file-zoom-dialog .kv-zoom-title samp{
+	font-size: 0.7rem;
+}
+
+
+/* .modal-body input[type="number"]::-webkit-inner-spin-button{
+	-webkit-background-clip: var(--upa-secondary) 100;
+}
+.modal-body input[type="number"]{
+	-moz-appearance: textfield;
+} */
+
 #formRegistro1 input[type="text"]:active,
 #formRegistro1 input[type="text"]:focus,
 #form-login input[type="text"]:active,
 #form-login input[type="text"]:focus,
 .modal-body input[type="text"]:active,
 .modal-body input[type="text"]:focus,
+.modal-body input[type="number"]:active,
+.modal-body input[type="number"]:focus,
+.modal-body input[type="time"]:active,
+.modal-body input[type="time"]:focus,
+.modal-body input[type="date"]:active,
+.modal-body input[type="date"]:focus,
 #form-login input[type="password"]:active,
 #form-login input[type="password"]:focus,
 #formRegistro1 textarea:active,
@@ -353,6 +470,8 @@ img {
 	--upa-light: #e8f1f7;
 	--red: #dc3545;
 	--red-light: #df635f;
+	--red-dark: #aa1d3c;
+	--red-lighter: #f17f70;
 }
 
 .admin-body {
@@ -541,6 +660,14 @@ input.bg-upa-main-dark:focus {
 		var(--upa-primary-light) 100%
 	);
 }
+.bg-upa-danger-gradient{
+	background-image: linear-gradient(
+		to bottom right,
+		var(--red-dark) 5%,
+		var(--red-lighter) 100%
+	);
+}
+
 button.bg-upa-secondary,
 input.bg-upa-secondary {
 	border-color: var(--upa-secondary);
@@ -785,6 +912,13 @@ input.bg-upa-secondary:focus {
 
 .shadow-sm-2{
 	box-shadow:0 .25rem .25rem rgba(0,0,0,.1) !important;
+}
+
+.dropdown-item{
+	cursor: pointer;
+}
+.dropdown-item:active{
+	background-color: var(--upa-secondary-light) !important;
 }
 
 /* MODALS */

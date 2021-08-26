@@ -244,7 +244,7 @@ foreach ($res as $key => $dato) {
                     <h6 class="text-dark d-inline-flex">
                         <i class="fas fa-graduation-cap pe-2 my-auto"></i> <?php echo $datos["instructor"] ?>
                     </h6>
-                    <p class="text-upa-gray">
+                    <p class="text-upa-gray text-truncate">
                         <?php echo $datos["objetivo"] ?>
                     </p>
                     <div class="d-flex">
@@ -447,8 +447,8 @@ foreach ($res as $key => $dato) {
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form method="POST">
-                    <div class="modal-header">
-                        <h2 class="modal-title" id="exampleModalLabel">Eliminar alumno</h2>
+                    <div class="modal-header bg-upa-danger-gradient">
+                        <h2 class="modal-title text-white text-uppercase display-6 fs-4" id="exampleModalLabel">Eliminar alumno</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -529,11 +529,11 @@ foreach ($res as $key => $dato) {
                                     <div class="col-12  mb-4">
                                         <div class="input-group">
                                             <span class="input-group-text input-group-text2"
-                                                id="addon-wrapping">Del</span>
+                                                id="addon-wrapping"><i class="fst-normal fw-bold mx-auto">Del</i></span>
                                             <input type="date" class="form-control" name="reg_inicio" id="reg_inicio"
                                                 required>
                                             <span class="input-group-text input-group-text2"
-                                                id="addon-wrapping">al</i></span>
+                                                id="addon-wrapping"><i class="fst-normal fw-bold mx-auto">al</i></span>
                                             <input type="date" class="form-control" name="reg_fin" id="reg_fin"
                                                 required>
                                         </div>
@@ -544,11 +544,13 @@ foreach ($res as $key => $dato) {
                                 </div>
                                 <div class="col-12 mb-4">
                                     <div class="input-group">
-                                        <span class="input-group-text input-group-text2" id="addon-wrapping">Del</span>
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping">
+                                            <i class="fst-normal fw-bold mx-auto">Del</i>
+                                        </span>
                                         <input type="date" class="form-control" name="fec_inicio" id="fec_inicio"
                                             required>
                                         <span class="input-group-text input-group-text2"
-                                            id="addon-wrapping">al</i></span>
+                                            id="addon-wrapping"><i class="fst-normal fw-bold mx-auto">al</i></span>
                                         <input type="date" class="form-control" name="fec_fin" id="fec_fin" required>
                                     </div>
                                 </div>
@@ -557,12 +559,12 @@ foreach ($res as $key => $dato) {
                                 </div>
                                 <div class="col-12 mb-4">
                                     <div class="input-group">
-                                        <span class="input-group-text input-group-text2 text-center"
-                                            id="addon-wrapping">De</span>
+                                        <span class="input-group-text input-group-text2"
+                                            id="addon-wrapping"><i class="fst-normal fw-bold mx-auto">De</i></span>
                                         <input type="time" class="form-control" name="hora_inicio" id="fec_inicio"
                                             required>
                                         <span class="input-group-text input-group-text2"
-                                            id="addon-wrapping">a</i></span>
+                                            id="addon-wrapping"><i class="fst-normal fw-bold mx-auto">a</i></span>
                                         <input type="time" class="form-control" name="hora_fin" id="fec_fin" required>
                                     </div>
                                 </div>
@@ -665,11 +667,11 @@ foreach ($res as $key => $dato) {
                             <div class="row mb-4">
                                 <div class="col-lg-6">
                                     <h5 class="text-center"><b>Flyer del curso</b></h5>
-                                    <input type="file" class="file" name="flyer" id="flyer" required>
+                                    <input type="file" class="" name="flyer" id="flyer" required>
                                 </div>
                                 <div class="col-lg-6">
                                     <h5 class="text-center"><b>Banner del curso</b></h5>
-                                    <input type="file" class="file" name="banner" id="banner" required>
+                                    <input type="file" class="" name="banner" id="banner" required>
                                 </div>
                             </div>
                         </div>
@@ -748,11 +750,11 @@ foreach ($res as $key => $dato) {
                                     <div class="col-12  mb-4">
                                         <div class="input-group">
                                             <span class="input-group-text input-group-text2"
-                                                id="addon-wrapping">Del</span>
+                                                id="addon-wrapping"><i class="fst-normal fw-bold mx-auto">Del</i></span>
                                             <input type="date" class="form-control" name="reg_inicio" id="reg_inicio"
                                                 required>
                                             <span class="input-group-text input-group-text2"
-                                                id="addon-wrapping">al</i></span>
+                                                id="addon-wrapping"><i class="fst-normal fw-bold mx-auto">al</i></span>
                                             <input type="date" class="form-control" name="reg_fin" id="reg_fin"
                                                 required>
                                         </div>
@@ -763,11 +765,11 @@ foreach ($res as $key => $dato) {
                                 </div>
                                 <div class="col-12 mb-4">
                                     <div class="input-group">
-                                        <span class="input-group-text input-group-text2" id="addon-wrapping">Del</span>
+                                        <span class="input-group-text input-group-text2" id="addon-wrapping"><i class="fst-normal fw-bold mx-auto">Del</i></span>
                                         <input type="date" class="form-control" name="fec_inicio" id="fec_inicio"
                                             required>
                                         <span class="input-group-text input-group-text2"
-                                            id="addon-wrapping">al</i></span>
+                                            id="addon-wrapping"><i class="fst-normal fw-bold mx-auto">al</i></span>
                                         <input type="date" class="form-control" name="fec_fin" id="fec_fin" required>
                                     </div>
                                 </div>
@@ -777,11 +779,11 @@ foreach ($res as $key => $dato) {
                                 <div class="col-12 mb-4">
                                     <div class="input-group">
                                         <span class="input-group-text input-group-text2 text-center"
-                                            id="addon-wrapping">De</span>
+                                            id="addon-wrapping"><i class="fst-normal fw-bold mx-auto">De</i></span>
                                         <input type="time" class="form-control" name="hora_inicio" id="fec_inicio"
                                             required>
                                         <span class="input-group-text input-group-text2"
-                                            id="addon-wrapping">a</i></span>
+                                            id="addon-wrapping"><i class="fst-normal fw-bold mx-auto">a</i></span>
                                         <input type="time" class="form-control" name="hora_fin" id="fec_fin" required>
                                     </div>
                                 </div>
@@ -908,8 +910,8 @@ foreach ($res as $key => $dato) {
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form method="POST">
-                    <div class="modal-header">
-                        <h2 class="modal-title" id="exampleModalLabel">Eliminar curso</h2>
+                    <div class="modal-header bg-upa-danger-gradient">
+                        <h2 class="modal-title text-white text-uppercase display-6 fs-4" id="exampleModalLabel">Eliminar curso</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
