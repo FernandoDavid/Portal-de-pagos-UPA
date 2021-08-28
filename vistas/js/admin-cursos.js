@@ -113,12 +113,12 @@ $(document).ready(function() {
 
     $('#editFlyer').on('filedeleted', function(event, key, jqXHR, data) {
         event.preventDefault();
-        console.log('Key = ' + key);
+        // console.log('Key = ' + key);
     });
 
     $('#editBanner').on('filedeleted', function(event, key, jqXHR, data) {
         event.preventDefault();
-        console.log('Key = ' + key);
+        // console.log('Key = ' + key);
     });
 
     $(".btnEliminarCurso").on('click', function() {
@@ -241,7 +241,7 @@ function eliminarParticipante(e) {
 
 function comprobante(e) {
     $('#modalRevisar').modal('show');
-
+    var idParticipante = $(e).closest('tr').children('td')[0].className.split('-')[1];
     // console.log("bnt Comprobante");
 
     let tipo = $(e).closest('tr').parent().parent().parent().parent().attr("id");
@@ -251,7 +251,6 @@ function comprobante(e) {
     } else {
         $($('#modalRevisar .modal-footer')[0]).removeClass("visually-hidden-focusable");
     }
-    var tr = $(e).closest('tr');
 
     $.ajax({
         url: dominio + 'ajax/formularios.ajax.php',
@@ -259,39 +258,102 @@ function comprobante(e) {
         data: {
             "tabla": "Participantes",
             "campo": "idParticipante",
-            "dato": tr.children('td')[0].className.split('-')[1]
+            "dato": idParticipante
         },
         dataType: "json",
-        success: function(res) {
-            let labels = $('#info-inscrito').find('p');
-            // console.log(labels);
-            $($('#info-inscrito h4')[0]).text(res["nombre"]);
-            // $(labels[0]).text(res["nombre"]);
-            $(labels[0]).html('<b>Correo: </b>' + res["correo"]);
-            $(labels[1]).html('<b>Teléfono: </b>' + res["telefono"]);
-            $(labels[2]).html('<b>Dirección: </b>' + res["direc"]);
-            $(labels[3]).html('<b>CURP: </b>' + res["curp"]);
-
+        success: function(participante) {
+            $('#participante-name').text(participante.nombre);
+            // console.log({participante: participante});
             $.ajax({
                 url: dominio + 'ajax/formularios.ajax.php',
                 method: "POST",
                 data: {
                     "tabla": "Facturas",
                     "campo": "idParticipante",
-                    "dato": tr.children('td')[0].className.split('-')[1]
+                    "dato": idParticipante
                 },
                 dataType: "json",
-                success: function(res) {
-                    $(labels[4]).html('<b>RFC: </b>' + res["rfc"]);
+                success: function(factura) {
+                    // console.log({factura:factura});
+                    var obs = "";
+                    (factura.obs!="")?
+                        obs = `
+                        <div class="d-flex mt-3">
+                            <span class="icon mt-0 rounded-circle d-flex me-3"><i class="far fa-sticky-note text-upa-main fs-6 m-auto"></i></span>
+                            <p class="my-auto">${factura.obs}</p>
+                        </div>`
+                    :obs = "";
+                    try{
+                        $('#pills-tab').remove();
+                        $('#pills-tabContent').remove();
+                        $("#user-details").remove();
+                    }catch(e){console.log("error al eliminar DOM");}
+                    $($('#modalRevisar hr')[0]).after(`
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item w-50" role="presentation">
+                                <button class="nav-link active text-secondary mx-auto w-100 py-1" id="user-details-tab" type="button" data-bs-toggle="pill" type="button" aria-selected="true" data-bs-target="#user-details" role="tab" aria-controls="user-details">
+                                    <i class="fst-normal fw-bold">Datos personales</i>
+                                </button>
+                            </li>
+                            <li class="nav-item w-50" role="presentation">
+                                <button class="nav-link text-secondary mx-auto w-100 py-1" id="user-factura-tab" type="button" data-bs-toggle="pill" type="button" aria-selected="false" data-bs-target="#user-factura" role="tab" aria-controls="user-factura">
+                                    <i class="fst-normal fw-bold">Facturación</i>
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="user-details text-secondary w-75 mx-auto mt-4 tab-pane fade show active" role="tabpanel" aria-labelledby="user-details-tab" id="user-details">
+                                <div class="d-flex">
+                                    <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-phone-alt text-upa-main fs-6 m-auto"></i></span>
+                                    <p class="my-auto">${participante.telefono}</p>
+                                </div>
+                                <div class="d-flex mt-3">
+                                    <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-hashtag text-upa-main fs-6 m-auto"></i></span>
+                                    <p class="my-auto">${participante.curp}</p>
+                                </div>
+                                <div class="d-flex mt-3">
+                                    <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-home text-upa-main fs-6 m-auto"></i></span>
+                                    <p class="my-auto">${participante.direc}</p>
+                                </div>
+                            </div>
+                            <div class="user-details text-secondary w-75 mx-auto mt-4 tab-pane fade show" role="tabpanel" aria-labelledby="user-factura-tab" id="user-factura">
+                                <div class="d-flex mt-3">
+                                    <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-address-card text-upa-main fs-6 m-auto"></i></span>
+                                    <p class="my-auto">${factura.rfc}</p>
+                                </div>
+                                <div class="d-flex mt-3">
+                                    <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-file-alt text-upa-main fs-6 m-auto"></i></span>
+                                    <p class="my-auto">${factura.cfdi}</p>
+                                </div>
+                                ${obs}
+                            </div>
+                        </div>
+                    `);
                 },
                 error: function(){
-                    $(labels[4]).html('<b>RFC: </b> Sin facturación');
+                    try{
+                        $('#pills-tab').remove();
+                        $('#pills-tabContent').remove();
+                        $("#user-details").remove();
+                    }catch(e){console.log('Error al eliminar elementos');}
+                    $($('#modalRevisar hr')[0]).after(`
+                        <div class="user-details text-secondary w-75 mx-auto mt-4 tab-pane fade show active" role="tabpanel" aria-labelledby="user-details-tab" id="user-details">
+                            <div class="d-flex">
+                                <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-phone-alt text-upa-main fs-6 m-auto"></i></span>
+                                <p class="my-auto">${participante.telefono}</p>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-hashtag text-upa-main fs-6 m-auto"></i></span>
+                                <p class="my-auto">${participante.curp}</p>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <span class="icon mt-0 rounded-circle d-flex me-3"><i class="fas fa-home text-upa-main fs-6 m-auto"></i></span>
+                                <p class="my-auto">${participante.direc}</p>
+                            </div>
+                        </div>
+                    `);
                 }
             });
-            $(labels[5]).html('<b>Sexo: </b>' + ((res["sexo"] == "H") ? "Masculino" : "Femenino"));
-            $(labels[6]).html('<b>Estado civil: </b>' + res["est_civil"]);
-            $(labels[7]).html('<b>Curso: </b>' + tr.children('td')[4].innerText);
-            let rev = "No validado";
 
             $.ajax({
                 url: dominio + 'ajax/formularios.ajax.php',
@@ -299,34 +361,105 @@ function comprobante(e) {
                 data: {
                     "tabla": "Pagos",
                     "campo": "idParticipante",
-                    "dato": tr.children('td')[0].className.split('-')[1]
+                    "dato": idParticipante
                 },
                 dataType: "json",
                 success: function(resPago){
-                    (resPago["r2"]==1) ? rev="Validado" : rev="No validado" ;
+                    console.log({resPago: resPago});
+                    (resPago["r2"]==1) ? 
+                        $('#modalRevisar input[name="btnRev"]').removeAttr('disabled')
+                    : $('#modalRevisar input[name="btnRev"]').prop('disabled',true); ;
                     try{
                         $(labels[8]).html('<b>Validación (Administración): </b>'+rev);
                     }catch(err){}
                     
-                    if(resPago["comprobante"]){
+                    $('#comprobante-revisar #precio').text(parseFloat(resPago.pago).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+                    if(resPago.comprobante!==null){
+                        $('#modalRevisar .pre-comprobante').hide();
                         $('#modalRevisar .modal-body img').attr({
-                            "src": dominio + 'vistas/img/comprobantes/' + res["idCurso"] + '/' + resPago["comprobante"],
+                            "src": dominio + 'vistas/img/comprobantes/' + participante["idCurso"] + '/' + resPago["comprobante"],
                             "alt": resPago["comprobante"]
                         });
+                        $('#modalRevisar .modal-body img').show();
                     }else {
+                        $('#modalRevisar .modal-body img').hide();
                         $('#modalRevisar .modal-body img').attr({
                             "src": "",
                             "alt": ""
                         });
+                        $('#modalRevisar .pre-comprobante').show();
                     }
                 }
             });
-
-            $('#idRev').val(res["idParticipante"]);
-            $('#idRevCurso').val(res["idCurso"]);
-        },
-        error: function() {
-            alert("err");
         }
     });
+
+            // -----------------------------------------
+    //         let labels = $('#info-inscrito').find('p');
+    //         // console.log(labels);
+    //         $($('#info-inscrito h4')[0]).text(res["nombre"]);
+    //         // $(labels[0]).text(res["nombre"]);
+    //         $(labels[0]).html('<b>Correo: </b>' + res["correo"]);
+    //         $(labels[1]).html('<b>Teléfono: </b>' + res["telefono"]);
+    //         $(labels[2]).html('<b>Dirección: </b>' + res["direc"]);
+    //         $(labels[3]).html('<b>CURP: </b>' + res["curp"]);
+
+    //         $.ajax({
+    //             url: dominio + 'ajax/formularios.ajax.php',
+    //             method: "POST",
+    //             data: {
+    //                 "tabla": "Facturas",
+    //                 "campo": "idParticipante",
+    //                 "dato": tr.children('td')[0].className.split('-')[1]
+    //             },
+    //             dataType: "json",
+    //             success: function(res) {
+    //                 $(labels[4]).html('<b>RFC: </b>' + res["rfc"]);
+    //             },
+    //             error: function(){
+    //                 $(labels[4]).html('<b>RFC: </b> Sin facturación');
+    //             }
+    //         });
+    //         $(labels[5]).html('<b>Sexo: </b>' + ((res["sexo"] == "H") ? "Masculino" : "Femenino"));
+    //         $(labels[6]).html('<b>Estado civil: </b>' + res["est_civil"]);
+    //         $(labels[7]).html('<b>Curso: </b>' + tr.children('td')[4].innerText);
+    //         let rev = "No validado";
+
+    //         $.ajax({
+    //             url: dominio + 'ajax/formularios.ajax.php',
+    //             method: "POST",
+    //             data: {
+    //                 "tabla": "Pagos",
+    //                 "campo": "idParticipante",
+    //                 "dato": tr.children('td')[0].className.split('-')[1]
+    //             },
+    //             dataType: "json",
+    //             success: function(resPago){
+    //                 (resPago["r2"]==1) ? rev="Validado" : rev="No validado" ;
+    //                 try{
+    //                     $(labels[8]).html('<b>Validación (Administración): </b>'+rev);
+    //                 }catch(err){}
+                    
+    //                 if(resPago["comprobante"]){
+    //                     $('#modalRevisar .modal-body img').attr({
+    //                         "src": dominio + 'vistas/img/comprobantes/' + res["idCurso"] + '/' + resPago["comprobante"],
+    //                         "alt": resPago["comprobante"]
+    //                     });
+    //                 }else {
+    //                     $('#modalRevisar .modal-body img').attr({
+    //                         "src": "",
+    //                         "alt": ""
+    //                     });
+    //                 }
+    //             }
+    //         });
+
+    //         $('#idRev').val(res["idParticipante"]);
+    //         $('#idRevCurso').val(res["idCurso"]);
+    //     },
+    //     error: function() {
+    //         alert("err");
+    //     }
+    // });
 }

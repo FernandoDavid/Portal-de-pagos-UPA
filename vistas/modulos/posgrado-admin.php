@@ -429,8 +429,8 @@ foreach ($res as $key => $dato) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn bg-upa-secondary text-white ">Modificar</button>
+                        <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
                         <?php
                             //añadir la modificación del alumno PHP
                             $Form = new ControladorFormularios();
@@ -457,7 +457,7 @@ foreach ($res as $key => $dato) {
                         FORMA UNA VEZ BORRADO
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-danger ">Borrar alumno</button>
                         <?php
                             $Form->ctrEliminarRegistro("Participantes", "idParticipante", $campo,$dominio);
@@ -677,8 +677,8 @@ foreach ($res as $key => $dato) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn text-white bg-upa-secondary">Guardar</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn text-white btn-primary">Guardar</button>
                         <?php
                             $Form->ctrRegistrarCurso();
                         ?>
@@ -894,8 +894,8 @@ foreach ($res as $key => $dato) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn text-white bg-upa-secondary">Guardar</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn text-white btn-primary">Guardar</button>
                         <?php
                             $Form->ctrModificarCurso($dominio);
                         ?>
@@ -920,7 +920,7 @@ foreach ($res as $key => $dato) {
                         FORMA UNA VEZ BORRADO
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-danger">Borrar curso</button>
                         <?php
                             $Form->ctrEliminarRegistro("Cursos", "idCurso", $campo,$dominio);
@@ -939,34 +939,48 @@ foreach ($res as $key => $dato) {
                     <h2 class="modal-title text-white text-uppercase display-6 fs-4">Revisión de comprobante de pago</h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body row">
-                    <div id="info-inscrito" class="col-md-6">
-                        <h4>Nombre completo</h4>
-                        <hr>
-                        <p>Dirección: ..</p>
-                        <p>CURP: ..</p>
-                        <p>RFC: ..</p>
-                        <p>Teléfono: ..</p>
-                        <p>Curso: ..</p>
-                        <p>Sexo: ..</p>
-                        <p>Estado civil: ..</p>
-                        <p>Curso: ..</p>
-                        <p>Revisión (Administración): ..</p>
+                <div class="modal-body row gx-0">
+                    <div class="col-xl-5 col-lg-6 col-md-12 mb-3 d-grid">
+                        <div class="card my-auto border-0 user-card">
+                            <div class="card-body my-auto">
+                                <span class="mx-auto rounded-circle overflow-hidden d-flex p-0 pt-2">
+                                    <i class="fas fa-user m-auto"></i>
+                                </span>
+                                <div class="text-center mt-3">
+                                    <h5 class="fw-bold"></h5>
+                                    <p class="fs-6 text-secondary fw-light mb-0" id="participante-name"></p>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 text-center">
-                        <h4>Comprobante</h4>
-                        <img id="revCmprobante" src="" alt="" class="img-fluid" style="max-height: 23rem">
+                    <div class="col-xl-7 col-lg-6 col-md-12 text-center d-grid">
+                        <div id="comprobante-revisar" class="card my-auto border-0">
+                            <div class="card-body">
+                                <h5 class="text-center text-upa-main-dark text-uppercase fw-bold mb-3">Monto a pagar</h5>
+                                <div class="d-flex text-center justify-content-center align-items-center">
+                                    <p class="mb-0 fs-6 text-upa-main-lighter fw-bold me-1">$</p>
+                                    <h5 class="fw-bold mb-0 fs-3 text-upa-primary" id="precio"></h5>
+                                </div>
+                                <!-- <hr> -->
+                                <div class="w-100 marco-comprobante p-3 mt-2">
+                                    <img src="" alt="" class="img-fluid">
+                                    <div class="row gx-0 pre-comprobante">
+                                        <h6 class="fs-2 m-auto text-white fw-bolder">Sin comprobante</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <form method="POST">
                         <input type="text" name="idRev" id="idRev" class="visually-hidden-focusable">
                         <input type="text" name="idRevCurso" id="idRevCurso" class="visually-hidden-focusable">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <input type="submit" class="btn btn-danger" name="btnRev" value="Rechazar">
-                        <input type="submit" class="btn btn-success" name="btnRev" value="Validar">
+                        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button> -->
+                        <input type="submit" class="btn btn-danger me-3" name="btnRev" value="Rechazar">
+                        <input type="submit" class="btn btn-primary" name="btnRev" value="Validar">
                         <?php
-                        
                         $Form->ctrValidarComprobante($dominio, $revisor, $campo);
                         ?>
                     </form>

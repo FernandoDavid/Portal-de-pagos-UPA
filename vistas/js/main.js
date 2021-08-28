@@ -67,12 +67,10 @@ function reg(element, foto) {
             $($('#data-curso .precios h5')[1]).text((parseFloat(res.precio) * (1 - parseFloat(res.desc) / 100)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 
             let arr = res.temario.split('|||')[0].split('\r\n');
-            // console.log(arr);
             $('#temario-curso .list-group').empty();
+            
             arr.forEach((e,i) => {
                 let tema = e.split(':')[1].trim();
-                // console.log({ tema: tema });
-                // console.log(convertToRoman(i));
                 let html = `
                 <li>
                     <div class="col-12 d-flex">
@@ -86,10 +84,11 @@ function reg(element, foto) {
                 `;
                 $('#temario-curso .list-group').append(html);    
             });
-            $("#temario-curso ul").mCustomScrollbar({
-                theme: 'minimal'
-            });
         }
+    }).done(()=>{
+        $("#temario-curso ul").mCustomScrollbar({
+            theme: 'minimal'
+        });
     });
 
     if ($(element).text() == "Ver más") {

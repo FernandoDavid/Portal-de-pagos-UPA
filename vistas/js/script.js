@@ -51,6 +51,88 @@ $(document).ready(() => {
         }else{
             // console.log("registro");
             $('body').addClass("bg-light-gray");
+
+            $('#card0').hide();
+            $('#card1').hide();
+            $('#card2').hide();
+            $('#card3').hide();
+
+            $('#step1').click(() => {
+                stepAlert("Paso 1: Elección", "Selecciona tu curso..");
+            });
+            $('#step2').click(() => {
+                stepAlert("Paso 2: Registro", "Ingresa tus datos personales..");
+            });
+            $('#step3').click(() => {
+                stepAlert("Paso 3: Comprobante de pago", "Adjunta tu comprobante de pago..");
+            });
+            $('#step4').click(() => {
+                stepAlert("Paso 4: Confirmación", "Revisa tu información..");
+            });
+
+            if (st!==undefined && st >= 0) {
+                $('#loader').toggleClass("visually-hidden-focusable");
+                switch (st) {
+                    case 0:
+                        $('#card0').toggle();
+                        break;
+                    case 1:
+                        $('#card1').toggle();
+                        break;
+                    case 2:
+                        $('#card2').toggle();
+                        break;
+                    case 3:
+                        $('#card3').toggle();
+                        break;
+                }
+            }
+
+            var tel = new Cleave('.telefono-input',{
+                phone: true,
+                phoneRegionCode: 'MX'
+            });
+
+            $('#btnRegresar').on('click',function(){
+                // $('#btnRegresar').removeAttr("data-bs-toggle");
+                if(window.history.replaceState){
+                    window.history.replaceState(null,null,window.location.href);
+                }
+        
+                $('#card1').slideUp('slow');
+        
+                $('#card1').hide('slow');
+                $('#card0').show('slow');
+                
+                $($('#header-cursos .cover')[0]).animate({opacity:0},500,()=>{
+                    $($('#header-cursos .cover')[0]).css({"background-image": "url("+dominio+"vistas/img/rsc/cover.jpg)"})
+                                                    .animate({opacity:1,height: "25rem"},500);
+                });
+        
+                $('#header-cursos h1').animate({opacity:0},400,()=>{
+                    $('#header-cursos h1').text("Cursos UPA").animate({opacity:1},900);
+                });
+        
+                st = 0;
+                $('#step2').removeClass('btn-primary');
+                $('#step2').addClass('btn-secondary');
+                $('.progress-bar').css("width","0%");
+                $('.progress-bar').attr("aria-valuenow","0");
+                $('#formRegistro1')[0].reset();
+        
+                $('#btnRegresar').tooltip('hide');
+                $("#temario-curso ul").mCustomScrollbar("destroy");
+            });
+        
+            $('#formRegistro1 input[type="text"], #formRegistro1 select').focusin((e)=>{
+                $(e['target']).parent().find('span').css({"color": "var(--upa-primary)"});
+            });
+            $('#formRegistro1 input[type="text"], #formRegistro1 select').focusout((e)=>{
+                $(e['target']).parent().find('span').css({"color": "var(--bs-dark)"});
+            });
+        
+            $('#facturacion-form').hide();
+            $('#facturacion-form .mb-3').hide();
         }
     }
 
@@ -58,93 +140,5 @@ $(document).ready(() => {
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
-
-    $('#card0').hide();
-    $('#card1').hide();
-    $('#card2').hide();
-    $('#card3').hide();
-
-    // $("#temario-curso ul").mCustomScrollbar({
-    //     theme: 'minimal'
-    // });
-
-    $('#step1').click(() => {
-        stepAlert("Paso 1: Elección", "Selecciona tu curso..");
-    });
-    $('#step2').click(() => {
-        stepAlert("Paso 2: Registro", "Ingresa tus datos personales..");
-    });
-    $('#step3').click(() => {
-        stepAlert("Paso 3: Comprobante de pago", "Adjunta tu comprobante de pago..");
-    });
-    $('#step4').click(() => {
-        stepAlert("Paso 4: Confirmación", "Revisa tu información..");
-    });
-
-    if (st >= 0) {
-        $('#loader').toggleClass("visually-hidden-focusable");
-        switch (st) {
-            case 0:
-                $('#card0').toggle();
-                break;
-            case 1:
-                $('#card1').toggle();
-                break;
-            case 2:
-                $('#card2').toggle();
-                break;
-            case 3:
-                $('#card3').toggle();
-                break;
-        }
-    }
-
-    // $('.filepond--drop-label label').empty().text("Adjunta tu comprobante de pago aquí");
-
-    // var Cleave = require('cleave.js');
-    var tel = new Cleave('.telefono-input',{
-        phone: true,
-        phoneRegionCode: 'MX'
-    });
-
-    $('#btnRegresar').on('click',function(){
-        // $('#btnRegresar').removeAttr("data-bs-toggle");
-        if(window.history.replaceState){
-            window.history.replaceState(null,null,window.location.href);
-        }
-
-        $('#card1').slideUp('slow');
-
-        $('#card1').hide('slow');
-        $('#card0').show('slow');
-        
-        $($('#header-cursos .cover')[0]).animate({opacity:0},500,()=>{
-            $($('#header-cursos .cover')[0]).css({"background-image": "url("+dominio+"vistas/img/rsc/cover.jpg)"})
-                                            .animate({opacity:1,height: "25rem"},500);
-        });
-
-        $('#header-cursos h1').animate({opacity:0},400,()=>{
-            $('#header-cursos h1').text("Cursos UPA").animate({opacity:1},900);
-        });
-
-        st = 0;
-        $('#step2').removeClass('btn-primary');
-        $('#step2').addClass('btn-secondary');
-        $('.progress-bar').css("width","0%");
-        $('.progress-bar').attr("aria-valuenow","0");
-        $('#formRegistro1')[0].reset();
-
-        $('#btnRegresar').tooltip('hide');
-    });
-
-    $('#formRegistro1 input[type="text"], #formRegistro1 select').focusin((e)=>{
-        $(e['target']).parent().find('span').css({"color": "var(--upa-primary)"});
-    });
-    $('#formRegistro1 input[type="text"], #formRegistro1 select').focusout((e)=>{
-        $(e['target']).parent().find('span').css({"color": "var(--bs-dark)"});
-    });
-
-    $('#facturacion-form').hide();
-    $('#facturacion-form .mb-3').hide();
 
 });
