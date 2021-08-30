@@ -67,7 +67,8 @@ if (isset($_GET["pagina"])) {
             ($campo=="r2")? include "modulos/admin-admin.php" : include "modulos/posgrado-admin.php";
         }
     } else {
-        include "paginas/404.php";
+        include "modulos/sidebar.php";
+        // include "paginas/404.php";
     }
 } else {
     include "modulos/mensajes.php";

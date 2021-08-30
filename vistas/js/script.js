@@ -12,6 +12,14 @@ $(document).ready(() => {
             $(e['target']).parent().find('span').css({"color": "var(--bs-dark)"});
         });
 
+        $('.modal-body input[type="radio"]').focusin((e)=>{
+            // console.log($(e['target']).closest('.row').find('div.input-group-text2'));
+            $(e['target']).closest('.row').find('div.input-group-text2').css({"color": "var(--upa-primary)"});
+        });
+        $('.modal-body input[type="radio"]').focusout((e)=>{
+            $(e['target']).closest('.row').find('div.input-group-text2').css({"color": "var(--bs-dark)"});
+        });
+
         $('.modal-body select').focusin((e)=>{
                 // console.log($(e['target']).parent().find('label'));
                 $(e['target']).parent().find('label').css({"color": "var(--upa-primary)"});
@@ -129,6 +137,13 @@ $(document).ready(() => {
             });
             $('#formRegistro1 input[type="text"], #formRegistro1 select').focusout((e)=>{
                 $(e['target']).parent().find('span').css({"color": "var(--bs-dark)"});
+            });
+
+            $('#formRegistro1 input[type="radio"]').focusin((e)=>{
+                $(e['target']).closest('.row').find('div.input-group-text2').css({"color": "var(--upa-primary)"});
+            });
+            $('#formRegistro1 input[type="radio"]').focusout((e)=>{
+                $(e['target']).closest('.row').find('div.input-group-text2').css({"color": "var(--bs-dark)"});
             });
         
             $('#facturacion-form').hide();

@@ -135,29 +135,29 @@ $(document).ready(function() {
     });
 
     // LATERAL NAVBAR
-    const showNavbar = (toggleId, navId, bodyId, headerId) => {
-        const toggle = document.getElementById(toggleId),
-            nav = document.getElementById(navId),
-            bodypd = document.getElementById(bodyId),
-            headerpd = document.getElementById(headerId);
-        // Validate that all variables exist
-        if (toggle && nav && bodypd && headerpd) {
-            toggle.addEventListener('click', () => {
-                // show navbar
-                nav.classList.toggle('show_nav');
-                // change icon
-                toggle.classList.toggle('fa-times');
-                // add padding to body
-                bodypd.classList.toggle('body-pd');
-                // add padding to header
-                headerpd.classList.toggle('body-pd');
-            });
-        }
-    }
+    // const showNavbar = (toggleId, navId, bodyId, headerId) => {
+    //     const toggle = document.getElementById(toggleId),
+    //         nav = document.getElementById(navId),
+    //         bodypd = document.getElementById(bodyId),
+    //         headerpd = document.getElementById(headerId);
+    //     // Validate that all variables exist
+    //     if (toggle && nav && bodypd && headerpd) {
+    //         toggle.addEventListener('click', () => {
+    //             // show navbar
+    //             nav.classList.toggle('show_nav');
+    //             // change icon
+    //             toggle.classList.toggle('fa-times');
+    //             // add padding to body
+    //             bodypd.classList.toggle('body-pd');
+    //             // add padding to header
+    //             headerpd.classList.toggle('body-pd');
+    //         });
+    //     }
+    // }
 
-    showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header');
+    // showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header');
 
-    /*===== LINK ACTIVE =====*/
+    // /*===== LINK ACTIVE =====*/
     const linkColor = document.querySelectorAll('.nav_link');
 
     function colorLink() {
@@ -167,6 +167,21 @@ $(document).ready(function() {
         }
     }
     linkColor.forEach(l => l.addEventListener('click', colorLink));
+
+    // SIDEBAR V2
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".upa-btn");
+    let bodypd = document.querySelector(".body-adm");
+
+    sidebarBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        // bodypd.classList.toggle('body-pd');
+        if (sidebar.classList.contains("open")){
+            $('.admin-body').animate({"padding-left": "15.8rem"},'fast');
+        }else{
+            $('.admin-body').animate({"padding-left": "5rem"},'fast');
+        }
+    });
 
     $('#link_inscritos').on('click', () => {
         $('#inscritosTable').removeClass('visually-hidden-focusable');
@@ -240,6 +255,7 @@ function eliminarParticipante(e) {
 }
 
 function comprobante(e) {
+    // console.log({campo:campo});
     $('#modalRevisar').modal('show');
     var idParticipante = $(e).closest('tr').children('td')[0].className.split('-')[1];
     // console.log("bnt Comprobante");
@@ -262,6 +278,9 @@ function comprobante(e) {
         },
         dataType: "json",
         success: function(participante) {
+            $('#idRev').val(participante["idParticipante"]);
+            $('#idRevCurso').val(participante["idCurso"]);
+
             $('#participante-name').text(participante.nombre);
             // console.log({participante: participante});
             $.ajax({
@@ -365,13 +384,20 @@ function comprobante(e) {
                 },
                 dataType: "json",
                 success: function(resPago){
-                    console.log({resPago: resPago});
-                    (resPago["r2"]==1) ? 
-                        $('#modalRevisar input[name="btnRev"]').removeAttr('disabled')
-                    : $('#modalRevisar input[name="btnRev"]').prop('disabled',true); ;
-                    try{
-                        $(labels[8]).html('<b>Validación (Administración): </b>'+rev);
-                    }catch(err){}
+                    // console.log({resPago: resPago});
+                    switch(campo){
+                        case "r1": 
+                            (resPago["r2"]==1) ? 
+                                $('#modalRevisar input[name="btnRev"]').removeAttr('disabled')
+                                : $('#modalRevisar input[name="btnRev"]').prop('disabled',true) ;
+                            break;
+                        case "r2":
+                            $('#modalRevisar input[name="btnRev"]').removeAttr('disabled');
+                            break;
+                    }
+                    // try{
+                    //     $(labels[8]).html('<b>Validación (Administración): </b>'+rev);
+                    // }catch(err){}
                     
                     $('#comprobante-revisar #precio').text(parseFloat(resPago.pago).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 
@@ -463,3 +489,7 @@ function comprobante(e) {
     //     }
     // });
 }
+
+$('#log_out').on('click',()=>{
+    window.location = "salir";
+});

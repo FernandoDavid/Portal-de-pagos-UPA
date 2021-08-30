@@ -329,7 +329,7 @@ class ControladorFormularios
                     date_default_timezone_set('America/Mexico_City');
                     $datos = array($campo=>"1","fec_".$campo=>date('y-m-d'));
                 }else{
-                    $datos = [$campo=>"1","fec_".$campo=>$_POST["revDate"]];
+                    $datos = [$campo=>"1","fec_".$campo=>$_POST["fec_r2"]];
                 }
                 
                 $res = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,$id);
@@ -370,9 +370,10 @@ class ControladorFormularios
             } else {
                 $id = array("idParticipante"=>$_POST["idRev"]);
                 $revisor[0]["depto"] == "Posgrado" ? $campo = "r1" : $campo = "r2";
+                $comp = ModeloFormularios::mdlSelecReg("Pagos", array_keys($id), $id);
                 $datos = ["comprobante"=>null];
                 $res = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,$id);
-                $source = "vistas/img/comprobantes/" . $_POST["idRevCurso"] . "/" . $res[0]["comprobante"];
+                $source = "vistas/img/comprobantes/" . $_POST["idRevCurso"] . "/" . $comp[0]["comprobante"];
                 unlink($source);
                 $msg = '<div>
                             <h3>Lo sentimos</h3>

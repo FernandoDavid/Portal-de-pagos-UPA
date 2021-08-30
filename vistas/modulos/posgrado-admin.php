@@ -12,7 +12,7 @@ foreach ($res as $key => $dato) {
 }
 ?>
 <!-- Barra de navegación -->
-<header class="header" id="header">
+<!-- <header class="header" id="header">
     <div class="header_toggle">
         <i class='fas fa-bars' id="header-toggle"></i>
     </div>
@@ -50,11 +50,58 @@ foreach ($res as $key => $dato) {
             <span class="nav_name">Cerrar sesión</span>
         </a>
     </nav>
+</div> -->
+
+<div class="sidebar">
+    <div class="logo-details">
+        <i class="upa-btn"><img src="<?php echo $dominio; ?>vistas/img/rsc/logo UPA.svg"></i>
+        <!-- <i class='fas fa-home'></i> -->
+        <span class="logo_name ms-3">Cursos UPA</span>
+    </div>
+    <!-- <div class="logo-details">
+        <i class='bx bxl-c-plus-plus icon'></i>
+        <div class="logo_name">Cursos UPA</div>
+        <i class='bx bx-menu' id="btn"></i>
+    </div> -->
+    <ul class="nav-list p-0">
+        <li>
+            <a id="link_pendientes" class="nav_link" >
+                <i class='fas fa-user-clock'></i>
+                <span class="links_name">Pendientes</span>
+            </a>
+            <span class="tooltip">Pendientes</span>
+        </li>
+        <li>
+            <a id="link_inscritos" class="nav_link">
+                <i class='fas fa-user-check'></i>
+                <span class="links_name">Inscritos</span>
+            </a>
+            <span class="tooltip">Inscritos</span>
+        </li>
+        <li>
+            <a id="link_cursos" class="nav_link">
+                <i class='fas fa-bookmark'></i>
+                <span class="links_name">Cursos</span>
+            </a>
+            <span class="tooltip">Cursos</span>
+        </li>
+        <li class="profile">
+            <div class="profile-details">
+                <i class="fas fa-user"></i>
+                <!-- <img src="profile.jpg" alt="profileImg"> -->
+                <div class="name_job">
+                    <div class="name fw-bold text-capitalize"><?php echo $_SESSION["admin"]; ?></div>
+                    <div class="job text-capitalize"><?php echo $revisor[0]["depto"]; ?></div>
+                </div>
+            </div>
+            <i class='fas fa-sign-out-alt' id="log_out" data-bs-toggle="tooltip" data-bs-placement="right" title="Cerrar sesión"></i>
+        </li>
+    </ul>
 </div>
 
 <!--TABLAS-->
 
-<div class="container-fluid mt-5 pt-4">
+<div class="container-fluid pt-4 body-adm">
     <!-- ALUMNOS PENDIENTES-->
     <div id="pendientesTable" class="visually-hidden-focusable">
         <div class="row mb-4 d-flex">
@@ -72,7 +119,7 @@ foreach ($res as $key => $dato) {
         </div>
 
         <div class="table-responsive px-3">
-            <table class="table own-table-hover mb-4 align-middle">
+            <table class="table own-table-hover mb-0 align-middle">
                 <thead class="table-dark">
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
@@ -151,7 +198,7 @@ foreach ($res as $key => $dato) {
         </div>
 
         <div class="table-responsive px-3">
-            <table class="table own-table-hover mb-4">
+            <table class="table own-table-hover mb-0">
                 <thead class="table-dark">
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
