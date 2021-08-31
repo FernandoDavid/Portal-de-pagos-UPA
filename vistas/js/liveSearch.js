@@ -1,7 +1,7 @@
 function search(e){
     var txt = $(e).val();
     var name = $(e).attr("name");
-    // console.log(name);
+    // console.log({name:name});
 
     var datos={};
     switch(name){
@@ -81,13 +81,13 @@ function search(e){
                         `;
                         if(datos.if==0){
                             let comp = (element.comprobante)?'btn-primary':''; 
+                            // console.log({element:element,campo:datos.campo,r: element[datos.campo]});
+                            let span = (element.r2==1) ? `<span class="position-absolute mt-1 top-0 start-100 translate-middle p-2 bg-danger rounded-circle"><span class="visually-hidden"></span></span>` : ``;
                             btn = `
                             <td>
                                 <button type="button" class="btn p-1 ${comp} btnComprobante position-relative" onclick="comprobante(this)">
                                     <i class="fas fa-file-invoice-dollar"></i>
-                                    <span class="position-absolute mt-1 top-0 start-100 translate-middle p-2 bg-danger rounded-circle">
-                                        <span class="visually-hidden"></span>
-                                    </span>
+                                    ${span}
                                 </button>
                             </td>
                             `;

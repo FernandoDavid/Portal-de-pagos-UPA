@@ -86,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive px-3">
+            <div class="table-responsive px-3 mb-4">
                 <table class="table own-table-hover mb-0 align-middle">
                     <thead class="table-dark">
                         <th scope="col">#</th>
@@ -233,51 +233,6 @@
         </div>
 
         <!-- Modal revisar comprobante -->
-        <!-- <div class="modal fade" id="modalRevisar" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 class="modal-title">Revisión de comprobante de pago</h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form method="POST">
-                        <div class="modal-body row">
-                            <div id="info-inscrito" class="col-md-6">
-                                <h4>Fullname</h4>
-                                <hr>
-                                <p>Dirección: ..</p>
-                                <p>CURP: ..</p>
-                                <p>RFC: ..</p>
-                                <p>Teléfono: ..</p>
-                                <p>Curso: ..</p>
-                                <p>Sexo: ..</p>
-                                <p>Estado civil: ..</p>
-                                <p>Curso: ..</p>
-                                <div class="rev-date">
-                                    <input type="date" class="form-control revDate" name="revDate" placeholder="Fecha de revisión" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6 text-center">
-                                <h4>Comprobante</h4>
-                                <img id="revCmprobante" src="" alt="" class="img-fluid" style="max-height: 23rem">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="text" name="idRev" id="idRev" class="visually-hidden-focusable">
-                            <input type="text" name="idRevCurso" id="idRevCurso" class="visually-hidden-focusable">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <input type="submit" class="btn btn-danger" name="btnRev" value="Rechazar">
-                            <input type="submit" class="btn btn-success" name="btnRev" value="Validar">
-                            <?php
-                            $Form = new ControladorFormularios();
-                            $Form->ctrValidarComprobante($dominio, $revisor, $campo);
-                            ?>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div>
-        </div> -->
         <div class="modal fade" id="modalRevisar" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">

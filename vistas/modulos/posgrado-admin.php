@@ -118,7 +118,7 @@ foreach ($res as $key => $dato) {
             </div>
         </div>
 
-        <div class="table-responsive px-3">
+        <div class="table-responsive px-3 mb-4">
             <table class="table own-table-hover mb-0 align-middle">
                 <thead class="table-dark">
                     <th scope="col">#</th>
@@ -197,7 +197,7 @@ foreach ($res as $key => $dato) {
             </div>
         </div>
 
-        <div class="table-responsive px-3">
+        <div class="table-responsive px-3 mb-4">
             <table class="table own-table-hover mb-0">
                 <thead class="table-dark">
                     <th scope="col">#</th>
