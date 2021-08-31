@@ -54,7 +54,6 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Participantes` (
   `curp` VARCHAR(20) NOT NULL,
   `sexo` CHAR(1) NULL,
   `est_civil` VARCHAR(15) NULL,
-  `subs` TINYINT NOT NULL,
   `idCurso` INT NOT NULL,
   PRIMARY KEY (`idParticipante`),
   CONSTRAINT `fk_Inscritos_Cursos`
@@ -62,6 +61,17 @@ CREATE TABLE IF NOT EXISTS `cursos_upa`.`Participantes` (
     REFERENCES `cursos_upa`.`Cursos` (`idCurso`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cursos_upa`.`Subscritos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cursos_upa`.`Subscritos` (
+  `correo` VARCHAR(45) NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `telefono` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`correo`))
 ENGINE = InnoDB;
 
 

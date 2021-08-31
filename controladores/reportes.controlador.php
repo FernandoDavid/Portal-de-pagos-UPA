@@ -34,11 +34,8 @@ class ControladorReportes
             ];
             
             $activeSheet->getStyle('A1:C1')->applyFromArray($styles_v1);            
-
-            $datos = array(
-                "subs" => 1
-            );
-            $res = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datos), $datos);
+            
+            $res = ModeloFormularios::mdlSelecReg("Subscritos");
             foreach($res as $key=>$alumno){
                 $activeSheet->setCellValue('A'.$key+2, $alumno["correo"]);
                 $activeSheet->setCellValue('B'.$key+2, $alumno["nombre"]);  

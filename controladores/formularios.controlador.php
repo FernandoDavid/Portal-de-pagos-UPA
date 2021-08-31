@@ -17,9 +17,21 @@ class ControladorFormularios
                     "curp" => $_POST["curp"],
                     "sexo" => $_POST["sexoRadio"],
                     "est_civil" => $_POST["estadoRadio"],
-                    "subs" => ($_POST["subs"])? 1 : 0,
+                    // "subs" => ($_POST["subs"])? 1 : 0,
                     "idCurso" => $_POST["curso"]
                 );
+
+                if($_POST["subs"]){
+                    $subscripcion = [
+                        "nombre" => $_POST["nombre"],
+                        "telefono" => $_POST["telefono"],
+                        "correo" => $_POST["correo"],
+                    ];
+                    try{
+                        $sub = ModeloFormularios::mdlCrearRegistro("Subscritos", array_keys($subscripcion), $subscripcion);
+                    }catch(Exception $e){}
+                }
+
                 $respuesta = ModeloFormularios::mdlCrearRegistro("Participantes", array_keys($datos), $datos);
                 if ($respuesta == "ok") {
                     $id = ModeloFormularios::mdlSelecReg("Participantes",array_keys($datos),$datos)[0];
