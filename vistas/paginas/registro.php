@@ -543,5 +543,5 @@ if (isset($rutas[1])) {
 </div>
 
 <footer class="bg-dark sticky-bottom py-3 text-center" style="color: rgba(248,249,250,0.5)">
-    Made with <i class="fas fa-heart"></i> by Ferando Arévalo & Carlos Martínez
+    Made with <i class="fas fa-heart"></i> by Fernando Arévalo & Carlos Martínez
 </footer>
