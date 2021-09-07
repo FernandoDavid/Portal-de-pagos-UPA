@@ -307,6 +307,11 @@ function comprobante(e) {
                         $('#pills-tabContent').remove();
                         $("#user-details").remove();
                     }catch(e){console.log("error al eliminar DOM");}
+
+                    switch(factura.cfdi){
+                        case "1": factura.cfdi='Gastos en general';break;
+                    }
+
                     $($('#modalRevisar hr')[0]).after(`
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                             <li class="nav-item w-50" role="presentation">
@@ -384,7 +389,7 @@ function comprobante(e) {
                 },
                 dataType: "json",
                 success: function(resPago){
-                    // console.log({resPago: resPago});
+                    console.log({resPago: resPago});
                     switch(campo){
                         case "r1": 
                             (resPago["r2"]==1) ? 
@@ -395,11 +400,20 @@ function comprobante(e) {
                             $('#modalRevisar input[name="btnRev"]').removeAttr('disabled');
                             break;
                     }
+
+                    $('#rechazo div').text("");
+                    if(resPago.r1==0 && resPago.fec_r1!=null){
+                        $($('#rechazo div')[1]).text("Rechazado por el área de Posgrado el "+resPago.fec_r1);
+                    }
+                    if(resPago.r2==0 && resPago.fec_r2!=null){
+                        $($('#rechazo div')[0]).text("Rechazado por el área de Administración el "+resPago.fec_r2);
+                    }
+
                     // try{
                     //     $(labels[8]).html('<b>Validación (Administración): </b>'+rev);
                     // }catch(err){}
-                    
-                    $('#comprobante-revisar #precio').text(parseFloat(resPago.pago).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    let precio = parseFloat(resPago.pago)-parseFloat(resPago.pago)*parseFloat(resPago.desc)/100;
+                    $('#comprobante-revisar #precio').text(parseFloat(precio).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 
                     if(resPago.comprobante!==null){
                         $('#modalRevisar .pre-comprobante').hide();

@@ -23,7 +23,7 @@ if (isset($rutas[1])) {
         $datos2 = array("idCurso"=>intval($inscrito[0]["idCurso"]));
         $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($datos2), $datos2);
         $datos3 = array("curp"=>$inscrito[0]["curp"]);
-        $alumno = ModeloFormularios::mdlSelecReg("alumnos",array_keys($datos3), $datos3);
+        $alumno = ModeloFormularios::mdlSelecReg("Alumnos",array_keys($datos3), $datos3);
 
         if($pagoParticipante[0]["r1"] && $pagoParticipante[0]["r2"]){
             echo '
@@ -204,60 +204,6 @@ if (isset($rutas[1])) {
                                 <h3 class="text-center text-white text-uppercase fw-bold mb-4">Temario</h3>
                                 <!-- <hr> -->
                                 <ul class="list-group">
-                                    <!-- <li>
-                                        <div class="col-12 d-flex">
-                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">I</h1></span>
-                                            <div class="my-auto ms-3">
-                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad I</h6>
-                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="col-12 d-flex">
-                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">II</h1></span>
-                                            <div class="my-auto ms-3">
-                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad II</h6>
-                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="col-12 d-flex">
-                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">III</h1></span>
-                                            <div class="my-auto ms-3">
-                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad III</h6>
-                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="col-12 d-flex">
-                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">IV</h1></span>
-                                            <div class="my-auto ms-3">
-                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad IV</h6>
-                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="col-12 d-flex">
-                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">V</h1></span>
-                                            <div class="my-auto ms-3">
-                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad V</h6>
-                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="col-12 d-flex">
-                                            <span class="rounded-circle align-self-center text-white p-2 d-flex"><h1 class="m-auto fs-4 fw-bold">VI</h1></span>
-                                            <div class="my-auto ms-3">
-                                                <h6 class="fw-bold mb-0 text-uppercase">Unidad VI</h6>
-                                                <h6 class="fw-lighter text-white mb-0">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</h6>
-                                            </div>
-                                        </div>
-                                    </li> -->
                                 </ul>
                             </div>
                         </div>
@@ -450,8 +396,13 @@ if (isset($rutas[1])) {
                         <h5 class="text-center text-upa-main-dark text-uppercase fw-bold mb-3">Monto a pagar</h5>
                         <div class="d-flex text-center justify-content-center align-items-center">
                             <p class="mb-0 fs-6 text-upa-main-lighter fw-bold me-1">$</p>
-                            <h5 class="fw-bold mb-0 fs-3 text-white">
+                            <h5 class="fw-bold mb-0 fs-3 text-white position-relative <?php if(isset($alumno[0])):?> text-decoration-line-through <?php endif;?>">
                             <?php echo number_format($pagoParticipante[0]["pago"],2); ?>
+                            <?php if(isset($alumno[0])):?>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-upa-secondary" style="font-size: 1rem">
+                                <?php echo number_format(floatval($pagoParticipante[0]["pago"])-floatval($pagoParticipante[0]["pago"])*(floatval($pagoParticipante[0]["desc"]))/100,2); ?>
+                            </span>
+                            <?php endif; ?>
                             </h5>
                         </div>
                         <hr>
@@ -459,17 +410,10 @@ if (isset($rutas[1])) {
                         <p class="text-white fw-light">Para apartar tu lugar dentro del curso, sube una foto de tu comprobante de pago por la cantidad correspondiente en el siguiente apartado:</p>
                         <form method="POST" enctype="multipart/form-data" class="form-comprobante">
                             <div class="">
-                                <!-- <label for="comprobante" class="form-label">Comprobante de pago</label> -->
                                 <div class="mb-4">
-                                    <!-- <label for="comprobante" class="form-label">Comprobante de pago</label> -->
-                                    <!-- <input type="file" name="comprobante" id="editFlyer" id="comprobante"
-                                        data-max-file-size="3MB" data-max-files="1"> -->
                                     <input class="form-control" name="comprobante" type="file" id="comprobante"
                                         data-max-file-size="3MB" data-max-files="1">
                                 </div>
-                                <!-- <div class="file-img mb-3">
-                                        <input name="comprobante" id="comprobante" type="file" class="" data-max-file-size="3MB" data-max-files="1">
-                                    </div> -->
                                 <div class="d-flex">
                                     <button type="submit" class="btn btn-primary mx-auto">Guardar</button>
                                 </div>

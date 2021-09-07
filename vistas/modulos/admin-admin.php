@@ -1,6 +1,6 @@
     <?php
     foreach ($res as $key => $dato) {
-        if (!$dato["r2"]) {
+        if ($dato["r2"]==0) {
             $datParticipante = ["idParticipante"=>$dato["idParticipante"]];
             $participante = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datParticipante),$datParticipante);
             array_push($pendientes, $participante[0]);
@@ -71,7 +71,7 @@
 
     <div class="container-fluid pt-3">
         <!-- Tabla mostrar alumnos pendientes -->
-        <div id="pendientesTable" class="visually-hidden-focusable mb-4">
+        <div id="pendientesTable" class="mb-4">
             <div class="row mb-4 d-flex">
                 <div class="col-sm-6 align-self-center">
                     <h1 class="text-left fs-2 fw-bolder ms-3 my-auto"><i class="fas fa-angle-double-right text-upa-primary me-2"></i>Aspirantes pendientes</h1>
@@ -276,11 +276,15 @@
                                             <h5 class="fw-bold mb-0 fs-3 text-upa-primary" id="precio"></h5>
                                         </div>
                                         <!-- <hr> -->
-                                        <div class="w-100 marco-comprobante p-3 mt-2">
+                                        <div class="w-100 marco-comprobante p-3 mb-3 mt-2">
                                             <img src="" alt="" class="img-fluid">
                                             <div class="row gx-0 pre-comprobante">
                                                 <h6 class="fs-2 m-auto text-white fw-bolder">Sin comprobante</h6>
                                             </div>
+                                        </div>
+                                        <div id="rechazo" class="row">
+                                            <div class="col-sm-6 text-danger fs-6"></div>
+                                            <div class="col-sm-6 text-danger fs-6"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -293,6 +297,7 @@
                             <input type="submit" class="btn btn-danger me-3" name="btnRev" value="Rechazar">
                             <input type="submit" class="btn btn-primary" name="btnRev" value="Validar">
                             <?php
+                            $Form = new ControladorFormularios();
                             $Form->ctrValidarComprobante($dominio, $revisor, $campo);
                             ?>
                         </div>

@@ -252,7 +252,53 @@ class ControladorReportes
 
     public static function ctrParticipantes(){
         if(isset($_POST["idCurso"])){
+            $spreadsheet = IOFactory::load('controladores/plantillas/plantilla_participantes.xls');
+            $spreadsheet->getProperties()->setCreator("Cursos UPA")->setTitle("Alumnos participantes");
+            $spreadsheet->setActiveSheetIndex(0);
+            $activeSheet = $spreadsheet->getActiveSheet();
 
+            $styles_v1 = [
+                'borders' => [
+                    'inside' => [
+                        'borderStyle' => Border::BORDER_THIN,
+                        'color' => [ 'argb' => 'FFFFFFFF']
+                    ]
+                ],
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => [ 'argb' => 'FF4472C4' ]
+                ],
+                'font' => [
+                    'color' => [ 'argb' => 'FFFFFFFF' ]
+                ]
+            ];
+            
+            $activeSheet->getStyle('A1')->applyFromArray($styles_v1);            
+            $data = ["idCurso" => $_POST["idCurso"]];
+            $res = ModeloFormularios::mdlSelecReg("Participantes", array_keys($data), $data);
+            $cont = 2;
+            foreach($res as $key=>$alumno){
+                $participante = ["idParticipante"=>$alumno['idParticipante']];
+                $pago = ModeloFormularios::mdlSelecReg("Pagos", array_keys($participante), $participante);
+                if($pago[0]['r1']=="1" && $pago[0]['r2']=="1"){
+                    $activeSheet->setCellValue('A'.$cont, $alumno["nombre"]);
+                    if($cont%2==0){
+                        $activeSheet->getStyle('A'.($cont))->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFD9E1F2');
+                    }else{
+                        $activeSheet->getStyle('A'.($cont))->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFB4C6E7');
+                    }
+                }
+            }
+            $activeSheet->getStyle('A1:A'.$cont)->getAlignment()->setWrapText(true);
+
+            $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($data), $data);
+            ob_end_clean();
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="Participantes.xls"');
+            header('Cache-Control: max-age=0');
+
+            $writer = IOFactory::createWriter($spreadsheet, 'Xls');
+            $writer->save('php://output');
         }
     }
 }

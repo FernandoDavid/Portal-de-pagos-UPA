@@ -8,7 +8,7 @@ class ControladorFormularios
     {
         if (isset($_POST["curso"])) {
             if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ 0-9]+$/', $_POST["nombre"])) {
-                $_POST["telefono"] = str_replace(" ","",$_POST["telefono"]); 
+                $_POST["telefono"] = str_replace(" ", "", $_POST["telefono"]);
                 $datos = array(
                     "nombre" => $_POST["nombre"],
                     "telefono" => $_POST["telefono"],
@@ -21,39 +21,40 @@ class ControladorFormularios
                     "idCurso" => $_POST["curso"]
                 );
 
-                if($_POST["subs"]){
+                if ($_POST["subs"]) {
                     $subscripcion = [
                         "nombre" => $_POST["nombre"],
                         "telefono" => $_POST["telefono"],
                         "correo" => $_POST["correo"],
                     ];
-                    try{
+                    try {
                         $sub = ModeloFormularios::mdlCrearRegistro("Subscritos", array_keys($subscripcion), $subscripcion);
-                    }catch(Exception $e){}
+                    } catch (Exception $e) {
+                    }
                 }
 
                 $respuesta = ModeloFormularios::mdlCrearRegistro("Participantes", array_keys($datos), $datos);
                 if ($respuesta == "ok") {
-                    $id = ModeloFormularios::mdlSelecReg("Participantes",array_keys($datos),$datos)[0];
-                    $datosCurso = ["idCurso"=>$datos["idCurso"]];
-                    $curso = ModeloFormularios::mdlSelecReg("Cursos",array_keys($datosCurso),$datosCurso);
+                    $id = ModeloFormularios::mdlSelecReg("Participantes", array_keys($datos), $datos)[0];
+                    $datosCurso = ["idCurso" => $datos["idCurso"]];
+                    $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($datosCurso), $datosCurso);
                     if ($id) {
                         $datosAlumno = [
                             "curp" => $id["curp"]
                         ];
-                        $alumno = ModeloFormularios::mdlSelecReg("Alumnos",array_keys($datosAlumno), $datosAlumno);
+                        $alumno = ModeloFormularios::mdlSelecReg("Alumnos", array_keys($datosAlumno), $datosAlumno);
                         $descuento = 0;
-                        if(isset($alumno[0])){
-                            $descuento =  $curso[0]["desc"];
+                        if (isset($alumno[0])) {
+                            $descuento = $curso[0]["desc"];
                         }
                         $datosPago = [
                             "idParticipante" => $id["idParticipante"],
-                            "desc"=>$descuento,
-                            "pago"=>$curso[0]["precio"]
+                            "desc" => $descuento,
+                            "pago" => $curso[0]["precio"]
                         ];
-                        $res = ModeloFormularios::mdlCrearRegistro("Pagos",array_keys($datosPago),$datosPago);
-                        if($res=="ok"){
-                            if(isset($_POST["rfc"]) && $_POST["rfc"]!=""){
+                        $res = ModeloFormularios::mdlCrearRegistro("Pagos", array_keys($datosPago), $datosPago);
+                        if ($res == "ok") {
+                            if (isset($_POST["rfc"]) && $_POST["rfc"] != "") {
                                 $datosFac = [
                                     "idParticipante" => $id["idParticipante"],
                                     "rfc" => $_POST["rfc"],
@@ -61,7 +62,7 @@ class ControladorFormularios
                                     "obs" => $_POST["obs"]
                                 ];
                                 $resRfc = ModeloFormularios::mdlCrearRegistro("Facturas", array_keys($datosFac), $datosFac);
-                                if($resRfc != "ok"){
+                                if ($resRfc != "ok") {
                                     echo '<script>
                                         alert("Error al crear registro de Factura");
                                     </script>';
@@ -94,7 +95,7 @@ class ControladorFormularios
                             </div>';
                             $subject = "Regsitro a un curso UPA";
                             $correo = new ControladorCorreo();
-                            $correo->ctrEnviarCorreo($datos["correo"],$datos["nombre"],$subject, $msg,$curso[0]['idCurso'],1);
+                            $correo->ctrEnviarCorreo($datos["correo"], $datos["nombre"], $subject, $msg, $curso[0]['idCurso'], 1);
 
                             $_SESSION["toast"] = "success/Registro exitoso, revisa tu correo";
                             echo '<script>
@@ -103,7 +104,7 @@ class ControladorFormularios
                                 } 
                                 location.reload();
                             </script>';
-                        }else{
+                        } else {
                             $_SESSION["toast"] = "error/Error al realizar registro de pago";
                             echo '<script>
                                 if(window.history.replaceState){
@@ -148,7 +149,7 @@ class ControladorFormularios
     public static function ctrModificarRegistroAlumno($campo)
     {
         if (isset($_POST["idAlumno"])) {
-            
+
             if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nombre"])) {
                 // echo '<script>alert("ctr");</script>';
                 $datos = array(
@@ -201,25 +202,41 @@ class ControladorFormularios
         }
     }
     //Eliminar registro de alumnos
-    public static function ctrEliminarRegistro($tabla, $item,$campo,$dominio)
+    public static function ctrEliminarRegistro($tabla, $item, $campo, $dominio)
     {
         if (isset($_POST['alumnoEliminar']) || isset($_POST['cursoEliminar'])) {
             if ($tabla == "participantes" || $tabla == "Participantes") {
-                $id = array("idParticipante"=>$_POST["alumnoEliminar"]);
+                $id = array("idParticipante" => $_POST["alumnoEliminar"]);
                 $participante = ModeloFormularios::mdlSelecReg("Participantes", array_keys($id), $id)[0];
                 $val = $_POST["alumnoEliminar"];
                 $comprobante = ModeloFormularios::mdlSelecReg("Pagos", array_keys($id), $id);
-                $deletePago = ModeloFormularios::mdlBorrarRegistro("Pagos","idParticipante",$id);
-                if($comprobante[0]['comprobante']!=null){
-                    unlink($dominio."vistas/img/comprobantes/" . $participante['idCurso'] . '/' . $comprobante[0]['comprobante']);
+                // $deletePago = ModeloFormularios::mdlBorrarRegistro("Pagos","idParticipante",$id);
+                try {
+                    unlink(dirname(__DIR__) . '/vistas/img/comprobantes/' . $participante['idCurso'] . '/' . $comprobante[0]['comprobante']);
+                    // unlink($dominio."vistas/img/comprobantes/" . $participante['idCurso'] . '/' . $comprobante[0]['comprobante']);
+                } catch (Exception $e) {
                 }
                 ($comprobante[0][$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
             } else {
-                $id = array("idCurso"=>$_POST["cursoEliminar"]);
-                $curso = ModeloFormularios::mdlSelecReg("cursos", array_keys($id), $id)[0];
+                $id = array("idCurso" => $_POST["cursoEliminar"]);
+                $curso = ModeloFormularios::mdlSelecReg("Cursos", array_keys($id), $id)[0];
                 $val = $_POST["cursoEliminar"];
-                rmdir($dominio."vistas/img/comprobantes/" . $curso['idCurso']);
-                unlink($dominio."vistas/img/flyers/".$curso["flyer"]);
+                // rmdir();
+                $dir = dirname(__DIR__)."/vistas/img/comprobantes/" . $curso['idCurso'];
+                try {
+                    $files = scandir($dir);
+                    foreach ($files as $file) {
+                        if ($file != '.' && $file != '..') {
+                            unlink($dir . '/' . $file);
+                        }
+                    }
+                    rmdir($dir);
+                } catch (Exception $e) {}
+
+                // rmdir($dominio."vistas/img/comprobantes/" . $curso['idCurso']);
+                // unlink($dominio."vistas/img/flyers/".$curso["flyer"]);
+                unlink(dirname(__DIR__) . "/vistas/img/flyers/" . $curso["flyer"]);
+                unlink(dirname(__DIR__) . "/vistas/img/banners/" . $curso["banner"]);
                 $_SESSION["vista"] = 1;
             }
             $eliminar = ModeloFormularios::mdlBorrarRegistro($tabla, $item, $val);
@@ -248,7 +265,7 @@ class ControladorFormularios
     public static function ctrComprobante($idParticipante, $idCurso, $dominio)
     {
         if (isset($_FILES["comprobante"])) {
-            
+
             $ext = explode("/", $_FILES["comprobante"]["type"]);
             $carpeta = 'vistas/img/comprobantes/' . $idCurso;
             $datos = array(
@@ -259,7 +276,7 @@ class ControladorFormularios
             }
             if (move_uploaded_file($_FILES["comprobante"]["tmp_name"], $carpeta . '/' . $datos["comprobante"])) {
                 // echo '<script>alert("hi");</script>';
-                $respuesta = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,array("idParticipante"=>$idParticipante));
+                $respuesta = ModeloFormularios::mdlModificarRegistro("Pagos", array_keys($datos), $datos, array("idParticipante" => $idParticipante));
                 if ($respuesta == "ok") {
                     $_SESSION["toast"] = "success/Comprobante subido correctamente";
                     echo '<script>
@@ -293,7 +310,7 @@ class ControladorFormularios
     public static function ctrIngreso()
     {
         if (isset($_POST["correoIngreso"]) && isset($_POST["pwdIngreso"])) {
-            $datos = array("correo"=>$_POST["correoIngreso"]);
+            $datos = array("correo" => $_POST["correoIngreso"]);
             $res = ModeloFormularios::mdlSelecReg("Admins", array_keys($datos), $datos);
             if (isset($res[0])) {
                 if ($res[0]["pwd"] == $_POST["pwdIngreso"]) {
@@ -330,27 +347,27 @@ class ControladorFormularios
         }
     }
 
-    public static function ctrValidarComprobante($dominio, $revisor,$campo)
+    public static function ctrValidarComprobante($dominio, $revisor, $campo)
     {
         if (isset($_POST["idRev"]) && isset($_POST["btnRev"]) && isset($_POST["idRevCurso"])) {
-            $id = array("idParticipante"=>$_POST["idRev"]);
+            $id = array("idParticipante" => $_POST["idRev"]);
             $inscrito = ModeloFormularios::mdlSelecReg("Participantes", array_keys($id), $id);
             if ($_POST["btnRev"] == "Validar") {
                 $revisor[0]["depto"] == "Posgrado" ? $campo = "r1" : $campo = "r2";
-                if($campo=="r1"){
+                if ($campo == "r1") {
                     date_default_timezone_set('America/Mexico_City');
-                    $datos = array($campo=>"1","fec_".$campo=>date('y-m-d'));
-                }else{
-                    $datos = [$campo=>"1","fec_".$campo=>$_POST["fec_r2"]];
+                    $datos = array($campo => "1", "fec_" . $campo => date('y-m-d'));
+                } else {
+                    $datos = [$campo => "1", "fec_" . $campo => $_POST["fec_r2"]];
                 }
-                
-                $res = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,$id);
+
+                $res = ModeloFormularios::mdlModificarRegistro("Pagos", array_keys($datos), $datos, $id);
                 if ($res == "ok") {
-                    if($campo=="r1"){
+                    if ($campo == "r1") {
                         $doc = new ControladorReportes();
                         // $doc = new ControladorReportes();
-                        $doc -> ctrRegistro($_POST["idRevCurso"]);
-                        $doc -> ctrInscrito($_POST["idRevCurso"]);
+                        $doc->ctrRegistro($_POST["idRevCurso"]);
+                        $doc->ctrInscrito($_POST["idRevCurso"]);
 
                         $msg = '<div>
                             <h3>Felicidades!</h3>
@@ -358,7 +375,7 @@ class ControladorFormularios
                         </div>';
                         $subject = "Registro Exitoso";
                         $correo = new ControladorCorreo();
-                        $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg,$_POST["idRevCurso"],0);
+                        $correo->ctrEnviarCorreo($inscrito[0]["correo"], $inscrito[0]["nombre"], $subject, $msg, $_POST["idRevCurso"], 0);
                     }
                     ($inscrito[$campo]) ? $_SESSION["vista"] = 2 : $_SESSION["vista"] = 1;
                     $_SESSION["toast"] = "success/Comprobante validado";
@@ -380,25 +397,46 @@ class ControladorFormularios
                     </script>';
                 }
             } else {
-                $id = array("idParticipante"=>$_POST["idRev"]);
+                $revisor[0]["depto"] == "Posgrado" ? $campo = "r1" : $campo = "r2";
+                if ($campo == "r1") {
+                    date_default_timezone_set('America/Mexico_City');
+                    $datos = array($campo => "0", "fec_" . $campo => date('y-m-d'), "r2" => "0", "fec_r2" => null);
+                } else {
+                    $datos = [$campo => "0", "fec_" . $campo => $_POST["fec_r2"]];
+                }
+
+                $res = ModeloFormularios::mdlModificarRegistro("Pagos", array_keys($datos), $datos, $id);
+
+
+                $id = array("idParticipante" => $_POST["idRev"]);
                 $revisor[0]["depto"] == "Posgrado" ? $campo = "r1" : $campo = "r2";
                 $comp = ModeloFormularios::mdlSelecReg("Pagos", array_keys($id), $id);
-                $datos = ["comprobante"=>null];
-                $res = ModeloFormularios::mdlModificarRegistro("Pagos",array_keys($datos), $datos,$id);
+                $datos = ["comprobante" => null];
+                $res = ModeloFormularios::mdlModificarRegistro("Pagos", array_keys($datos), $datos, $id);
                 $source = "vistas/img/comprobantes/" . $_POST["idRevCurso"] . "/" . $comp[0]["comprobante"];
                 unlink($source);
+
+                //------ ENCRIPTACIÓN DE ID------//
+                $encrypt_method = "AES-256-CBC";
+                $secret_key = 'AA74CDCC2BBRT935136HH7B63C27';
+                $secret_iv = '5fgf5HJ5g27';
+                $key = hash('sha256', $secret_key);
+                $iv = substr(hash('sha256', $secret_iv), 0, 16);
+                $encryption = openssl_encrypt(strval($id["idParticipante"]), $encrypt_method, $key, 0, $iv);
+                $encryption = base64_encode($encryption);
+
                 $msg = '<div>
                             <h3>Lo sentimos</h3>
                             <p>Tu comprobante de pago ha sido rechazado, ingresa al siguiente enlace para reenviar la captura de tu comprobante. Asegúrate que se vean claramente los datos del mismo en la fotografía que vayas a mandar. : </p>
-                            <a href="' . $dominio . 'registro/' . $_POST["idRev"] . '">' . $dominio . 'registro/' . $_POST["idRev"] . '</a>
+                            <a href="' . $dominio . 'registro/' . $encryption . '">' . $dominio . 'registro/' . $encryption . '</a>
                             <br>
                             <img src="cid:imagen" style="margin-left:auto;margin-right:auto;margin-top: 1rem;width: 35rem;" alt="Instrucciones de pago">
                         </div>';
                 $subject = "Info. cursos";
                 $correo = new ControladorCorreo();
-                $correo->ctrEnviarCorreo($inscrito[0]["correo"],$inscrito[0]["nombre"],$subject, $msg,$dominio,1);
+                $correo->ctrEnviarCorreo($inscrito[0]["correo"], $inscrito[0]["nombre"], $subject, $msg, $dominio, 1);
                 $_SESSION["toast"] = "error/Comprobante rechazado";
-                    echo '<script>
+                echo '<script>
                         if(window.history.replaceState){
                             window.history.replaceState(null,null,window.location.href);
                         } 
@@ -416,11 +454,11 @@ class ControladorFormularios
                 $datos = array(
                     "curso" => $_POST["curso"],
                     "objetivo" => $_POST["objetivo"],
-                    "tipo" => ($_POST["tipo"])? 1 : 0,
+                    "tipo" => ($_POST["tipo"]) ? 1 : 0,
                     "instructor" => $_POST["instructor"],
                     "aula" => $_POST["aula"],
-                    "modalidad" => ($_POST["modalidad"])? 1 : 0,
-                    "temario" => ($_POST["temario"].'|||'.$_POST["recursos"].'|||'.$_POST["materiales"]),
+                    "modalidad" => ($_POST["modalidad"]) ? 1 : 0,
+                    "temario" => ($_POST["temario"] . '|||' . $_POST["recursos"] . '|||' . $_POST["materiales"]),
                     "reg_inicio" => $_POST["reg_inicio"],
                     "reg_fin" => $_POST["reg_fin"],
                     "fec_inicio" => $_POST["fec_inicio"],
@@ -443,11 +481,11 @@ class ControladorFormularios
                     $extFileBanner = explode("/", $_FILES["banner"]["type"]);
                     // echo '<script>console.log("'.$id[0]["idCurso"].'.'.$extFile[1].'")</script>';
                     $datos = [
-                        "flyer" => basename($id[0]["idCurso"].'.'.$extFileFlyer[1]),
-                        "banner" => basename($id[0]["idCurso"].'.'.$extFileBanner[1])
+                        "flyer" => basename($id[0]["idCurso"] . '.' . $extFileFlyer[1]),
+                        "banner" => basename($id[0]["idCurso"] . '.' . $extFileBanner[1])
                     ];
-                    $flyer = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos,array("idCurso" => $id[0]["idCurso"]));
-                    if($flyer == 'ok' && move_uploaded_file($_FILES["flyer"]["tmp_name"], 'vistas/img/flyers/' . $datos["flyer"]) && move_uploaded_file($_FILES["banner"]["tmp_name"], 'vistas/img/banners/' . $datos["banner"])){
+                    $flyer = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos, array("idCurso" => $id[0]["idCurso"]));
+                    if ($flyer == 'ok' && move_uploaded_file($_FILES["flyer"]["tmp_name"], 'vistas/img/flyers/' . $datos["flyer"]) && move_uploaded_file($_FILES["banner"]["tmp_name"], 'vistas/img/banners/' . $datos["banner"])) {
                         $_SESSION["vista"] = 3;
                         $_SESSION["toast"] = "success/Curso creado exitosamente";
                         echo '<script>
@@ -456,7 +494,7 @@ class ControladorFormularios
                             } 
                             location.reload();
                             </script>';
-                    }else{
+                    } else {
                         echo '<script>
                         if(window.history.replaceState){
                             window.history.replaceState(null,null,window.location.href);
@@ -466,7 +504,7 @@ class ControladorFormularios
                             title: "Error al subir flyer de curso"
                         });
                         </script>';
-                    }                    
+                    }
                 } else {
                     echo '<script>
                         if(window.history.replaceState){
@@ -480,7 +518,6 @@ class ControladorFormularios
                 }
             }
         }
-        
     }
 
     public static function ctrModificarCurso($dominio)
@@ -490,11 +527,11 @@ class ControladorFormularios
                 $datos = array(
                     "curso" => $_POST["curso"],
                     "objetivo" => $_POST["objetivo"],
-                    "tipo" => ($_POST["tipo"])? 1 : 0,
+                    "tipo" => ($_POST["tipo"]) ? 1 : 0,
                     "instructor" => $_POST["instructor"],
                     "aula" => $_POST["aula"],
-                    "modalidad" => ($_POST["modalidad"])? 1 : 0,
-                    "temario" => ($_POST["temario"].'|||'.$_POST["recursos"].'|||'.$_POST["materiales"]),
+                    "modalidad" => ($_POST["modalidad"]) ? 1 : 0,
+                    "temario" => ($_POST["temario"] . '|||' . $_POST["recursos"] . '|||' . $_POST["materiales"]),
                     "reg_inicio" => $_POST["reg_inicio"],
                     "reg_fin" => $_POST["reg_fin"],
                     "fec_inicio" => $_POST["fec_inicio"],
@@ -510,28 +547,30 @@ class ControladorFormularios
                 // $old = ModeloFormularios::mdlSelecReg("Cursos",array_keys($data),$data);
                 $actualizar = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos, $data);
                 if ($actualizar == "ok") {
-                    if((isset($_FILES["flyer"]) && $_FILES["flyer"]["type"]!="") || (isset($_FILES["banner"]) && $_FILES["banner"]["type"]!="")){
-                        $cursoEdit = ModeloFormularios::mdlSelecReg("Cursos", array_keys($data), $data); 
+                    if ((isset($_FILES["flyer"]) && $_FILES["flyer"]["type"] != "") || (isset($_FILES["banner"]) && $_FILES["banner"]["type"] != "")) {
+                        $cursoEdit = ModeloFormularios::mdlSelecReg("Cursos", array_keys($data), $data);
                         // unlink('vistas/img/flyers/'.$old[0]['flyer']);
                         $extFileFlyer = explode("/", $_FILES["flyer"]["type"]);
                         $extFileBanner = explode("/", $_FILES["banner"]["type"]);
                         $datos = [
-                            "flyer" => (isset($_FILES["flyer"]) && $_FILES["flyer"]["type"]!="") ? basename($data["idCurso"].'.'.$extFileFlyer[1]) : $cursoEdit[0]["flyer"],
-                            "banner" => (isset($_FILES["banner"]) && $_FILES["banner"]["type"]!="") ? basename($data["idCurso"].'.'.$extFileBanner[1]) : $cursoEdit[0]["banner"] 
+                            "flyer" => (isset($_FILES["flyer"]) && $_FILES["flyer"]["type"] != "") ? basename($data["idCurso"] . '.' . $extFileFlyer[1]) : $cursoEdit[0]["flyer"],
+                            "banner" => (isset($_FILES["banner"]) && $_FILES["banner"]["type"] != "") ? basename($data["idCurso"] . '.' . $extFileBanner[1]) : $cursoEdit[0]["banner"]
                         ];
-                        $flyer = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos,$data);
+                        $flyer = ModeloFormularios::mdlModificarRegistro("Cursos", array_keys($datos), $datos, $data);
 
                         $st = false;
-                        try{
+                        try {
                             move_uploaded_file($_FILES["flyer"]["tmp_name"], 'vistas/img/flyers/' . $datos["flyer"]);
                             $st = true;
-                        }catch(Exception $e){}
-                        try{
+                        } catch (Exception $e) {
+                        }
+                        try {
                             move_uploaded_file($_FILES["banner"]["tmp_name"], 'vistas/img/banners/' . $datos["banner"]);
                             $st = true;
-                        }catch(Exception $er){}
+                        } catch (Exception $er) {
+                        }
 
-                        if($st){
+                        if ($st) {
                             $_SESSION["vista"] = 3;
                             $_SESSION["toast"] = "success/Curso modificado exitosamente";
                             echo '<script>
@@ -539,8 +578,8 @@ class ControladorFormularios
                                     window.history.replaceState(null,null,window.location.href);
                                 } 
                                 location.reload();
-                                </script>'; 
-                        }else{
+                                </script>';
+                        } else {
                             echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null,null,window.location.href);
@@ -550,8 +589,8 @@ class ControladorFormularios
                                 title: "Error al subir flyer"
                             });
                             </script>';
-                        } 
-                    }else{
+                        }
+                    } else {
                         $_SESSION["vista"] = 3;
                         $_SESSION["toast"] = "success/Curso modificado exitosamente";
                         echo '<script>

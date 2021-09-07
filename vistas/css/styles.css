@@ -413,10 +413,10 @@ img {
 	margin: auto;
 }
 
-#kvFileinputModal .file-zoom-dialog .kv-zoom-title {
+#kvFileinputModal .kv-zoom-title {
 	color: #fff !important;
 }
-#kvFileinputModal .file-zoom-dialog .kv-zoom-title samp {
+#kvFileinputModal .kv-zoom-title samp {
 	font-size: 0.7rem;
 }
 
@@ -920,11 +920,13 @@ input.bg-upa-secondary:focus {
 	border: 0;
 }
 .form-comprobante .form-control::file-selector-button {
+	color:#fff !important;
 	background-color: var(--upa-secondary-light);
 	border: 0;
 }
 .form-comprobante
 	.form-control:hover:not(:disabled):not([readonly])::file-selector-button {
+	color: #fff !important;
 	background-color: var(--upa-secondary-lighter);
 }
 

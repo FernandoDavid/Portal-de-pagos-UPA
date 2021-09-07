@@ -300,7 +300,14 @@ foreach ($res as $key => $dato) {
                             <li><a class="dropdown-item btnModificarCurso" data-bs-toggle="modal">Editar curso</a></li>
                             <li><a class="dropdown-item btnEliminarCurso" data-bs-toggle="modal">Eliminar curso</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" data-bs-toggle="modal">Lista de certificados</a></li>
+                            <form id="fc-<?php echo $datos["idCurso"]?>" method="post">
+                                <input type="hidden" name="idCurso" value="<?php echo $datos["idCurso"]?>">
+                                <?php 
+                                //$File = new ControladorReportes();
+                                $File->ctrParticipantes();
+                                ?>
+                            </form>
+                            <li><a href="javacript:{}" onclick="document.getElementById(`fc-<?php echo $datos['idCurso']?>`).submit()" class="dropdown-item" data-bs-toggle="modal">Lista de participantes</a></li>
                         </ul>
                         <div class="ms-auto d-flex">
                             <span class="badge my-auto rounded-pill fs-6 <?php if($razonCupo>=80): ?>bg-danger text-white<?php else: ?>bg-upa-gray-light text-upa-gray-dark<?php endif;?>">
@@ -1010,11 +1017,18 @@ foreach ($res as $key => $dato) {
                                     <h5 class="fw-bold mb-0 fs-3 text-upa-primary" id="precio"></h5>
                                 </div>
                                 <!-- <hr> -->
-                                <div class="w-100 marco-comprobante p-3 mt-2">
+                                <div class="w-100 marco-comprobante p-3 mb-3 mt-2 position-relative">
+                                    <!-- <span class="position-absolute top-0 start-100 translate-middle me-5 p-2 bg-danger border border-light rounded-circle" style="width:42px !important; height: 42px !important">
+                                        <i class="fas fa-exclamation-triangle text-white fs-6"></i>
+                                    </span> -->
                                     <img src="" alt="" class="img-fluid">
                                     <div class="row gx-0 pre-comprobante">
                                         <h6 class="fs-2 m-auto text-white fw-bolder">Sin comprobante</h6>
                                     </div>
+                                </div>
+                                <div id="rechazo" class="row">
+                                    <div class="col-sm-6 text-danger fs-6"></div>
+                                    <div class="col-sm-6 text-danger fs-6"></div>
                                 </div>
                             </div>
                         </div>
